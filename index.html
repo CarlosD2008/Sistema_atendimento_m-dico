@@ -16,7 +16,7 @@
             --azul-marinho: #0b2447;
             --dourado: #c09647; 
             --branco-gelo: #f8f9fa;
-            --fundo-topo: #f0f0f0; /* Cor de fundo da imagem do topo */
+            --fundo-topo: #f0f0f0; 
             --fundo-citacao: #ebebeb; 
         }
 
@@ -26,7 +26,7 @@
             color: #333;
         }
 
-        /* --- NOVO TOPO (Baseado na imagem image_1dfdf0.png) --- */
+        /* CABEÇALHO (Topo) */
         .header-custom {
             background-color: var(--fundo-topo);
             padding: 10px 0;
@@ -40,12 +40,20 @@
             flex-wrap: wrap;
         }
 
+        /* CORREÇÃO DO LOGOTIPO */
+        .header-logo {
+            width: 360px; /* Largura exata para mostrar apenas o coração e o nome "Dra Renata" */
+            height: 65px; /* Altura do logo */
+            overflow: hidden; /* Isso age como uma máscara: esconde o restante da imagem (os links originais) */
+            position: relative;
+        }
+
         .header-logo img {
-            height: 70px;
-            width: auto;
-            /* Foca no logo da imagem enviada */
-            object-fit: none;
-            object-position: left center;
+            height: 100%; /* Ajusta a imagem para caber na altura exata de 65px */
+            width: auto;  /* Mantém a proporção sem distorcer */
+            position: absolute;
+            left: 0;      /* Fixa a imagem no canto esquerdo */
+            top: 0;
         }
 
         .header-access {
@@ -108,6 +116,7 @@
             background-color: #fff;
         }
 
+        /* IMAGENS DA GALERIA - Com Transição Suave */
         .ambientes-section img {
             width: 100%;
             height: 100%;
@@ -115,6 +124,14 @@
             display: block;
             border-radius: 4px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+
+        /* EFEITO AO PASSAR O MOUSE (Hover) */
+        .ambientes-section img:hover {
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2); 
         }
 
         /* Footer com informações de contato */
@@ -136,6 +153,9 @@
                 gap: 15px;
                 font-size: 0.9rem;
             }
+            .header-logo {
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
@@ -146,7 +166,7 @@
             <div class="header-container">
                 
                 <div class="header-logo">
-                    <img src="Logo_clínica.png" alt="Logo Dra. Renata Vasconcelos">
+                    <img src="image_1dfdf0.png" alt="Logo Dra. Renata Vasconcelos">
                 </div>
 
                 <div class="header-access">
@@ -169,7 +189,7 @@
     </header>
 
     <section class="main-banner">
-        <img src="banner_principal.png" alt="Saúde Cardiovascular com Precisão Médica">
+        <img src="banner_principal.jpg" alt="Saúde Cardiovascular com Precisão Médica">
     </section>
 
     <section class="quote-section text-center">
@@ -185,13 +205,13 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
-                    <img src="Imagem_Clínica01.png" alt="Recepção">
+                    <img src="Imagem_Clínica01.jpg" alt="Recepção">
                 </div>
                 <div class="col-md-4">
-                    <img src="Imagem_Clínica02.png" alt="Sala de Exames">
+                    <img src="Imagem_Clínica02.jpg" alt="Sala de Exames">
                 </div>
                 <div class="col-md-4">
-                    <img src="Imagem_Clínica03.png" alt="Consultório">
+                    <img src="Imagem_Clínica03.jpg" alt="Consultório">
                 </div>
             </div>
         </div>
@@ -202,13 +222,13 @@
             <div class="row text-center text-md-start">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h5 class="text-white mb-3" style="font-family: 'Playfair Display', serif;">Corcentro Cardiologia e Diagnósticos Médicos</h5>
-                    <p class="mb-1">Avaliação: ⭐⭐⭐⭐⭐ 4,5 (286) </p>
-                    <p>Serviços médicos locais </p>
+                    <p class="mb-1">Avaliação: ⭐⭐⭐⭐⭐ 4,5 (286)</p>
+                    <p>Serviços médicos locais</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-1"><strong>Endereço:</strong> Av. Dom Pedro II, 620 - Sala 184 </p>
-                    <p class="mb-1"><strong>Telefone:</strong> (11) 2325-4369 </p>
-                    <p><strong>Horário:</strong> Aberto • Fecha às 17:00 </p>
+                    <p class="mb-1"><strong>Endereço:</strong> Av. Dom Pedro II, 620 - Sala 184</p>
+                    <p class="mb-1"><strong>Telefone:</strong> (11) 2325-4369</p>
+                    <p><strong>Horário:</strong> Aberto • Fecha às 17:00</p>
                 </div>
             </div>
         </div>
