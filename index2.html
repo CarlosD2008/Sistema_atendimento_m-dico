@@ -19,6 +19,8 @@
     />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
       :root {
         --azul-marinho: #0b2447;
@@ -98,7 +100,6 @@
           opacity: 0;
           transform: translateY(10px);
         }
-
         to {
           opacity: 1;
           transform: translateY(0);
@@ -140,7 +141,6 @@
         transform: translateY(-2px);
       }
 
-      /* Alternância entre Login e Cadastro */
       #register-form {
         display: none;
       }
@@ -420,7 +420,6 @@
                 placeholder="Digite seu acesso"
                 required
               />
-
               <label class="small fw-bold">Senha</label>
               <input
                 type="password"
@@ -428,7 +427,6 @@
                 placeholder="********"
                 required
               />
-
               <button type="submit" class="btn-primary-custom mt-2">
                 ENTRAR
               </button>
@@ -464,7 +462,6 @@
                 placeholder="Seu nome"
                 required
               />
-
               <label class="small fw-bold">E-mail</label>
               <input
                 type="email"
@@ -472,7 +469,6 @@
                 placeholder="exemplo@email.com"
                 required
               />
-
               <div class="row">
                 <div class="col-6">
                   <label class="small fw-bold">CPF</label>
@@ -493,7 +489,6 @@
                   />
                 </div>
               </div>
-
               <label class="small fw-bold">Crie uma Senha</label>
               <input
                 type="password"
@@ -501,7 +496,6 @@
                 placeholder="********"
                 required
               />
-
               <button type="submit" class="btn-primary-custom mt-2">
                 FINALIZAR CADASTRO
               </button>
@@ -549,7 +543,6 @@
           </div>
 
           <form id="formAgendar">
-            <!-- Passo 1: Serviço -->
             <div id="step1">
               <div class="mb-4">
                 <label class="fw-bold mb-2">Selecione o Serviço:</label>
@@ -584,7 +577,6 @@
               </button>
             </div>
 
-            <!-- Passo 2: Data e Hora -->
             <div id="step2" style="display: none">
               <div class="row">
                 <div class="col-md-6 mb-4">
@@ -625,7 +617,6 @@
               </div>
             </div>
 
-            <!-- Passo 3: Confirmação -->
             <div id="step3" style="display: none">
               <div
                 class="glass-card mb-4"
@@ -647,7 +638,6 @@
                   <strong>Convênio:</strong> <span id="resumoConvenio">-</span>
                 </p>
               </div>
-
               <div class="mb-3">
                 <label class="small fw-bold"
                   >Observações Adicionais (Opcional)</label
@@ -659,7 +649,6 @@
                   placeholder="Ex: Primeira vez, sintomas específicos..."
                 ></textarea>
               </div>
-
               <div class="d-flex gap-2">
                 <button
                   type="button"
@@ -691,7 +680,7 @@
         </div>
         <div class="row">
           <div class="col-md-4 mb-4">
-            <div class="glass-card text-center">
+            <div class="glass-card text-center mb-4">
               <i class="bi bi-calendar-check text-primary display-6"></i>
               <h5 class="mt-3">Próxima Consulta</h5>
               <div id="proximaConsultaContent">
@@ -699,7 +688,15 @@
                 <span class="status-badge bg-confirmed">Confirmado</span>
               </div>
             </div>
+
+            <div class="glass-card">
+              <h6 class="fw-bold mb-3">
+                <i class="bi bi-activity text-danger"></i> Evolução da Pressão
+              </h6>
+              <canvas id="myChart" height="200"></canvas>
+            </div>
           </div>
+
           <div class="col-md-8">
             <div class="glass-card">
               <h5>Histórico de Atividades</h5>
@@ -744,9 +741,8 @@
               Sua saúde cardíaca em mãos de quem entende e cuida com dedicação.
             </p>
             <div class="d-flex gap-3 fs-4">
-              <i class="bi bi-instagram"></i>
-              <i class="bi bi-facebook"></i>
-              <i class="bi bi-whatsapp"></i>
+              <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i
+              ><i class="bi bi-whatsapp"></i>
             </div>
           </div>
           <div class="col-md-4 mb-4 text-center">
@@ -754,7 +750,7 @@
             <p class="small mb-0">Av. Dom Pedro II, 620 - Santo André/SP</p>
             <div class="map-container">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.4533036814986!2d-46.5332!3d-23.655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDM5JzE4LjAiUyA0NsKwMzInMDAuMCJX!5e0!3m2!1spt-BR!2sbr!4v1634567890123"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.5517173950587!2d-46.53676052377312!3d-23.656247964528173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce42eb785a9f2b%3A0x1d6199a0937c468e!2sAv.%20Dom%20Pedro%20II%2C%20620%20-%20Jardim%2C%20Santo%20Andr%C3%A9%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
                 width="100%"
                 height="100%"
                 style="border: 0"
@@ -777,11 +773,9 @@
     <script>
       AOS.init({ duration: 800, once: true });
 
-      // Configuração inicial da data mínima (hoje)
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("dataAgenda").setAttribute("min", today);
 
-      // Navegação entre páginas
       function showPage(pageId) {
         const pages = document.querySelectorAll(".page-content");
         pages.forEach((page) => page.classList.remove("page-active"));
@@ -790,47 +784,40 @@
         AOS.refresh();
       }
 
-      // Alternar entre Login e Cadastro
       function toggleAuth() {
         const loginForm = document.getElementById("login-form");
         const registerForm = document.getElementById("register-form");
-
-        if (loginForm.style.display === "none") {
-          loginForm.style.display = "block";
-          registerForm.style.display = "none";
-        } else {
-          loginForm.style.display = "none";
-          registerForm.style.display = "block";
-        }
+        loginForm.style.display =
+          loginForm.style.display === "none" ? "block" : "none";
+        registerForm.style.display =
+          registerForm.style.display === "none" ? "block" : "none";
       }
 
-      // Lógica de Agendamento por Passos
       function nextStep(step) {
         if (step === 2) {
-          const servico = document.getElementById("servicoSelect").value;
-          if (!servico) return alert("Por favor, selecione um serviço.");
-
+          if (!document.getElementById("servicoSelect").value)
+            return alert("Selecione um serviço.");
           document.getElementById("step1").style.display = "none";
           document.getElementById("step2").style.display = "block";
           document.getElementById("step1-indicator").classList.add("completed");
           document.getElementById("step2-indicator").classList.add("active");
         } else if (step === 3) {
-          const data = document.getElementById("dataAgenda").value;
-          const hora = document.getElementById("selectedTime").value;
-          if (!data || !hora)
-            return alert("Por favor, selecione a data e o horário.");
-
-          // Preencher resumo
+          if (
+            !document.getElementById("dataAgenda").value ||
+            !document.getElementById("selectedTime").value
+          )
+            return alert("Selecione data e hora.");
           document.getElementById("resumoServico").innerText =
             document.getElementById("servicoSelect").value;
-          document.getElementById("resumoData").innerText = data
-            .split("-")
+          document.getElementById("resumoData").innerText = document
+            .getElementById("dataAgenda")
+            .value.split("-")
             .reverse()
             .join("/");
-          document.getElementById("resumoHora").innerText = hora;
+          document.getElementById("resumoHora").innerText =
+            document.getElementById("selectedTime").value;
           document.getElementById("resumoConvenio").innerText =
             document.getElementById("convenioSelect").value;
-
           document.getElementById("step2").style.display = "none";
           document.getElementById("step3").style.display = "block";
           document.getElementById("step2-indicator").classList.add("completed");
@@ -856,112 +843,80 @@
         }
       }
 
-      // Gerador de Horários (Simulado)
       function generateTimeSlots() {
         const container = document.getElementById("timeSlots");
         container.innerHTML = "";
-        const times = [
+        [
           "08:00",
           "08:30",
           "09:00",
           "09:30",
           "10:00",
-          "10:30",
-          "11:00",
           "14:00",
-          "14:30",
           "15:00",
-          "15:30",
           "16:00",
-          "16:30",
-          "17:00",
-        ];
-
-        times.forEach((time) => {
+        ].forEach((time) => {
           const div = document.createElement("div");
           div.className = "time-slot";
-          // Simular alguns horários ocupados aleatoriamente
-          if (Math.random() < 0.2) {
-            div.classList.add("disabled");
-            div.innerText = time;
-          } else {
-            div.innerText = time;
-            div.onclick = function () {
-              document
-                .querySelectorAll(".time-slot")
-                .forEach((s) => s.classList.remove("active"));
-              this.classList.add("active");
-              document.getElementById("selectedTime").value = time;
-            };
-          }
+          div.innerText = time;
+          div.onclick = function () {
+            document
+              .querySelectorAll(".time-slot")
+              .forEach((s) => s.classList.remove("active"));
+            this.classList.add("active");
+            document.getElementById("selectedTime").value = time;
+          };
           container.appendChild(div);
         });
       }
 
-      // Finalizar Agendamento
       document.getElementById("formAgendar").onsubmit = function (e) {
         e.preventDefault();
-
-        const servico = document.getElementById("resumoServico").innerText;
-        const data = document.getElementById("resumoData").innerText;
-        const hora = document.getElementById("resumoHora").innerText;
-
-        alert(
-          `Agendamento confirmado!\n\nServiço: ${servico}\nData: ${data}\nHorário: ${hora}\n\nVocê receberá um lembrete via WhatsApp.`,
-        );
-
-        // Atualizar Dashboard Simulado
-        document.getElementById("proximaConsultaContent").innerHTML = `
-                <p class="mb-0 fw-bold">${data}, ${hora}</p>
-                <span class="status-badge bg-confirmed">Confirmado</span>
-            `;
-
-        // Resetar formulário e voltar para home ou dashboard
-        this.reset();
+        alert("Agendamento confirmado!");
         showPage("dashboard");
-
-        // Resetar passos para o próximo uso
-        document.getElementById("step3").style.display = "none";
-        document.getElementById("step1").style.display = "block";
-        document.querySelectorAll(".step").forEach((s) => {
-          s.classList.remove("active", "completed");
-        });
-        document.getElementById("step1-indicator").classList.add("active");
       };
 
       function loginSimulado() {
-        alert("Login realizado com sucesso! Bem-vindo(a) ao seu painel.");
+        alert("Login realizado com sucesso!");
         showPage("dashboard");
       }
-      // Adicione isso no final do seu bloco <script> existente
-      const ctx = document.getElementById("myChart");
-      if (ctx) {
-        new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: ["Jan", "Fev", "Mar", "Abr", "Mai"],
-            datasets: [
-              {
-                label: "Pressão Sistólica",
-                data: [120, 125, 122, 118, 121],
-                borderColor: "#c09647", // Cor dourada do seu sistema
-                backgroundColor: "rgba(192, 150, 71, 0.1)",
-                fill: true,
-                tension: 0.4,
+
+      // 3. INICIALIZAÇÃO DO GRÁFICO (NO FINAL DO SCRIPT)
+      window.onload = function () {
+        const ctx = document.getElementById("myChart");
+        if (ctx) {
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: ["Jan", "Fev", "Mar", "Abr", "Mai"],
+              datasets: [
+                {
+                  label: "Sistólica",
+                  data: [120, 125, 122, 118, 121],
+                  borderColor: "#c09647",
+                  backgroundColor: "rgba(192, 150, 71, 0.1)",
+                  tension: 0.4,
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: { display: false },
               },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { display: false },
+              scales: {
+                y: {
+                  beginAtZero: false,
+                  grid: { color: "#f0f0f0" },
+                },
+                x: { grid: { display: false } },
+              },
             },
-            scales: {
-              y: { beginAtZero: false },
-            },
-          },
-        });
-      }
+          });
+        }
+      };
     </script>
   </body>
 </html>
