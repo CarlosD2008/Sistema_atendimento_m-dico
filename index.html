@@ -5,12 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dra. Renata Vasconcelos - Cardiologia</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <!-- CSS Externo -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
       :root {
@@ -18,6 +32,18 @@
         --dourado: #c09647;
         --branco-gelo: #f8f9fa;
         --transicao: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        width: 100%;
       }
 
       body {
@@ -40,6 +66,17 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 0 20px;
+      }
+
+      .header-logo {
+        cursor: pointer;
+        font-weight: 700;
+        color: var(--azul-marinho);
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .header-logo img {
@@ -51,6 +88,7 @@
         display: flex;
         gap: 20px;
         align-items: center;
+        flex-wrap: wrap;
       }
 
       .nav-btn {
@@ -61,6 +99,7 @@
         transition: var(--transicao);
         border: none;
         background: none;
+        cursor: pointer;
       }
 
       .nav-btn:hover {
@@ -73,17 +112,60 @@
         padding: 8px 22px;
         border-radius: 50px;
         box-shadow: 0 4px 12px rgba(192, 150, 71, 0.2);
+        transition: var(--transicao);
+      }
+
+      .btn-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(192, 150, 71, 0.3);
+      }
+
+      /* --- Menu Hambúrguer --- */
+      .hamburger-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--azul-marinho);
+        cursor: pointer;
+        transition: var(--transicao);
+      }
+
+      .hamburger-btn:hover {
+        color: var(--dourado);
+      }
+
+      .nav-links.mobile-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 15px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #eee;
+      }
+
+      .nav-links.mobile-menu .nav-btn {
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .nav-links.mobile-menu .nav-btn:last-child {
+        border-bottom: none;
       }
 
       /* --- Controle de Telas --- */
       .page-content {
         display: none;
         min-height: 80vh;
+        animation: fadeIn 0.6s ease;
       }
 
       .page-active {
         display: block;
-        animation: fadeIn 0.6s ease;
       }
 
       @keyframes fadeIn {
@@ -114,6 +196,13 @@
         border-radius: 8px;
         border: 1px solid #ddd;
         margin-bottom: 15px;
+        transition: var(--transicao);
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--dourado);
+        box-shadow: 0 0 0 0.2rem rgba(192, 150, 71, 0.25);
       }
 
       .btn-primary-custom {
@@ -125,6 +214,7 @@
         border: none;
         font-weight: 600;
         transition: var(--transicao);
+        cursor: pointer;
       }
 
       .btn-primary-custom:hover {
@@ -141,6 +231,11 @@
         text-decoration: none;
         font-weight: 600;
         cursor: pointer;
+        transition: var(--transicao);
+      }
+
+      .auth-toggle-link:hover {
+        text-decoration: underline;
       }
 
       /* --- Galeria e Banner --- */
@@ -178,9 +273,10 @@
         cursor: pointer;
         transition: var(--transicao);
         font-weight: 500;
+        background: white;
       }
 
-      .time-slot:hover {
+      .time-slot:hover:not(.disabled) {
         border-color: var(--dourado);
         color: var(--dourado);
       }
@@ -237,6 +333,7 @@
         z-index: 2;
         font-weight: bold;
         margin-bottom: 5px;
+        transition: var(--transicao);
       }
 
       .step.active .step-number {
@@ -249,6 +346,100 @@
         color: white;
       }
 
+      /* --- CALENDÁRIO OTIMIZADO --- */
+      .calendar-box {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .calendar-header h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--azul-marinho);
+        margin: 0;
+        text-transform: capitalize;
+      }
+
+      .calendar-nav-btn {
+        background: var(--dourado);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        transition: var(--transicao);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .calendar-nav-btn:hover {
+        background: var(--azul-marinho);
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+      }
+
+      .calendar-weekday {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #718096;
+        padding-bottom: 5px;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transicao);
+        font-weight: 500;
+        border: 1px solid transparent;
+        background: white;
+      }
+
+      .calendar-day:hover:not(.disabled):not(.selected) {
+        background-color: #f1f5f9;
+        color: var(--azul-marinho);
+      }
+
+      .calendar-day.disabled {
+        color: #cbd5e1;
+        cursor: not-allowed;
+        background-color: #f8fafc;
+      }
+
+      .calendar-day.selected {
+        background-color: var(--dourado) !important;
+        color: white !important;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(192, 150, 71, 0.4);
+      }
+
+      .calendar-day.today {
+        border-color: var(--azul-marinho);
+        color: var(--azul-marinho);
+        font-weight: bold;
+      }
+
       /* --- Dashboard --- */
       .glass-card {
         background: white;
@@ -256,6 +447,11 @@
         padding: 25px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         height: 100%;
+        transition: var(--transicao);
+      }
+
+      .glass-card:hover {
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
       }
 
       .status-badge {
@@ -263,6 +459,7 @@
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        display: inline-block;
       }
 
       .bg-confirmed {
@@ -270,6 +467,91 @@
         color: #0f5132;
       }
 
+      /* --- Toast Container --- */
+      .toast-container-custom {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+      }
+
+      .toast-custom {
+        background: white;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: slideIn 0.3s ease;
+        min-width: 300px;
+      }
+
+      .toast-custom.success {
+        border-left: 4px solid #28a745;
+      }
+
+      .toast-custom.error {
+        border-left: 4px solid #dc3545;
+      }
+
+      .toast-custom.warning {
+        border-left: 4px solid #ffc107;
+      }
+
+      .toast-custom.info {
+        border-left: 4px solid #17a2b8;
+      }
+
+      .toast-custom .icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .toast-custom.success .icon {
+        color: #28a745;
+      }
+
+      .toast-custom.error .icon {
+        color: #dc3545;
+      }
+
+      .toast-custom.warning .icon {
+        color: #ffc107;
+      }
+
+      .toast-custom.info .icon {
+        color: #17a2b8;
+      }
+
+      .toast-custom .content {
+        flex: 1;
+      }
+
+      .toast-custom .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: #999;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 10px;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* --- Footer com Mapa Interativo --- */
       footer {
         background: var(--azul-marinho);
         color: white;
@@ -278,40 +560,199 @@
       }
 
       .map-container {
-        height: 150px;
+        height: 300px;
         border-radius: 10px;
         overflow: hidden;
         margin-top: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .leaflet-container {
+        background: #e8f4f8;
+      }
+
+      .leaflet-popup-content {
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9rem;
+      }
+
+      .custom-marker {
+        background: var(--dourado);
+        border: 3px solid white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- Responsividade --- */
+      @media (max-width: 768px) {
+        .header-container {
+          flex-direction: row;
+          gap: 10px;
+        }
+
+        .hamburger-btn {
+          display: block;
+        }
+
+        .nav-links {
+          display: none;
+          gap: 0;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .nav-btn {
+          font-size: 0.8rem;
+        }
+
+        .auth-card {
+          padding: 25px;
+          margin: 30px 15px;
+        }
+
+        .time-slots-container {
+          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        }
+
+        .step-indicator {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .step::after {
+          display: none;
+        }
+
+        .map-container {
+          height: 250px;
+        }
+
+        .toast-container-custom {
+          max-width: calc(100% - 20px);
+          left: 10px;
+          right: 10px;
+        }
+
+        .toast-custom {
+          min-width: auto;
+        }
       }
     </style>
   </head>
 
   <body>
+    <!-- Toast Container -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
     <header class="header-custom">
-      <div class="container header-container">
+      <div class="container-fluid header-container">
         <div class="header-logo" onclick="showPage('home')">
-          <img src="Logo_clínica.png" alt="Logo" onerror="this.src = 'https://via.placeholder.com/150x50?text=CORCENTRO'" />
+          <i class="bi bi-heart-pulse" style="color: var(--dourado)"></i
+          >Dra. Renata Vasconcelos - Cardiologia
         </div>
-        <div class="nav-links">
-          <button class="nav-btn" onclick="showPage('home')">Início</button>
-          <button class="nav-btn" onclick="showPage('auth')"><i class="bi bi-person"></i> Login</button>
-          <button class="nav-btn" onclick="showPage('dashboard')">Minhas Consultas</button>
-          <button class="nav-btn btn-cta" onclick="showPage('agendamento')">Agendar Consulta</button>
+        <button
+          class="hamburger-btn"
+          id="hamburgerBtn"
+          onclick="toggleMobileMenu()"
+        >
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <button
+            class="nav-btn"
+            onclick="
+              showPage('home');
+              closeMobileMenu();
+            "
+          >
+            Início
+          </button>
+          <button
+            class="nav-btn"
+            onclick="
+              showPage('auth');
+              closeMobileMenu();
+            "
+          >
+            <i class="bi bi-person"></i> Login
+          </button>
+          <button
+            class="nav-btn"
+            onclick="
+              showPage('dashboard');
+              closeMobileMenu();
+            "
+          >
+            Minhas Consultas
+          </button>
+          <button
+            class="nav-btn btn-cta"
+            onclick="
+              showPage('agendamento');
+              closeMobileMenu();
+            "
+          >
+            Agendar Consulta
+          </button>
         </div>
       </div>
     </header>
 
+    <!-- Home Page -->
     <main id="home" class="page-content page-active">
-      <section class="main-banner" data-aos="fade">
-        <img src="banner_principal.png" class="w-100" alt="Banner Principal" onerror="this.src = 'https://via.placeholder.com/1920x600?text=Cuidado+Cardiológico+de+Excelência'" />
+      <section class="main-banner">
+        <div
+          style="
+            background: linear-gradient(
+              135deg,
+              var(--azul-marinho) 0%,
+              var(--dourado) 100%
+            );
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+          "
+        >
+          <h1
+            style="
+              font-family: &quot;Playfair Display&quot;;
+              font-size: 3rem;
+              margin-bottom: 20px;
+            "
+          >
+            Cardiologia de Excelência
+          </h1>
+          <p style="font-size: 1.2rem; opacity: 0.9">
+            Cuidado especializado para a saúde do seu coração
+          </p>
+        </div>
       </section>
 
       <section class="quote-section text-center py-5">
         <div class="container" data-aos="fade-up">
-          <h2 style="font-family: 'Playfair Display'; color: var(--azul-marinho);">
-            <span style="color: var(--dourado)">“Seu coração merece atenção,</span> cuidado e confiança.”
+          <h2
+            style="
+              font-family: &quot;Playfair Display&quot;;
+              color: var(--azul-marinho);
+            "
+          >
+            <span style="color: var(--dourado)"
+              >"Seu coração merece atenção,</span
+            >
+            cuidado e confiança."
           </h2>
-          <p class="text-muted">Conheça nossa estrutura e tecnologia para sua saúde cardiovascular.</p>
+          <p class="text-muted">
+            Conheça nossa estrutura e tecnologia para sua saúde cardiovascular.
+          </p>
         </div>
       </section>
 
@@ -319,135 +760,355 @@
         <div class="row g-4">
           <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
             <div class="img-zoom-container">
-              <img src="Imagem_Clínica01.png" alt="Recepção" onerror="this.src = 'https://via.placeholder.com/400x300?text=Recepção'" />
+              <div
+                style="
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 3rem;
+                "
+              >
+                <i class="bi bi-hospital"></i>
+              </div>
             </div>
+            <h5 class="mt-3" style="color: var(--azul-marinho)">
+              Recepção Moderna
+            </h5>
+            <p class="text-muted">
+              Ambiente acolhedor e equipado com tecnologia de ponta.
+            </p>
           </div>
           <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
             <div class="img-zoom-container">
-              <img src="Imagem_Clínica02.png" alt="Exames" onerror="this.src = 'https://via.placeholder.com/400x300?text=Exames'" />
+              <div
+                style="
+                  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 3rem;
+                "
+              >
+                <i class="bi bi-heart-pulse"></i>
+              </div>
             </div>
+            <h5 class="mt-3" style="color: var(--azul-marinho)">
+              Exames Avançados
+            </h5>
+            <p class="text-muted">
+              Diagnósticos precisos com equipamentos de última geração.
+            </p>
           </div>
           <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
             <div class="img-zoom-container">
-              <img src="Imagem_Clínica03.png" alt="Consultório" onerror="this.src = 'https://via.placeholder.com/400x300?text=Consultório'" />
+              <div
+                style="
+                  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 3rem;
+                "
+              >
+                <i class="bi bi-person-check"></i>
+              </div>
             </div>
+            <h5 class="mt-3" style="color: var(--azul-marinho)">
+              Consultório Confortável
+            </h5>
+            <p class="text-muted">
+              Atendimento personalizado e humanizado para cada paciente.
+            </p>
           </div>
         </div>
       </section>
     </main>
 
+    <!-- Auth Page -->
     <section id="auth" class="page-content">
       <div class="container">
         <div class="auth-card" data-aos="zoom-in">
           <div id="login-form">
-            <h3 class="text-center mb-4" style="font-family: 'Playfair Display'; color: var(--azul-marinho);">Acesso do Paciente</h3>
-            <form onsubmit="event.preventDefault(); loginSimulado();">
+            <h3
+              class="text-center mb-4"
+              style="
+                font-family: &quot;Playfair Display&quot;;
+                color: var(--azul-marinho);
+              "
+            >
+              Acesso do Paciente
+            </h3>
+            <form
+              onsubmit="
+                event.preventDefault();
+                loginSimulado();
+              "
+            >
               <label class="small fw-bold">E-mail ou CPF</label>
-              <input type="text" class="form-control" placeholder="Digite seu acesso" required />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Digite seu acesso"
+                required
+              />
               <label class="small fw-bold">Senha</label>
-              <input type="password" class="form-control" placeholder="********" required />
-              <button type="submit" class="btn-primary-custom mt-2">ENTRAR</button>
-              <p class="text-center mt-4 small">Ainda não tem conta? <br /> <span class="auth-toggle-link" onclick="toggleAuth()">Cadastre-se aqui</span></p>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="••••••••"
+                required
+              />
+              <button type="submit" class="btn-primary-custom mt-2">
+                ENTRAR
+              </button>
+              <p class="text-center mt-4 small">
+                Ainda não tem conta? <br />
+                <span class="auth-toggle-link" onclick="toggleAuth()"
+                  >Cadastre-se aqui</span
+                >
+              </p>
             </form>
           </div>
 
           <div id="register-form">
-            <h3 class="text-center mb-4" style="font-family: 'Playfair Display'; color: var(--azul-marinho);">Crie sua Conta</h3>
-            <form onsubmit="event.preventDefault(); loginSimulado();">
+            <h3
+              class="text-center mb-4"
+              style="
+                font-family: &quot;Playfair Display&quot;;
+                color: var(--azul-marinho);
+              "
+            >
+              Crie sua Conta
+            </h3>
+            <form
+              onsubmit="
+                event.preventDefault();
+                loginSimulado();
+              "
+            >
               <label class="small fw-bold">Nome Completo</label>
-              <input type="text" class="form-control" placeholder="Seu nome" required />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Seu nome"
+                required
+              />
               <label class="small fw-bold">E-mail</label>
-              <input type="email" class="form-control" placeholder="exemplo@email.com" required />
+              <input
+                type="email"
+                class="form-control"
+                placeholder="exemplo@email.com"
+                required
+              />
               <div class="row">
                 <div class="col-6">
                   <label class="small fw-bold">CPF</label>
-                  <input type="text" class="form-control" placeholder="000.000.000-00" required />
+                  <input
+                    type="text"
+                    id="cpfInput"
+                    class="form-control"
+                    placeholder="000.000.000-00"
+                    maxlength="14"
+                    required
+                  />
                 </div>
                 <div class="col-6">
                   <label class="small fw-bold">Celular</label>
-                  <input type="tel" class="form-control" placeholder="(11) 99999-9999" required />
+                  <input
+                    type="tel"
+                    id="celularInput"
+                    class="form-control"
+                    placeholder="(11) 99999-9999"
+                    maxlength="15"
+                    required
+                  />
                 </div>
               </div>
               <label class="small fw-bold">Crie uma Senha</label>
-              <input type="password" class="form-control" placeholder="********" required />
-              <button type="submit" class="btn-primary-custom mt-2">FINALIZAR CADASTRO</button>
-              <p class="text-center mt-4 small">Já possui conta? <br /> <span class="auth-toggle-link" onclick="toggleAuth()">Voltar para Login</span></p>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="••••••••"
+                required
+              />
+              <button type="submit" class="btn-primary-custom mt-2">
+                FINALIZAR CADASTRO
+              </button>
+              <p class="text-center mt-4 small">
+                Já possui conta? <br />
+                <span class="auth-toggle-link" onclick="toggleAuth()"
+                  >Voltar para Login</span
+                >
+              </p>
             </form>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Agendamento Page -->
     <section id="agendamento" class="page-content">
       <div class="container">
         <div class="auth-card" style="max-width: 800px" data-aos="fade-up">
-          <h3 class="text-center mb-2" style="font-family: 'Playfair Display'; color: var(--azul-marinho);">Agendamento Online</h3>
-          <p class="text-center text-muted mb-4 small">Escolha o melhor horário para você</p>
+          <h3
+            class="text-center mb-2"
+            style="
+              font-family: &quot;Playfair Display&quot;;
+              color: var(--azul-marinho);
+            "
+          >
+            Agendamento Online
+          </h3>
+          <p class="text-center text-muted mb-4 small">
+            Escolha o melhor horário para você
+          </p>
 
           <div class="step-indicator">
-            <div class="step active" id="step1-indicator"><div class="step-number">1</div><div class="small">Serviço</div></div>
-            <div class="step" id="step2-indicator"><div class="step-number">2</div><div class="small">Data e Hora</div></div>
-            <div class="step" id="step3-indicator"><div class="step-number">3</div><div class="small">Confirmação</div></div>
+            <div class="step active" id="step1-indicator">
+              <div class="step-number">1</div>
+              <div class="small">Serviço</div>
+            </div>
+            <div class="step" id="step2-indicator">
+              <div class="step-number">2</div>
+              <div class="small">Data e Hora</div>
+            </div>
+            <div class="step" id="step3-indicator">
+              <div class="step-number">3</div>
+              <div class="small">Confirmação</div>
+            </div>
           </div>
 
-          <form id="formAgendar">
+          <form id="formAgendar" onsubmit="handleAgendamentoSubmit(event)">
+            <!-- Step 1: Serviço -->
             <div id="step1">
-              <div class="mb-4">
-                <label class="fw-bold mb-2">Selecione o Serviço:</label>
-                <select class="form-select" id="servicoSelect" required>
-                  <option value="" selected disabled>Escolha um serviço...</option>
-                  <option value="Consulta Cardiológica">Consulta Cardiológica</option>
-                  <option value="Eletrocardiograma">Eletrocardiograma</option>
-                  <option value="Mapa/Holter">Mapa/Holter</option>
-                  <option value="Ecocardiograma">Ecocardiograma</option>
-                </select>
-              </div>
-              <div class="mb-4">
-                <label class="fw-bold mb-2">Convênio:</label>
-                <select class="form-select" id="convenioSelect">
+              <h5 class="mb-3">Selecione o Serviço</h5>
+              <select id="servicoSelect" class="form-select" required>
+                <option value="">-- Escolha um serviço --</option>
+                <option value="Consulta Cardiológica">
+                  Consulta Cardiológica
+                </option>
+                <option value="Eletrocardiograma">Eletrocardiograma</option>
+                <option value="Ecocardiograma">Ecocardiograma</option>
+                <option value="Teste de Esforço">Teste de Esforço</option>
+                <option value="Holter 24h">Holter 24h</option>
+              </select>
+              <div class="mb-3">
+                <label class="small fw-bold">Convênio</label>
+                <select id="convenioSelect" class="form-select" required>
+                  <option value="">-- Selecione --</option>
                   <option value="Particular">Particular</option>
+                  <option value="Unimed">Unimed</option>
                   <option value="Bradesco Saúde">Bradesco Saúde</option>
                   <option value="SulAmérica">SulAmérica</option>
-                  <option value="Unimed">Unimed</option>
-                  <option value="Amil">Amil</option>
                 </select>
               </div>
-              <button type="button" class="btn-primary-custom" onclick="nextStep(2)">PRÓXIMO PASSO</button>
+              <button
+                type="button"
+                class="btn-primary-custom"
+                onclick="nextStep(2)"
+              >
+                PRÓXIMO PASSO
+              </button>
             </div>
 
+            <!-- Step 2: Data e Hora -->
             <div id="step2" style="display: none">
-              <div class="row">
-                <div class="col-md-6 mb-4">
-                  <label class="fw-bold mb-2">Selecione a Data:</label>
-                  <input type="date" class="form-control" id="dataAgenda" required onchange="generateTimeSlots()" />
+              <h5 class="mb-3">Escolha Data e Horário</h5>
+              <div class="calendar-box mb-4">
+                <div class="calendar-header">
+                  <button
+                    type="button"
+                    class="calendar-nav-btn"
+                    onclick="changeMonth(-1)"
+                  >
+                    <i class="bi bi-chevron-left"></i>
+                  </button>
+                  <h5 id="calendarTitle"></h5>
+                  <button
+                    type="button"
+                    class="calendar-nav-btn"
+                    onclick="changeMonth(1)"
+                  >
+                    <i class="bi bi-chevron-right"></i>
+                  </button>
                 </div>
-                <div class="col-md-6 mb-4">
-                  <label class="fw-bold mb-2">Horários Disponíveis:</label>
-                  <div id="timeSlots" class="time-slots-container"><p class="text-muted small">Selecione uma data primeiro...</p></div>
-                  <input type="hidden" id="selectedTime" required />
-                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
               </div>
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary w-100 py-2" onclick="prevStep(1)">VOLTAR</button>
-                <button type="button" class="btn-primary-custom" onclick="nextStep(3)">PRÓXIMO PASSO</button>
+              <input type="hidden" id="dataAgenda" required />
+              <div>
+                <label class="small fw-bold">Horários Disponíveis</label>
+                <div id="timeSlots" class="time-slots-container">
+                  <p class="text-muted small">Selecione uma data primeiro...</p>
+                </div>
+                <input type="hidden" id="selectedTime" required />
+              </div>
+              <div class="d-flex gap-2 mt-4">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 py-2"
+                  onclick="prevStep(1)"
+                >
+                  VOLTAR
+                </button>
+                <button
+                  type="button"
+                  class="btn-primary-custom"
+                  onclick="nextStep(3)"
+                >
+                  PRÓXIMO PASSO
+                </button>
               </div>
             </div>
 
+            <!-- Step 3: Confirmação -->
             <div id="step3" style="display: none">
-              <div class="glass-card mb-4" style="background: #f8f9fa; border: 1px solid #eee">
-                <h6 class="fw-bold border-bottom pb-2 mb-3">Resumo do Agendamento</h6>
-                <p class="mb-1"><strong>Serviço:</strong> <span id="resumoServico">-</span></p>
-                <p class="mb-1"><strong>Data:</strong> <span id="resumoData">-</span></p>
-                <p class="mb-1"><strong>Horário:</strong> <span id="resumoHora">-</span></p>
-                <p class="mb-1"><strong>Convênio:</strong> <span id="resumoConvenio">-</span></p>
+              <h5 class="mb-3">Resumo do Agendamento</h5>
+              <div
+                class="glass-card mb-4"
+                style="background: #f8f9fa; border: 1px solid #eee"
+              >
+                <p class="mb-2">
+                  <strong>Serviço:</strong> <span id="resumoServico">-</span>
+                </p>
+                <p class="mb-2">
+                  <strong>Data:</strong> <span id="resumoData">-</span>
+                </p>
+                <p class="mb-2">
+                  <strong>Horário:</strong> <span id="resumoHora">-</span>
+                </p>
+                <p class="mb-0">
+                  <strong>Convênio:</strong> <span id="resumoConvenio">-</span>
+                </p>
               </div>
               <div class="mb-3">
-                <label class="small fw-bold">Observações Adicionais (Opcional)</label>
-                <textarea class="form-control" id="obsAgendamento" rows="2" placeholder="Ex: Primeira vez, sintomas específicos..."></textarea>
+                <label class="small fw-bold"
+                  >Observações Adicionais (Opcional)</label
+                >
+                <textarea
+                  class="form-control"
+                  id="obsAgendamento"
+                  rows="2"
+                  placeholder="Ex: Primeira vez, sintomas específicos..."
+                ></textarea>
               </div>
               <div class="d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary w-100 py-2" onclick="prevStep(2)">VOLTAR</button>
-                <button type="submit" class="btn-primary-custom">CONFIRMAR AGENDAMENTO</button>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100 py-2"
+                  onclick="prevStep(2)"
+                >
+                  VOLTAR
+                </button>
+                <button type="submit" class="btn-primary-custom">
+                  CONFIRMAR AGENDAMENTO
+                </button>
               </div>
             </div>
           </form>
@@ -455,11 +1116,17 @@
       </div>
     </section>
 
+    <!-- Dashboard Page -->
     <section id="dashboard" class="page-content">
       <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h3 class="fw-bold mb-0">Olá, Julia Pacheco</h3>
-          <button class="btn btn-outline-danger btn-sm" onclick="showPage('home')">Sair</button>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            onclick="showPage('home')"
+          >
+            Sair
+          </button>
         </div>
         <div class="row">
           <div class="col-md-4 mb-4">
@@ -471,9 +1138,11 @@
                 <span class="status-badge bg-confirmed">Confirmado</span>
               </div>
             </div>
-            
+
             <div class="glass-card">
-              <h6 class="fw-bold mb-3"><i class="bi bi-activity text-danger"></i> Evolução da Pressão</h6>
+              <h6 class="fw-bold mb-3">
+                <i class="bi bi-activity text-danger"></i> Evolução da Pressão
+              </h6>
               <canvas id="myChart" height="200"></canvas>
             </div>
           </div>
@@ -495,8 +1164,14 @@
                     <tr>
                       <td>10/08/2025</td>
                       <td>Check-up Geral</td>
-                      <td><span class="status-badge bg-light">Concluído</span></td>
-                      <td><button class="btn btn-sm btn-outline-dark">Ver Exame</button></td>
+                      <td>
+                        <span class="status-badge bg-light">Concluído</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-dark">
+                          Ver Exame
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -507,23 +1182,43 @@
       </div>
     </section>
 
+    <!-- Footer com Mapa Interativo -->
     <footer>
       <div class="container">
         <div class="row">
           <div class="col-md-4 mb-4">
             <h5 class="fw-bold">Clínica Corcentro</h5>
-            <p class="opacity-75">Sua saúde cardíaca em mãos de quem entende e cuida com dedicação.</p>
+            <p class="opacity-75">
+              Sua saúde cardíaca em mãos de quem entende e cuida com dedicação.
+            </p>
             <div class="d-flex gap-3 fs-4">
-              <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i><i class="bi bi-whatsapp"></i>
+              <i
+                class="bi bi-instagram"
+                style="cursor: pointer; transition: var(--transicao)"
+                onmouseover="this.style.color = 'var(--dourado)'"
+                onmouseout="this.style.color = 'white'"
+              ></i>
+              <i
+                class="bi bi-facebook"
+                style="cursor: pointer; transition: var(--transicao)"
+                onmouseover="this.style.color = 'var(--dourado)'"
+                onmouseout="this.style.color = 'white'"
+              ></i>
+              <i
+                class="bi bi-whatsapp"
+                style="cursor: pointer; transition: var(--transicao)"
+                onmouseover="this.style.color = 'var(--dourado)'"
+                onmouseout="this.style.color = 'white'"
+              ></i>
             </div>
           </div>
+
           <div class="col-md-4 mb-4 text-center">
             <h5 class="fw-bold">Nossa Localização</h5>
-            <p class="small mb-0">Av. Dom Pedro II, 620 - Santo André/SP</p>
-            <div class="map-container">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.5517173950587!2d-46.53676052377312!3d-23.656247964528173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce42eb785a9f2b%3A0x1d6199a0937c468e!2sAv.%20Dom%20Pedro%20II%2C%20620%20-%20Jardim%2C%20Santo%20Andr%C3%A9%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000" width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
-            </div>
+            <p class="small mb-2">Av. Dom Pedro II, 620 - Santo André/SP</p>
+            <div class="map-container" id="mapContainer"></div>
           </div>
+
           <div class="col-md-4 text-md-end">
             <h5 class="fw-bold">Atendimento</h5>
             <p class="mb-1">Segunda a Sexta: 08h às 19h</p>
@@ -534,41 +1229,234 @@
       </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      AOS.init({ duration: 800, once: true });
+      // ============================================
+      // SISTEMA DE TOASTS (NOTIFICAÇÕES)
+      // ============================================
+      function showToast(message, type = "info", duration = 3000) {
+        const container = document.getElementById("toastContainer");
+        const toastId = "toast-" + Date.now();
 
-      const today = new Date().toISOString().split("T")[0];
-      document.getElementById("dataAgenda").setAttribute("min", today);
+        const icons = {
+          success: "bi-check-circle-fill",
+          error: "bi-exclamation-circle-fill",
+          warning: "bi-exclamation-triangle-fill",
+          info: "bi-info-circle-fill",
+        };
 
+        const toast = document.createElement("div");
+        toast.className = `toast-custom ${type}`;
+        toast.id = toastId;
+        toast.innerHTML = `
+        <div class="icon">
+          <i class="bi ${icons[type]}"></i>
+        </div>
+        <div class="content">
+          ${message}
+        </div>
+        <button class="close-btn" onclick="document.getElementById('${toastId}').remove()">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+
+        container.appendChild(toast);
+
+        if (duration > 0) {
+          setTimeout(() => {
+            if (document.getElementById(toastId)) {
+              document.getElementById(toastId).remove();
+            }
+          }, duration);
+        }
+      }
+
+      // ============================================
+      // MENU HAMBÚRGUER MOBILE
+      // ============================================
+      function toggleMobileMenu() {
+        const navLinks = document.getElementById("navLinks");
+        navLinks.classList.toggle("active");
+        navLinks.classList.toggle("mobile-menu");
+      }
+
+      function closeMobileMenu() {
+        const navLinks = document.getElementById("navLinks");
+        navLinks.classList.remove("active");
+        navLinks.classList.remove("mobile-menu");
+      }
+
+      // ============================================
+      // MÁSCARAS DE INPUT (CPF e CELULAR)
+      // ============================================
+      function formatCPF(value) {
+        value = value.replace(/\D/g, "");
+        if (value.length > 11) value = value.slice(0, 11);
+
+        if (value.length <= 3) {
+          return value;
+        } else if (value.length <= 6) {
+          return value.slice(0, 3) + "." + value.slice(3);
+        } else if (value.length <= 9) {
+          return (
+            value.slice(0, 3) + "." + value.slice(3, 6) + "." + value.slice(6)
+          );
+        } else {
+          return (
+            value.slice(0, 3) +
+            "." +
+            value.slice(3, 6) +
+            "." +
+            value.slice(6, 9) +
+            "-" +
+            value.slice(9)
+          );
+        }
+      }
+
+      function formatCelular(value) {
+        value = value.replace(/\D/g, "");
+        if (value.length > 11) value = value.slice(0, 11);
+
+        if (value.length <= 2) {
+          return value;
+        } else if (value.length <= 7) {
+          return "(" + value.slice(0, 2) + ") " + value.slice(2);
+        } else {
+          return (
+            "(" +
+            value.slice(0, 2) +
+            ") " +
+            value.slice(2, 7) +
+            "-" +
+            value.slice(7)
+          );
+        }
+      }
+
+      // Aplicar máscaras aos inputs
+      document.addEventListener("DOMContentLoaded", function () {
+        const cpfInput = document.getElementById("cpfInput");
+        const celularInput = document.getElementById("celularInput");
+
+        if (cpfInput) {
+          cpfInput.addEventListener("input", function () {
+            this.value = formatCPF(this.value);
+          });
+        }
+
+        if (celularInput) {
+          celularInput.addEventListener("input", function () {
+            this.value = formatCelular(this.value);
+          });
+        }
+      });
+
+      // ============================================
+      // CONFIGURAÇÃO GLOBAL E INICIALIZAÇÃO
+      // ============================================
+      const AppState = {
+        currentMonth: new Date(),
+        selectedDate: null,
+        map: null,
+        chartInstance: null,
+      };
+
+      const Config = {
+        monthsBr: [
+          "Janeiro",
+          "Fevereiro",
+          "Março",
+          "Abril",
+          "Maio",
+          "Junho",
+          "Julho",
+          "Agosto",
+          "Setembro",
+          "Outubro",
+          "Novembro",
+          "Dezembro",
+        ],
+        weekdaysBr: ["D", "S", "T", "Q", "Q", "S", "S"],
+        timeSlots: [
+          "08:00",
+          "08:30",
+          "09:00",
+          "09:30",
+          "10:00",
+          "14:00",
+          "15:00",
+          "16:00",
+        ],
+        clinicaCoords: [-23.656247964528173, -46.53676052377312],
+        fixedHolidays: {
+          "01-01": "Confraternização Universal",
+          "04-21": "Tiradentes",
+          "05-01": "Dia do Trabalho",
+          "09-07": "Independência do Brasil",
+          "10-12": "Nossa Senhora Aparecida",
+          "11-02": "Finados",
+          "11-15": "Proclamação da República",
+          "11-20": "Dia da Consciência Negra",
+          "12-25": "Natal",
+        },
+      };
+
+      // ============================================
+      // FUNÇÕES DE NAVEGAÇÃO
+      // ============================================
       function showPage(pageId) {
         const pages = document.querySelectorAll(".page-content");
         pages.forEach((page) => page.classList.remove("page-active"));
         document.getElementById(pageId).classList.add("page-active");
         window.scrollTo(0, 0);
+
+        if (pageId === "dashboard") {
+          setTimeout(() => initChart(), 100);
+        }
+        if (pageId === "agendamento") {
+          renderCalendar();
+        }
+        if (pageId === "home") {
+          setTimeout(() => initMap(), 100);
+        }
         AOS.refresh();
       }
 
       function toggleAuth() {
         const loginForm = document.getElementById("login-form");
         const registerForm = document.getElementById("register-form");
-        loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
-        registerForm.style.display = registerForm.style.display === "none" ? "block" : "none";
+        loginForm.style.display =
+          loginForm.style.display === "none" ? "block" : "none";
+        registerForm.style.display =
+          registerForm.style.display === "none" ? "block" : "none";
       }
 
+      // ============================================
+      // FUNÇÕES DE AGENDAMENTO
+      // ============================================
       function nextStep(step) {
         if (step === 2) {
-          if (!document.getElementById("servicoSelect").value) return alert("Selecione um serviço.");
+          if (!document.getElementById("servicoSelect").value) {
+            showToast("Por favor, selecione um serviço.", "warning");
+            return;
+          }
           document.getElementById("step1").style.display = "none";
           document.getElementById("step2").style.display = "block";
           document.getElementById("step1-indicator").classList.add("completed");
           document.getElementById("step2-indicator").classList.add("active");
+          renderCalendar();
         } else if (step === 3) {
-          if (!document.getElementById("dataAgenda").value || !document.getElementById("selectedTime").value) return alert("Selecione data e hora.");
-          document.getElementById("resumoServico").innerText = document.getElementById("servicoSelect").value;
-          document.getElementById("resumoData").innerText = document.getElementById("dataAgenda").value.split("-").reverse().join("/");
-          document.getElementById("resumoHora").innerText = document.getElementById("selectedTime").value;
-          document.getElementById("resumoConvenio").innerText = document.getElementById("convenioSelect").value;
+          if (
+            !document.getElementById("dataAgenda").value ||
+            !document.getElementById("selectedTime").value
+          ) {
+            showToast("Por favor, selecione data e hora.", "warning");
+            return;
+          }
+          updateResumo();
           document.getElementById("step2").style.display = "none";
           document.getElementById("step3").style.display = "block";
           document.getElementById("step2-indicator").classList.add("completed");
@@ -580,25 +1468,196 @@
         if (step === 1) {
           document.getElementById("step2").style.display = "none";
           document.getElementById("step1").style.display = "block";
-          document.getElementById("step1-indicator").classList.remove("completed");
+          document
+            .getElementById("step1-indicator")
+            .classList.remove("completed");
           document.getElementById("step2-indicator").classList.remove("active");
         } else if (step === 2) {
           document.getElementById("step3").style.display = "none";
           document.getElementById("step2").style.display = "block";
-          document.getElementById("step2-indicator").classList.remove("completed");
+          document
+            .getElementById("step2-indicator")
+            .classList.remove("completed");
           document.getElementById("step3-indicator").classList.remove("active");
         }
+      }
+
+      function updateResumo() {
+        document.getElementById("resumoServico").innerText =
+          document.getElementById("servicoSelect").value;
+        const dataFormatada = document
+          .getElementById("dataAgenda")
+          .value.split("-")
+          .reverse()
+          .join("/");
+        document.getElementById("resumoData").innerText = dataFormatada;
+        document.getElementById("resumoHora").innerText =
+          document.getElementById("selectedTime").value;
+        document.getElementById("resumoConvenio").innerText =
+          document.getElementById("convenioSelect").value;
+      }
+
+      function handleAgendamentoSubmit(e) {
+        e.preventDefault();
+        showToast("✓ Agendamento confirmado com sucesso!", "success");
+        document.getElementById("formAgendar").reset();
+        resetAgendamentoForm();
+        setTimeout(() => showPage("dashboard"), 1500);
+      }
+
+      function resetAgendamentoForm() {
+        document.getElementById("step1").style.display = "block";
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("step3").style.display = "none";
+        document
+          .getElementById("step1-indicator")
+          .classList.remove("completed");
+        document
+          .getElementById("step2-indicator")
+          .classList.remove("completed", "active");
+        document.getElementById("step3-indicator").classList.remove("active");
+        document.getElementById("step1-indicator").classList.add("active");
+      }
+
+      function loginSimulado() {
+        showToast("✓ Login realizado com sucesso!", "success");
+        setTimeout(() => showPage("dashboard"), 1500);
+      }
+
+      // ============================================
+      // FUNÇÕES DO CALENDÁRIO
+      // ============================================
+      function getEasterDate(year) {
+        const a = year % 19;
+        const b = Math.floor(year / 100);
+        const c = year % 100;
+        const d = Math.floor(b / 4);
+        const e = b % 4;
+        const f = Math.floor((b + 8) / 25);
+        const g = Math.floor((b - f + 1) / 3);
+        const h = (19 * a + b - d - g + 15) % 30;
+        const i = Math.floor(c / 4);
+        const k = c % 4;
+        const l = (32 + 2 * e + 2 * i - h - k) % 7;
+        const m = Math.floor((a + 11 * h + 22 * l) / 451);
+        const month = Math.floor((h + l - 7 * m + 114) / 31);
+        const day = ((h + l - 7 * m + 114) % 31) + 1;
+        return new Date(year, month - 1, day);
+      }
+
+      function isHoliday(date) {
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const key = `${month}-${day}`;
+
+        if (Config.fixedHolidays[key]) return Config.fixedHolidays[key];
+
+        const easter = getEasterDate(date.getFullYear());
+        const holidays = [
+          { offset: -48, name: "Carnaval (Segunda)" },
+          { offset: -47, name: "Carnaval (Terça)" },
+          { offset: -2, name: "Sexta-feira Santa" },
+          { offset: 0, name: "Páscoa" },
+          { offset: 60, name: "Corpus Christi" },
+        ];
+
+        for (let h of holidays) {
+          const d = new Date(easter);
+          d.setDate(easter.getDate() + h.offset);
+          if (d.toDateString() === date.toDateString()) return h.name;
+        }
+        return null;
+      }
+
+      function renderCalendar() {
+        const year = AppState.currentMonth.getFullYear();
+        const month = AppState.currentMonth.getMonth();
+        document.getElementById("calendarTitle").innerText =
+          `${Config.monthsBr[month]} ${year}`;
+
+        const grid = document.getElementById("calendarGrid");
+        grid.innerHTML = "";
+
+        Config.weekdaysBr.forEach((d) => {
+          const div = document.createElement("div");
+          div.className = "calendar-weekday";
+          div.innerText = d;
+          grid.appendChild(div);
+        });
+
+        const firstDayIndex = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
+        const todayStr = new Date().toISOString().split("T")[0];
+
+        for (let i = 0; i < firstDayIndex; i++) {
+          grid.appendChild(document.createElement("div"));
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+          const div = document.createElement("div");
+          div.className = "calendar-day";
+          div.innerText = day;
+
+          const date = new Date(year, month, day);
+          const dateStr = date.toISOString().split("T")[0];
+          const dayOfWeek = date.getDay();
+          const holiday = isHoliday(date);
+
+          if (dateStr === todayStr) div.classList.add("today");
+
+          if (
+            dateStr < todayStr ||
+            dayOfWeek === 0 ||
+            dayOfWeek === 6 ||
+            holiday
+          ) {
+            div.classList.add("disabled");
+            if (holiday) {
+              div.style.backgroundColor = "#ffebeb";
+              div.style.color = "#ea580c";
+              div.title = `Feriado: ${holiday}`;
+            }
+          } else {
+            if (AppState.selectedDate === dateStr)
+              div.classList.add("selected");
+            div.onclick = function () {
+              document
+                .querySelectorAll(".calendar-day")
+                .forEach((d) => d.classList.remove("selected"));
+              this.classList.add("selected");
+              AppState.selectedDate = dateStr;
+              document.getElementById("dataAgenda").value = dateStr;
+              generateTimeSlots();
+            };
+          }
+          grid.appendChild(div);
+        }
+      }
+
+      function changeMonth(direction) {
+        const newDate = new Date(AppState.currentMonth);
+        newDate.setMonth(newDate.getMonth() + direction);
+        const today = new Date();
+        today.setDate(1);
+
+        if (direction === -1 && newDate < today) return;
+        AppState.currentMonth = newDate;
+        renderCalendar();
       }
 
       function generateTimeSlots() {
         const container = document.getElementById("timeSlots");
         container.innerHTML = "";
-        ["08:00", "08:30", "09:00", "09:30", "10:00", "14:00", "15:00", "16:00"].forEach((time) => {
+        document.getElementById("selectedTime").value = "";
+
+        Config.timeSlots.forEach((time) => {
           const div = document.createElement("div");
           div.className = "time-slot";
           div.innerText = time;
           div.onclick = function () {
-            document.querySelectorAll(".time-slot").forEach((s) => s.classList.remove("active"));
+            document
+              .querySelectorAll(".time-slot")
+              .forEach((s) => s.classList.remove("active"));
             this.classList.add("active");
             document.getElementById("selectedTime").value = time;
           };
@@ -606,51 +1665,103 @@
         });
       }
 
-      document.getElementById("formAgendar").onsubmit = function (e) {
-        e.preventDefault();
-        alert("Agendamento confirmado!");
-        showPage("dashboard");
-      };
+      // ============================================
+      // MAPA INTERATIVO COM LEAFLET
+      // ============================================
+      function initMap() {
+        const mapContainer = document.getElementById("mapContainer");
+        if (!mapContainer || AppState.map) return;
 
-      function loginSimulado() {
-        alert("Login realizado com sucesso!");
-        showPage("dashboard");
+        AppState.map = L.map("mapContainer").setView(Config.clinicaCoords, 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+          maxZoom: 19,
+        }).addTo(AppState.map);
+
+        const customIcon = L.divIcon({
+          html: '<div style="background: var(--dourado); border: 3px solid white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">❤</div>',
+          iconSize: [40, 40],
+          className: "custom-marker",
+        });
+
+        L.marker(Config.clinicaCoords, { icon: customIcon })
+          .addTo(AppState.map)
+          .bindPopup(
+            `
+          <div style="font-family: Poppins; text-align: center;">
+            <strong style="color: var(--azul-marinho);">Clínica Corcentro</strong><br>
+            Av. Dom Pedro II, 620<br>
+            Santo André - SP<br>
+            <strong style="color: var(--dourado);">(11) 2325-4369</strong>
+          </div>
+        `,
+          )
+          .openPopup();
       }
 
-      // 3. INICIALIZAÇÃO DO GRÁFICO (NO FINAL DO SCRIPT)
-      window.onload = function() {
-          const ctx = document.getElementById('myChart');
-          if (ctx) {
-              new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'],
-                      datasets: [{
-                          label: 'Sistólica',
-                          data: [120, 125, 122, 118, 121],
-                          borderColor: '#c09647',
-                          backgroundColor: 'rgba(192, 150, 71, 0.1)',
-                          tension: 0.4,
-                          fill: true
-                      }]
-                  },
-                  options: {
-                      responsive: true,
-                      maintainAspectRatio: true,
-                      plugins: {
-                          legend: { display: false }
-                      },
-                      scales: {
-                          y: { 
-                              beginAtZero: false,
-                              grid: { color: '#f0f0f0' }
-                          },
-                          x: { grid: { display: false } }
-                      }
-                  }
-              });
-          }
-      };
+      // ============================================
+      // GRÁFICO DO DASHBOARD
+      // ============================================
+      function initChart() {
+        const ctx = document.getElementById("myChart");
+        if (!ctx) return;
+
+        if (AppState.chartInstance) {
+          AppState.chartInstance.destroy();
+        }
+
+        AppState.chartInstance = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: ["Jan", "Fev", "Mar", "Abr", "Mai"],
+            datasets: [
+              {
+                label: "Pressão Sistólica",
+                data: [120, 125, 122, 118, 121],
+                borderColor: "var(--dourado)",
+                backgroundColor: "rgba(192, 150, 71, 0.1)",
+                tension: 0.4,
+                fill: true,
+                pointRadius: 5,
+                pointBackgroundColor: "var(--dourado)",
+                pointBorderColor: "white",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: { display: false },
+            },
+            scales: {
+              y: {
+                beginAtZero: false,
+                grid: { color: "#f0f0f0" },
+              },
+              x: { grid: { display: false } },
+            },
+          },
+        });
+      }
+
+      // ============================================
+      // INICIALIZAÇÃO
+      // ============================================
+      window.addEventListener("load", () => {
+        AOS.init({ duration: 800, once: true });
+        renderCalendar();
+        initMap();
+      });
+
+      // Redimensionar mapa quando necessário
+      window.addEventListener("resize", () => {
+        if (AppState.map) {
+          AppState.map.invalidateSize();
+        }
+      });
     </script>
   </body>
 </html>
