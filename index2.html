@@ -1,790 +1,1195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dra. Renata Vasconcelos - Cardiologia</title>
-
-  <!-- CSS Externo -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <style>
-    :root {
-      --azul-marinho: #0b2447;
-      --azul-claro: #19376d;
-      --dourado: #c09647;
-      --dourado-claro: #d4af37;
-      --branco-gelo: #f8f9fa;
-      --transicao: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      width: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Poppins", sans-serif;
-      background-color: var(--branco-gelo);
-      overflow-x: hidden;
-    }
-
-    h1, h2, h3, .playfair {
-      font-family: 'Playfair Display', serif;
-    }
-
-    /* --- Header Fixo --- */
-    .header-custom {
-      background: white;
-      padding: 12px 0;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .header-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-    }
-
-    .header-logo {
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--azul-marinho);
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .nav-btn {
-      text-decoration: none;
-      color: var(--azul-marinho);
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: var(--transicao);
-      border: none;
-      background: none;
-      cursor: pointer;
-    }
-
-    .nav-btn:hover {
-      color: var(--dourado);
-    }
-
-    .btn-cta {
-      background: var(--dourado);
-      color: white !important;
-      padding: 8px 22px;
-      border-radius: 50px;
-      box-shadow: 0 4px 12px rgba(192, 150, 71, 0.2);
-      transition: var(--transicao);
-    }
-
-    .btn-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(192, 150, 71, 0.3);
-    }
-
-    /* --- Menu Hambúrguer --- */
-    .hamburger-btn {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: var(--azul-marinho);
-      cursor: pointer;
-    }
-
-    /* --- Hero Section --- */
-    .hero-section {
-      background: linear-gradient(rgba(11, 36, 71, 0.8), rgba(11, 36, 71, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1920&q=80');
-      background-size: cover;
-      background-position: center;
-      color: white;
-      padding: 120px 0;
-      text-align: center;
-    }
-
-    .hero-title {
-      font-size: 4rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .hero-subtitle {
-      font-size: 1.4rem;
-      opacity: 0.9;
-      max-width: 700px;
-      margin: 0 auto 40px;
-    }
-
-    /* --- Video Section --- */
-    .video-container {
-      position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: -80px auto 60px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      background: black;
-      z-index: 10;
-    }
-
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
-      height: 0;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* --- Seções Gerais --- */
-    .section-padding {
-      padding: 80px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .section-title h2 {
-      color: var(--azul-marinho);
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-    }
-
-    .section-title .divider {
-      width: 80px;
-      height: 4px;
-      background: var(--dourado);
-      margin: 0 auto;
-    }
-
-    /* --- Sobre a Dra --- */
-    .about-img {
-      border-radius: 20px;
-      box-shadow: 20px 20px 0 var(--dourado);
-      width: 100%;
-      max-width: 450px;
-    }
-
-    .stats-box {
-      display: flex;
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    .stat-item h4 {
-      color: var(--dourado);
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 0;
-    }
-
-    /* --- Especialidades --- */
-    .specialty-card {
-      background: white;
-      padding: 40px;
-      border-radius: 15px;
-      text-align: center;
-      transition: var(--transicao);
-      height: 100%;
-      border-bottom: 4px solid transparent;
-    }
-
-    .specialty-card:hover {
-      transform: translateY(-10px);
-      border-bottom-color: var(--dourado);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-    }
-
-    .specialty-icon {
-      font-size: 3rem;
-      color: var(--dourado);
-      margin-bottom: 20px;
-    }
-
-    /* --- Depoimentos --- */
-    .testimonial-card {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      position: relative;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    }
-
-    .testimonial-card i.quote-icon {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 2rem;
-      color: #eee;
-    }
-
-    .patient-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .patient-img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: #ddd;
-    }
-
-    /* --- Controle de Telas --- */
-    .page-content {
-      display: none;
-      min-height: 80vh;
-      animation: fadeIn 0.6s ease;
-    }
-
-    .page-active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* --- Estilo dos Cards de Auth --- */
-    .auth-card {
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      margin: 50px auto;
-      max-width: 500px;
-    }
-
-    .form-control, .form-select {
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .btn-primary-custom {
-      background: var(--azul-marinho);
-      color: white;
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      transition: var(--transicao);
-    }
-
-    .btn-primary-custom:hover {
-      background: var(--dourado);
-      transform: translateY(-2px);
-    }
-
-    /* --- Toast Container --- */
-    .toast-container-custom {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-    }
-
-    .toast-custom {
-      background: white;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 300px;
-      border-left: 4px solid var(--dourado);
-    }
-
-    /* --- Responsividade --- */
-    @media (max-width: 768px) {
-      .hero-title { font-size: 2.5rem; }
-      .hamburger-btn { display: block; }
-      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: white; padding: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
-      .nav-links.active { display: flex; }
-      .about-img { box-shadow: 10px 10px 0 var(--dourado); }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="toast-container-custom" id="toastContainer"></div>
-
-  <header class="header-custom">
-    <div class="container header-container">
-      <div class="header-logo" onclick="showPage('home')">
-        <i class="bi bi-heart-pulse-fill" style="color: var(--dourado);"></i> Dra. Renata Vasconcelos - Cardiologia
-      </div>
-      <button class="hamburger-btn" onclick="toggleMobileMenu()">
-        <i class="bi bi-list"></i>
-      </button>
-      <div class="nav-links" id="navLinks">
-        <button class="nav-btn" onclick="showPage('home'); closeMobileMenu();">Início</button>
-        <button class="nav-btn" onclick="showPage('auth'); closeMobileMenu();">Login</button>
-        <button class="nav-btn" onclick="showPage('dashboard'); closeMobileMenu();">Minhas Consultas</button>
-        <button class="nav-btn btn-cta" onclick="showPage('agendamento'); closeMobileMenu();">Agendar Agora</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Home Page -->
-  <main id="home" class="page-content page-active">
-    <!-- Hero -->
-    <section class="hero-section">
-      <div class="container" data-aos="fade-up">
-        <h1 class="hero-title">Sua Saúde Cardíaca em Boas Mãos</h1>
-        <p class="hero-subtitle">Excelência médica, tecnologia de ponta e atendimento humanizado para cuidar do motor da sua vida.</p>
-        <button class="btn-cta border-0 py-3 px-5 fs-5" onclick="showPage('agendamento')">Agendar Consulta Online</button>
-      </div>
-    </section>
-
-    <!-- Video Section -->
-    <div class="container">
-      <div class="video-container" data-aos="zoom-in">
-        <div class="video-wrapper">
-          <!-- Vídeo de exemplo sobre saúde do coração -->
-          <iframe src="" title="Saúde do Coração" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sobre a Dra -->
-    <section class="section-padding">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-            <img src="https://images.unsplash.com/photo-1559839734-2b71f153678f?auto=format&fit=crop&w=800&q=80" alt="Dra Renata" class="about-img">
-          </div>
-          <div class="col-lg-6" data-aos="fade-left">
-            <h5 class="text-uppercase fw-bold" style="color: var(--dourado); letter-spacing: 2px;">Sobre a Especialista</h5>
-            <h2 class="playfair mb-4" style="color: var(--azul-marinho); font-size: 2.8rem;">Dra. Renata Vasconcelos</h2>
-            <p class="text-muted fs-5">Com mais de 15 anos de experiência em cardiologia clínica e intervencionista, a Dra. Renata é referência em diagnósticos precisos e tratamentos personalizados.</p>
-            <p class="text-muted">Formada pela USP com especialização no InCor, dedica sua carreira a prevenir doenças cardiovasculares e melhorar a qualidade de vida de seus pacientes através de uma abordagem integrativa.</p>
-            
-            <div class="stats-box">
-              <div class="stat-item">
-                <h4>15+</h4>
-                <p class="small text-uppercase fw-bold">Anos de Exp.</p>
-              </div>
-              <div class="stat-item">
-                <h4>5k+</h4>
-                <p class="small text-uppercase fw-bold">Pacientes</p>
-              </div>
-              <div class="stat-item">
-                <h4>10+</h4>
-                <p class="small text-uppercase fw-bold">Prêmios</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Especialidades -->
-    <section class="section-padding" style="background: #f0f4f8;">
-      <div class="container">
-        <div class="section-title" data-aos="fade-up">
-          <h2>Nossas Especialidades</h2>
-          <div class="divider"></div>
-        </div>
-        <div class="row g-4">
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="specialty-card">
-              <div class="specialty-icon"><i class="bi bi-heart-pulse"></i></div>
-              <h4 class="playfair">Check-up Completo</h4>
-              <p class="text-muted">Avaliação detalhada da saúde cardiovascular com exames preventivos de última geração.</p>
-            </div>
-          </div>
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="specialty-card">
-              <div class="specialty-icon"><i class="bi bi-activity"></i></div>
-              <h4 class="playfair">Arritmologia</h4>
-              <p class="text-muted">Diagnóstico e tratamento de distúrbios do ritmo cardíaco com monitoramento avançado.</p>
-            </div>
-          </div>
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="specialty-card">
-              <div class="specialty-icon"><i class="bi bi-shield-check"></i></div>
-              <h4 class="playfair">Hipertensão</h4>
-              <p class="text-muted">Controle rigoroso da pressão arterial para prevenir complicações graves no futuro.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Depoimentos -->
-    <section class="section-padding">
-      <div class="container">
-        <div class="section-title" data-aos="fade-up">
-          <h2>O que dizem nossos pacientes</h2>
-          <div class="divider"></div>
-        </div>
-        <div class="row g-4">
-          <div class="col-md-6" data-aos="fade-right">
-            <div class="testimonial-card">
-              <i class="bi bi-quote quote-icon"></i>
-              <p class="fst-italic text-muted">"A Dra. Renata salvou minha vida. Seu diagnóstico rápido e o cuidado durante todo o tratamento foram fundamentais para minha recuperação."</p>
-              <div class="patient-info">
-                <div class="patient-img" style="background: url('https://i.pravatar.cc/150?u=1') center/cover;"></div>
-                <div>
-                  <h6 class="mb-0 fw-bold">Carlos Eduardo</h6>
-                  <small class="text-muted">Paciente há 3 anos</small>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6" data-aos="fade-left">
-            <div class="testimonial-card">
-              <i class="bi bi-quote quote-icon"></i>
-              <p class="fst-italic text-muted">"Excelente profissional. O sistema de agendamento online facilitou muito minha rotina. Recomendo a todos que buscam confiança."</p>
-              <div class="patient-info">
-                <div class="patient-img" style="background: url('https://i.pravatar.cc/150?u=2') center/cover;"></div>
-                <div>
-                  <h6 class="mb-0 fw-bold">Mariana Silva</h6>
-                  <small class="text-muted">Paciente há 1 ano</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Auth Page -->
-  <section id="auth" class="page-content">
-    <div class="container section-padding">
-      <div class="auth-card" data-aos="zoom-in">
-        <div id="login-form">
-          <h3 class="text-center mb-4 playfair" style="color: var(--azul-marinho);">Acesso do Paciente</h3>
-          <form onsubmit="event.preventDefault(); loginSimulado();">
-            <label class="small fw-bold">E-mail ou CPF</label>
-            <input type="text" class="form-control" placeholder="Digite seu acesso" required />
-            <label class="small fw-bold">Senha</label>
-            <input type="password" class="form-control" placeholder="••••••••" required />
-            <button type="submit" class="btn-primary-custom mt-2">ENTRAR</button>
-            <p class="text-center mt-4 small">Ainda não tem conta? <br /> <span class="auth-toggle-link text-primary" style="cursor:pointer" onclick="toggleAuth()">Cadastre-se aqui</span></p>
-          </form>
-        </div>
-
-        <div id="register-form" style="display:none">
-          <h3 class="text-center mb-4 playfair" style="color: var(--azul-marinho);">Crie sua Conta</h3>
-          <form onsubmit="event.preventDefault(); loginSimulado();">
-            <label class="small fw-bold">Nome Completo</label>
-            <input type="text" class="form-control" placeholder="Seu nome" required />
-            <label class="small fw-bold">E-mail</label>
-            <input type="email" class="form-control" placeholder="exemplo@email.com" required />
-            <div class="row">
-              <div class="col-6">
-                <label class="small fw-bold">CPF</label>
-                <input type="text" id="cpfInput" class="form-control" placeholder="000.000.000-00" maxlength="14" required />
-              </div>
-              <div class="col-6">
-                <label class="small fw-bold">Celular</label>
-                <input type="tel" id="celularInput" class="form-control" placeholder="(11) 99999-9999" maxlength="15" required />
-              </div>
-            </div>
-            <label class="small fw-bold">Crie uma Senha</label>
-            <input type="password" class="form-control" placeholder="••••••••" required />
-            <button type="submit" class="btn-primary-custom mt-2">FINALIZAR CADASTRO</button>
-            <p class="text-center mt-4 small">Já possui conta? <br /> <span class="auth-toggle-link text-primary" style="cursor:pointer" onclick="toggleAuth()">Voltar para Login</span></p>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Agendamento Page -->
-  <section id="agendamento" class="page-content">
-    <div class="container section-padding">
-      <div class="auth-card" style="max-width: 800px" data-aos="fade-up">
-        <h3 class="text-center mb-4 playfair" style="color: var(--azul-marinho);">Agendamento Online</h3>
-        
-        <div class="step-indicator mb-5">
-          <div class="step active" id="step1-indicator"><div class="step-number">1</div><div class="small">Serviço</div></div>
-          <div class="step" id="step2-indicator"><div class="step-number">2</div><div class="small">Data e Hora</div></div>
-          <div class="step" id="step3-indicator"><div class="step-number">3</div><div class="small">Confirmação</div></div>
-        </div>
-
-        <form id="formAgendar" onsubmit="handleAgendamentoSubmit(event)">
-          <div id="step1">
-            <h5 class="mb-3">Selecione o Serviço</h5>
-            <select id="servicoSelect" class="form-select" required>
-              <option value="">-- Escolha um serviço --</option>
-              <option value="Consulta Cardiológica">Consulta Cardiológica</option>
-              <option value="Eletrocardiograma">Eletrocardiograma</option>
-              <option value="Ecocardiograma">Ecocardiograma</option>
-            </select>
-            <div class="mb-3">
-              <label class="small fw-bold">Convênio</label>
-              <select id="convenioSelect" class="form-select" required>
-                <option value="">-- Selecione --</option>
-                <option value="Particular">Particular</option>
-                <option value="Unimed">Unimed</option>
-              </select>
-            </div>
-            <button type="button" class="btn-primary-custom" onclick="nextStep(2)">PRÓXIMO PASSO</button>
-          </div>
-
-          <div id="step2" style="display: none">
-            <h5 class="mb-3">Escolha Data e Horário</h5>
-            <div class="calendar-box mb-4">
-              <div class="calendar-header">
-                <button type="button" class="calendar-nav-btn" onclick="changeMonth(-1)"><i class="bi bi-chevron-left"></i></button>
-                <h5 id="calendarTitle"></h5>
-                <button type="button" class="calendar-nav-btn" onclick="changeMonth(1)"><i class="bi bi-chevron-right"></i></button>
-              </div>
-              <div class="calendar-grid" id="calendarGrid"></div>
-            </div>
-            <input type="hidden" id="dataAgenda" required />
-            <div id="timeSlots" class="time-slots-container mb-4"></div>
-            <input type="hidden" id="selectedTime" required />
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline-secondary w-100" onclick="prevStep(1)">VOLTAR</button>
-              <button type="button" class="btn-primary-custom" onclick="nextStep(3)">PRÓXIMO PASSO</button>
-            </div>
-          </div>
-
-          <div id="step3" style="display: none">
-            <h5 class="mb-3">Resumo do Agendamento</h5>
-            <div class="p-3 bg-light rounded mb-4">
-              <p><strong>Serviço:</strong> <span id="resumoServico"></span></p>
-              <p><strong>Data:</strong> <span id="resumoData"></span></p>
-              <p><strong>Horário:</strong> <span id="resumoHora"></span></p>
-            </div>
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline-secondary w-100" onclick="prevStep(2)">VOLTAR</button>
-              <button type="submit" class="btn-primary-custom">CONFIRMAR AGENDAMENTO</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Dashboard Page -->
-  <section id="dashboard" class="page-content">
-    <div class="container section-padding">
-      <div class="d-flex justify-content-between align-items-center mb-5">
-        <h2 class="playfair mb-0">Olá, Julia Pacheco</h2>
-        <button class="btn btn-outline-danger" onclick="showPage('home')">Sair</button>
-      </div>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="auth-card m-0 text-center mb-4">
-            <i class="bi bi-calendar-check text-primary display-4"></i>
-            <h5 class="mt-3">Próxima Consulta</h5>
-            <p class="fw-bold mb-0">15 de Outubro, 14:00</p>
-            <span class="badge bg-success">Confirmado</span>
-          </div>
-          <div class="auth-card m-0">
-            <h6 class="fw-bold mb-3">Evolução da Pressão</h6>
-            <canvas id="myChart" height="200"></canvas>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="auth-card m-0" style="max-width: 100%">
-            <h5>Histórico de Atividades</h5>
-            <table class="table mt-3">
-              <thead><tr><th>Data</th><th>Serviço</th><th>Status</th></tr></thead>
-              <tbody><tr><td>10/08/2025</td><td>Check-up Geral</td><td><span class="badge bg-light text-dark">Concluído</span></td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer style="background: var(--azul-marinho); color: white; padding: 60px 0;">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <h4 class="playfair mb-4">CORCENTRO</h4>
-          <p class="opacity-75">Excelência em cardiologia para você e sua família.</p>
-          <div class="d-flex gap-3 fs-4">
-            <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i><i class="bi bi-whatsapp"></i>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h5 class="mb-4">Localização</h5>
-          <p class="small">Av. Dom Pedro II, 620 - Santo André/SP</p>
-          <div id="mapContainer" style="height: 200px; border-radius: 10px;"></div>
-        </div>
-        <div class="col-md-4 text-md-end">
-          <h5 class="mb-4">Atendimento</h5>
-          <p class="mb-1">Seg a Sex: 08h às 19h</p>
-          <p class="mb-1">Sáb: 08h às 13h</p>
-          <h3 class="text-warning mt-3">(11) 2325-4369</h3>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Inicialização
-    window.addEventListener("load", () => {
-      AOS.init({ duration: 800, once: true });
-      renderCalendar();
-      initMap();
-    });
-
-    // Toasts
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast-custom';
-      toast.innerHTML = `<i class="bi bi-info-circle-fill me-2"></i> ${message}`;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    // Navegação
-    function showPage(pageId) {
-      document.querySelectorAll(".page-content").forEach(p => p.classList.remove("page-active"));
-      document.getElementById(pageId).classList.add("page-active");
-      window.scrollTo(0, 0);
-      if (pageId === "dashboard") setTimeout(initChart, 100);
-      AOS.refresh();
-    }
-
-    function toggleMobileMenu() { document.getElementById('navLinks').classList.toggle('active'); }
-    function closeMobileMenu() { document.getElementById('navLinks').classList.remove('active'); }
-    function toggleAuth() {
-      const l = document.getElementById('login-form'), r = document.getElementById('register-form');
-      l.style.display = l.style.display === 'none' ? 'block' : 'none';
-      r.style.display = r.style.display === 'none' ? 'block' : 'none';
-    }
-
-    // Máscaras
-    const mask = (id, fn) => document.getElementById(id)?.addEventListener('input', e => e.target.value = fn(e.target.value));
-    mask('cpfInput', v => v.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2'));
-    mask('celularInput', v => v.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2'));
-
-    // Calendário e Agendamento
-    const AppState = { currentMonth: new Date(), selectedDate: null };
-    const Config = {
-      monthsBr: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-      weekdaysBr: ["D", "S", "T", "Q", "Q", "S", "S"],
-      timeSlots: ["08:00", "09:00", "10:00", "14:00", "15:00", "16:00"]
-    };
-
-    function renderCalendar() {
-      const y = AppState.currentMonth.getFullYear(), m = AppState.currentMonth.getMonth();
-      document.getElementById("calendarTitle").innerText = `${Config.monthsBr[m]} ${y}`;
-      const grid = document.getElementById("calendarGrid");
-      grid.innerHTML = "";
-      Config.weekdaysBr.forEach(d => {
-        const div = document.createElement("div");
-        div.className = "calendar-weekday"; div.innerText = d; grid.appendChild(div);
-      });
-      const first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(), today = new Date().toISOString().split('T')[0];
-      for (let i = 0; i < first; i++) grid.appendChild(document.createElement("div"));
-      for (let d = 1; d <= total; d++) {
-        const date = new Date(y, m, d), dateStr = date.toISOString().split('T')[0], div = document.createElement("div");
-        div.className = "calendar-day"; div.innerText = d;
-        if (dateStr < today || date.getDay() === 0 || date.getDay() === 6) div.classList.add("disabled");
-        else {
-          div.onclick = () => {
-            document.querySelectorAll(".calendar-day").forEach(el => el.classList.remove("selected"));
-            div.classList.add("selected"); AppState.selectedDate = dateStr;
-            document.getElementById("dataAgenda").value = dateStr; generateTimeSlots();
-          };
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dra. Renata Vasconcelos - Cardiologia</title>
+
+    <!-- CSS Externo -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+      :root {
+        --azul-marinho: #0b2447;
+        --azul-claro: #19376d;
+        --dourado: #c09647;
+        --dourado-claro: #d4af37;
+        --branco-gelo: #f8f9fa;
+        --transicao: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--branco-gelo);
+        overflow-x: hidden;
+      }
+
+      h1,
+      h2,
+      h3,
+      .playfair {
+        font-family: "Playfair Display", serif;
+      }
+
+      /* --- Header Fixo --- */
+      .header-custom {
+        background: white;
+        padding: 12px 0;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .header-logo {
+        cursor: pointer;
+        font-weight: 700;
+        color: var(--azul-marinho);
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-btn {
+        text-decoration: none;
+        color: var(--azul-marinho);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transicao);
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
+
+      .nav-btn:hover {
+        color: var(--dourado);
+      }
+
+      .btn-cta {
+        background: var(--dourado);
+        color: white !important;
+        padding: 8px 22px;
+        border-radius: 50px;
+        box-shadow: 0 4px 12px rgba(192, 150, 71, 0.2);
+        transition: var(--transicao);
+      }
+
+      .btn-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(192, 150, 71, 0.3);
+      }
+
+      /* --- Menu Hambúrguer --- */
+      .hamburger-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--azul-marinho);
+        cursor: pointer;
+      }
+
+      /* --- Hero Section --- */
+      .hero-section {
+        background:
+          linear-gradient(rgba(11, 36, 71, 0.8), rgba(11, 36, 71, 0.8)),
+          url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1920&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .hero-subtitle {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto 40px;
+      }
+
+      /* --- Video Section --- */
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin: -80px auto 60px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        background: black;
+        z-index: 10;
+      }
+
+      .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+      }
+
+      .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* --- Seções Gerais --- */
+      .section-padding {
+        padding: 80px 0;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .section-title h2 {
+        color: var(--azul-marinho);
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      .section-title .divider {
+        width: 80px;
+        height: 4px;
+        background: var(--dourado);
+        margin: 0 auto;
+      }
+
+      /* --- Sobre a Dra --- */
+      .about-img {
+        border-radius: 20px;
+        box-shadow: 20px 20px 0 var(--dourado);
+        width: 100%;
+        max-width: 450px;
+      }
+
+      .stats-box {
+        display: flex;
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      .stat-item h4 {
+        color: var(--dourado);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0;
+      }
+
+      /* --- Especialidades --- */
+      .specialty-card {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        transition: var(--transicao);
+        height: 100%;
+        border-bottom: 4px solid transparent;
+      }
+
+      .specialty-card:hover {
+        transform: translateY(-10px);
+        border-bottom-color: var(--dourado);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      }
+
+      .specialty-icon {
+        font-size: 3rem;
+        color: var(--dourado);
+        margin-bottom: 20px;
+      }
+
+      /* --- Depoimentos --- */
+      .testimonial-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      }
+
+      .testimonial-card i.quote-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        color: #eee;
+      }
+
+      .patient-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .patient-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #ddd;
+      }
+
+      /* --- Controle de Telas --- */
+      .page-content {
+        display: none;
+        min-height: 80vh;
+        animation: fadeIn 0.6s ease;
+      }
+
+      .page-active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-        grid.appendChild(div);
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-    }
 
-    function changeMonth(dir) { AppState.currentMonth.setMonth(AppState.currentMonth.getMonth() + dir); renderCalendar(); }
-    function generateTimeSlots() {
-      const c = document.getElementById("timeSlots"); c.innerHTML = "";
-      Config.timeSlots.forEach(t => {
-        const d = document.createElement("div"); d.className = "time-slot"; d.innerText = t;
-        d.onclick = () => {
-          document.querySelectorAll(".time-slot").forEach(s => s.classList.remove("active"));
-          d.classList.add("active"); document.getElementById("selectedTime").value = t;
-        };
-        c.appendChild(d);
-      });
-    }
-
-    function nextStep(s) {
-      if (s === 2 && !document.getElementById("servicoSelect").value) return showToast("Selecione um serviço", "warning");
-      if (s === 3 && (!AppState.selectedDate || !document.getElementById("selectedTime").value)) return showToast("Selecione data e hora", "warning");
-      document.getElementById("step1").style.display = s === 1 ? "block" : "none";
-      document.getElementById("step2").style.display = s === 2 ? "block" : "none";
-      document.getElementById("step3").style.display = s === 3 ? "block" : "none";
-      if (s === 3) {
-        document.getElementById("resumoServico").innerText = document.getElementById("servicoSelect").value;
-        document.getElementById("resumoData").innerText = AppState.selectedDate;
-        document.getElementById("resumoHora").innerText = document.getElementById("selectedTime").value;
+      /* --- Estilo dos Cards de Auth --- */
+      .auth-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        margin: 50px auto;
+        max-width: 500px;
       }
-    }
 
-    function prevStep(s) { nextStep(s); }
-    function handleAgendamentoSubmit(e) {
-      e.preventDefault(); showToast("✓ Agendamento realizado!", "success");
-      setTimeout(() => showPage("dashboard"), 1500);
-    }
+      .form-control,
+      .form-select {
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
 
-    function loginSimulado() { showToast("✓ Bem-vindo(a)!", "success"); setTimeout(() => showPage("dashboard"), 1500); }
+      .btn-primary-custom {
+        background: var(--azul-marinho);
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        transition: var(--transicao);
+      }
 
-    function initMap() {
-      const m = L.map("mapContainer").setView([-23.6562, -46.5367], 15);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(m);
-      L.marker([-23.6562, -46.5367]).addTo(m).bindPopup("Clínica Corcentro").openPopup();
-    }
+      .btn-primary-custom:hover {
+        background: var(--dourado);
+        transform: translateY(-2px);
+      }
 
-    function initChart() {
-      new Chart(document.getElementById("myChart"), {
-        type: "line",
-        data: { labels: ["Jan", "Fev", "Mar", "Abr"], datasets: [{ label: "Pressão", data: [120, 125, 122, 118], borderColor: "#c09647", tension: 0.4 }] }
+      /* --- Toast Container --- */
+      .toast-container-custom {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+
+      .toast-custom {
+        background: white;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 300px;
+        border-left: 4px solid var(--dourado);
+      }
+
+      /* --- Responsividade --- */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+        .hamburger-btn {
+          display: block;
+        }
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: white;
+          padding: 20px;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-links.active {
+          display: flex;
+        }
+        .about-img {
+          box-shadow: 10px 10px 0 var(--dourado);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <header class="header-custom">
+      <div class="container header-container">
+        <div class="header-logo" onclick="showPage('home')">
+          <i class="bi bi-heart-pulse-fill" style="color: var(--dourado)"></i>
+          Dra. Renata Vasconcelos - Cardiologia
+        </div>
+        <button class="hamburger-btn" onclick="toggleMobileMenu()">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <button
+            class="nav-btn"
+            onclick="
+              showPage('home');
+              closeMobileMenu();
+            "
+          >
+            Início
+          </button>
+          <button
+            class="nav-btn"
+            onclick="
+              showPage('auth');
+              closeMobileMenu();
+            "
+          >
+            Login
+          </button>
+          <button
+            class="nav-btn"
+            onclick="
+              showPage('dashboard');
+              closeMobileMenu();
+            "
+          >
+            Minhas Consultas
+          </button>
+          <button
+            class="nav-btn btn-cta"
+            onclick="
+              showPage('agendamento');
+              closeMobileMenu();
+            "
+          >
+            Agendar Agora
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Home Page -->
+    <main id="home" class="page-content page-active">
+      <!-- Hero -->
+      <section class="hero-section">
+        <div class="container" data-aos="fade-up">
+          <h1 class="hero-title">Sua Saúde Cardíaca em Boas Mãos</h1>
+          <p class="hero-subtitle">
+            Excelência médica, tecnologia de ponta e atendimento humanizado para
+            cuidar do motor da sua vida.
+          </p>
+          <button
+            class="btn-cta border-0 py-3 px-5 fs-5"
+            onclick="showPage('agendamento')"
+          >
+            Agendar Consulta Online
+          </button>
+        </div>
+      </section>
+
+      <!-- Video Section -->
+      <div class="container">
+        <div class="video-container" data-aos="zoom-in">
+          <div class="video-wrapper">
+            <!-- Vídeo de exemplo sobre saúde do coração -->
+            <iframe
+              src=""
+              title="Saúde do Coração"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+              "
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sobre a Dra -->
+      <section class="section-padding">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+              <img
+                src="https://images.unsplash.com/photo-1559839734-2b71f153678f?auto=format&fit=crop&w=800&q=80"
+                alt="Dra Renata"
+                class="about-img"
+              />
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+              <h5
+                class="text-uppercase fw-bold"
+                style="color: var(--dourado); letter-spacing: 2px"
+              >
+                Sobre a Especialista
+              </h5>
+              <h2
+                class="playfair mb-4"
+                style="color: var(--azul-marinho); font-size: 2.8rem"
+              >
+                Dra. Renata Vasconcelos
+              </h2>
+              <p class="text-muted fs-5">
+                Com mais de 15 anos de experiência em cardiologia clínica e
+                intervencionista, a Dra. Renata é referência em diagnósticos
+                precisos e tratamentos personalizados.
+              </p>
+              <p class="text-muted">
+                Formada pela USP com especialização no InCor, dedica sua
+                carreira a prevenir doenças cardiovasculares e melhorar a
+                qualidade de vida de seus pacientes através de uma abordagem
+                integrativa.
+              </p>
+
+              <div class="stats-box">
+                <div class="stat-item">
+                  <h4>15+</h4>
+                  <p class="small text-uppercase fw-bold">Anos de Exp.</p>
+                </div>
+                <div class="stat-item">
+                  <h4>5k+</h4>
+                  <p class="small text-uppercase fw-bold">Pacientes</p>
+                </div>
+                <div class="stat-item">
+                  <h4>10+</h4>
+                  <p class="small text-uppercase fw-bold">Prêmios</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Especialidades -->
+      <section class="section-padding" style="background: #f0f4f8">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <h2>Nossas Especialidades</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="specialty-card">
+                <div class="specialty-icon">
+                  <i class="bi bi-heart-pulse"></i>
+                </div>
+                <h4 class="playfair">Check-up Completo</h4>
+                <p class="text-muted">
+                  Avaliação detalhada da saúde cardiovascular com exames
+                  preventivos de última geração.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="specialty-card">
+                <div class="specialty-icon"><i class="bi bi-activity"></i></div>
+                <h4 class="playfair">Arritmologia</h4>
+                <p class="text-muted">
+                  Diagnóstico e tratamento de distúrbios do ritmo cardíaco com
+                  monitoramento avançado.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+              <div class="specialty-card">
+                <div class="specialty-icon">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+                <h4 class="playfair">Hipertensão</h4>
+                <p class="text-muted">
+                  Controle rigoroso da pressão arterial para prevenir
+                  complicações graves no futuro.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Depoimentos -->
+      <section class="section-padding">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <h2>O que dizem nossos pacientes</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-6" data-aos="fade-right">
+              <div class="testimonial-card">
+                <i class="bi bi-quote quote-icon"></i>
+                <p class="fst-italic text-muted">
+                  "A Dra. Renata salvou minha vida. Seu diagnóstico rápido e o
+                  cuidado durante todo o tratamento foram fundamentais para
+                  minha recuperação."
+                </p>
+                <div class="patient-info">
+                  <div
+                    class="patient-img"
+                    style="
+                      background: url(&quot;https://i.pravatar.cc/150?u=1&quot;)
+                        center/cover;
+                    "
+                  ></div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Carlos Eduardo</h6>
+                    <small class="text-muted">Paciente há 3 anos</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-left">
+              <div class="testimonial-card">
+                <i class="bi bi-quote quote-icon"></i>
+                <p class="fst-italic text-muted">
+                  "Excelente profissional. O sistema de agendamento online
+                  facilitou muito minha rotina. Recomendo a todos que buscam
+                  confiança."
+                </p>
+                <div class="patient-info">
+                  <div
+                    class="patient-img"
+                    style="
+                      background: url(&quot;https://i.pravatar.cc/150?u=2&quot;)
+                        center/cover;
+                    "
+                  ></div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Mariana Silva</h6>
+                    <small class="text-muted">Paciente há 1 ano</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Auth Page -->
+    <section id="auth" class="page-content">
+      <div class="container section-padding">
+        <div class="auth-card" data-aos="zoom-in">
+          <div id="login-form">
+            <h3
+              class="text-center mb-4 playfair"
+              style="color: var(--azul-marinho)"
+            >
+              Acesso do Paciente
+            </h3>
+            <form
+              onsubmit="
+                event.preventDefault();
+                loginSimulado();
+              "
+            >
+              <label class="small fw-bold">E-mail ou CPF</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Digite seu acesso"
+                required
+              />
+              <label class="small fw-bold">Senha</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="••••••••"
+                required
+              />
+              <button type="submit" class="btn-primary-custom mt-2">
+                ENTRAR
+              </button>
+              <p class="text-center mt-4 small">
+                Ainda não tem conta? <br />
+                <span
+                  class="auth-toggle-link text-primary"
+                  style="cursor: pointer"
+                  onclick="toggleAuth()"
+                  >Cadastre-se aqui</span
+                >
+              </p>
+            </form>
+          </div>
+
+          <div id="register-form" style="display: none">
+            <h3
+              class="text-center mb-4 playfair"
+              style="color: var(--azul-marinho)"
+            >
+              Crie sua Conta
+            </h3>
+            <form
+              onsubmit="
+                event.preventDefault();
+                loginSimulado();
+              "
+            >
+              <label class="small fw-bold">Nome Completo</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Seu nome"
+                required
+              />
+              <label class="small fw-bold">E-mail</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="exemplo@email.com"
+                required
+              />
+              <div class="row">
+                <div class="col-6">
+                  <label class="small fw-bold">CPF</label>
+                  <input
+                    type="text"
+                    id="cpfInput"
+                    class="form-control"
+                    placeholder="000.000.000-00"
+                    maxlength="14"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label class="small fw-bold">Celular</label>
+                  <input
+                    type="tel"
+                    id="celularInput"
+                    class="form-control"
+                    placeholder="(11) 99999-9999"
+                    maxlength="15"
+                    required
+                  />
+                </div>
+              </div>
+              <label class="small fw-bold">Crie uma Senha</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="••••••••"
+                required
+              />
+              <button type="submit" class="btn-primary-custom mt-2">
+                FINALIZAR CADASTRO
+              </button>
+              <p class="text-center mt-4 small">
+                Já possui conta? <br />
+                <span
+                  class="auth-toggle-link text-primary"
+                  style="cursor: pointer"
+                  onclick="toggleAuth()"
+                  >Voltar para Login</span
+                >
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Agendamento Page -->
+    <section id="agendamento" class="page-content">
+      <div class="container section-padding">
+        <div class="auth-card" style="max-width: 800px" data-aos="fade-up">
+          <h3
+            class="text-center mb-4 playfair"
+            style="color: var(--azul-marinho)"
+          >
+            Agendamento Online
+          </h3>
+
+          <div class="step-indicator mb-5">
+            <div class="step active" id="step1-indicator">
+              <div class="step-number">1</div>
+              <div class="small">Serviço</div>
+            </div>
+            <div class="step" id="step2-indicator">
+              <div class="step-number">2</div>
+              <div class="small">Data e Hora</div>
+            </div>
+            <div class="step" id="step3-indicator">
+              <div class="step-number">3</div>
+              <div class="small">Confirmação</div>
+            </div>
+          </div>
+
+          <form id="formAgendar" onsubmit="handleAgendamentoSubmit(event)">
+            <div id="step1">
+              <h5 class="mb-3">Selecione o Serviço</h5>
+              <select id="servicoSelect" class="form-select" required>
+                <option value="">-- Escolha um serviço --</option>
+                <option value="Consulta Cardiológica">
+                  Consulta Cardiológica
+                </option>
+                <option value="Eletrocardiograma">Eletrocardiograma</option>
+                <option value="Ecocardiograma">Ecocardiograma</option>
+              </select>
+              <div class="mb-3">
+                <label class="small fw-bold">Convênio</label>
+                <select id="convenioSelect" class="form-select" required>
+                  <option value="">-- Selecione --</option>
+                  <option value="Particular">Particular</option>
+                  <option value="Unimed">Unimed</option>
+                </select>
+              </div>
+              <button
+                type="button"
+                class="btn-primary-custom"
+                onclick="nextStep(2)"
+              >
+                PRÓXIMO PASSO
+              </button>
+            </div>
+
+            <div id="step2" style="display: none">
+              <h5 class="mb-3">Escolha Data e Horário</h5>
+              <div class="calendar-box mb-4">
+                <div class="calendar-header">
+                  <button
+                    type="button"
+                    class="calendar-nav-btn"
+                    onclick="changeMonth(-1)"
+                  >
+                    <i class="bi bi-chevron-left"></i>
+                  </button>
+                  <h5 id="calendarTitle"></h5>
+                  <button
+                    type="button"
+                    class="calendar-nav-btn"
+                    onclick="changeMonth(1)"
+                  >
+                    <i class="bi bi-chevron-right"></i>
+                  </button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+              </div>
+              <input type="hidden" id="dataAgenda" required />
+              <div id="timeSlots" class="time-slots-container mb-4"></div>
+              <input type="hidden" id="selectedTime" required />
+              <div class="d-flex gap-2">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100"
+                  onclick="prevStep(1)"
+                >
+                  VOLTAR
+                </button>
+                <button
+                  type="button"
+                  class="btn-primary-custom"
+                  onclick="nextStep(3)"
+                >
+                  PRÓXIMO PASSO
+                </button>
+              </div>
+            </div>
+
+            <div id="step3" style="display: none">
+              <h5 class="mb-3">Resumo do Agendamento</h5>
+              <div class="p-3 bg-light rounded mb-4">
+                <p>
+                  <strong>Serviço:</strong> <span id="resumoServico"></span>
+                </p>
+                <p><strong>Data:</strong> <span id="resumoData"></span></p>
+                <p><strong>Horário:</strong> <span id="resumoHora"></span></p>
+              </div>
+              <div class="d-flex gap-2">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100"
+                  onclick="prevStep(2)"
+                >
+                  VOLTAR
+                </button>
+                <button type="submit" class="btn-primary-custom">
+                  CONFIRMAR AGENDAMENTO
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Page -->
+    <section id="dashboard" class="page-content">
+      <div class="container section-padding">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <h2 class="playfair mb-0">Olá, Julia Pacheco</h2>
+          <button class="btn btn-outline-danger" onclick="showPage('home')">
+            Sair
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="auth-card m-0 text-center mb-4">
+              <i class="bi bi-calendar-check text-primary display-4"></i>
+              <h5 class="mt-3">Próxima Consulta</h5>
+              <p class="fw-bold mb-0">15 de Outubro, 14:00</p>
+              <span class="badge bg-success">Confirmado</span>
+            </div>
+            <div class="auth-card m-0">
+              <h6 class="fw-bold mb-3">Evolução da Pressão</h6>
+              <canvas id="myChart" height="200"></canvas>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="auth-card m-0" style="max-width: 100%">
+              <h5>Histórico de Atividades</h5>
+              <table class="table mt-3">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Serviço</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10/08/2025</td>
+                    <td>Check-up Geral</td>
+                    <td>
+                      <span class="badge bg-light text-dark">Concluído</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      style="background: var(--azul-marinho); color: white; padding: 60px 0"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <h4 class="playfair mb-4">CORCENTRO</h4>
+            <p class="opacity-75">
+              Excelência em cardiologia para você e sua família.
+            </p>
+            <div class="d-flex gap-3 fs-4">
+              <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i
+              ><i class="bi bi-whatsapp"></i>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <h5 class="mb-4">Localização</h5>
+            <p class="small">Av. Dom Pedro II, 620 - Santo André/SP</p>
+            <div
+              id="mapContainer"
+              style="height: 200px; border-radius: 10px"
+            ></div>
+          </div>
+          <div class="col-md-4 text-md-end">
+            <h5 class="mb-4">Atendimento</h5>
+            <p class="mb-1">Seg a Sex: 08h às 19h</p>
+            <p class="mb-1">Sáb: 08h às 13h</p>
+            <h3 class="text-warning mt-3">(11) 2325-4369</h3>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Inicialização
+      window.addEventListener("load", () => {
+        AOS.init({ duration: 800, once: true });
+        renderCalendar();
+        initMap();
       });
-    }
-  </script>
-</body>
+
+      // Toasts
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = "toast-custom";
+        toast.innerHTML = `<i class="bi bi-info-circle-fill me-2"></i> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      // Navegação
+      function showPage(pageId) {
+        document
+          .querySelectorAll(".page-content")
+          .forEach((p) => p.classList.remove("page-active"));
+        document.getElementById(pageId).classList.add("page-active");
+        window.scrollTo(0, 0);
+        if (pageId === "dashboard") setTimeout(initChart, 100);
+        AOS.refresh();
+      }
+
+      function toggleMobileMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+      function closeMobileMenu() {
+        document.getElementById("navLinks").classList.remove("active");
+      }
+      function toggleAuth() {
+        const l = document.getElementById("login-form"),
+          r = document.getElementById("register-form");
+        l.style.display = l.style.display === "none" ? "block" : "none";
+        r.style.display = r.style.display === "none" ? "block" : "none";
+      }
+
+      // Máscaras
+      const mask = (id, fn) =>
+        document
+          .getElementById(id)
+          ?.addEventListener(
+            "input",
+            (e) => (e.target.value = fn(e.target.value)),
+          );
+      mask("cpfInput", (v) =>
+        v
+          .replace(/\D/g, "")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d{1,2})$/, "$1-$2"),
+      );
+      mask("celularInput", (v) =>
+        v
+          .replace(/\D/g, "")
+          .replace(/^(\d{2})(\d)/g, "($1) $2")
+          .replace(/(\d{5})(\d)/, "$1-$2"),
+      );
+
+      // Calendário e Agendamento
+      const AppState = { currentMonth: new Date(), selectedDate: null };
+      const Config = {
+        monthsBr: [
+          "Janeiro",
+          "Fevereiro",
+          "Março",
+          "Abril",
+          "Maio",
+          "Junho",
+          "Julho",
+          "Agosto",
+          "Setembro",
+          "Outubro",
+          "Novembro",
+          "Dezembro",
+        ],
+        weekdaysBr: ["D", "S", "T", "Q", "Q", "S", "S"],
+        timeSlots: ["08:00", "09:00", "10:00", "14:00", "15:00", "16:00"],
+      };
+
+      function renderCalendar() {
+        const y = AppState.currentMonth.getFullYear(),
+          m = AppState.currentMonth.getMonth();
+        document.getElementById("calendarTitle").innerText =
+          `${Config.monthsBr[m]} ${y}`;
+        const grid = document.getElementById("calendarGrid");
+        grid.innerHTML = "";
+        Config.weekdaysBr.forEach((d) => {
+          const div = document.createElement("div");
+          div.className = "calendar-weekday";
+          div.innerText = d;
+          grid.appendChild(div);
+        });
+        const first = new Date(y, m, 1).getDay(),
+          total = new Date(y, m + 1, 0).getDate(),
+          today = new Date().toISOString().split("T")[0];
+        for (let i = 0; i < first; i++)
+          grid.appendChild(document.createElement("div"));
+        for (let d = 1; d <= total; d++) {
+          const date = new Date(y, m, d),
+            dateStr = date.toISOString().split("T")[0],
+            div = document.createElement("div");
+          div.className = "calendar-day";
+          div.innerText = d;
+          if (dateStr < today || date.getDay() === 0 || date.getDay() === 6)
+            div.classList.add("disabled");
+          else {
+            div.onclick = () => {
+              document
+                .querySelectorAll(".calendar-day")
+                .forEach((el) => el.classList.remove("selected"));
+              div.classList.add("selected");
+              AppState.selectedDate = dateStr;
+              document.getElementById("dataAgenda").value = dateStr;
+              generateTimeSlots();
+            };
+          }
+          grid.appendChild(div);
+        }
+      }
+
+      function changeMonth(dir) {
+        AppState.currentMonth.setMonth(AppState.currentMonth.getMonth() + dir);
+        renderCalendar();
+      }
+      function generateTimeSlots() {
+        const c = document.getElementById("timeSlots");
+        c.innerHTML = "";
+        Config.timeSlots.forEach((t) => {
+          const d = document.createElement("div");
+          d.className = "time-slot";
+          d.innerText = t;
+          d.onclick = () => {
+            document
+              .querySelectorAll(".time-slot")
+              .forEach((s) => s.classList.remove("active"));
+            d.classList.add("active");
+            document.getElementById("selectedTime").value = t;
+          };
+          c.appendChild(d);
+        });
+      }
+
+      function nextStep(s) {
+        if (s === 2 && !document.getElementById("servicoSelect").value)
+          return showToast("Selecione um serviço", "warning");
+        if (
+          s === 3 &&
+          (!AppState.selectedDate ||
+            !document.getElementById("selectedTime").value)
+        )
+          return showToast("Selecione data e hora", "warning");
+        document.getElementById("step1").style.display =
+          s === 1 ? "block" : "none";
+        document.getElementById("step2").style.display =
+          s === 2 ? "block" : "none";
+        document.getElementById("step3").style.display =
+          s === 3 ? "block" : "none";
+        if (s === 3) {
+          document.getElementById("resumoServico").innerText =
+            document.getElementById("servicoSelect").value;
+          document.getElementById("resumoData").innerText =
+            AppState.selectedDate;
+          document.getElementById("resumoHora").innerText =
+            document.getElementById("selectedTime").value;
+        }
+      }
+
+      function prevStep(s) {
+        nextStep(s);
+      }
+      function handleAgendamentoSubmit(e) {
+        e.preventDefault();
+        showToast("✓ Agendamento realizado!", "success");
+        setTimeout(() => showPage("dashboard"), 1500);
+      }
+
+      function loginSimulado() {
+        showToast("✓ Bem-vindo(a)!", "success");
+        setTimeout(() => showPage("dashboard"), 1500);
+      }
+
+      function initMap() {
+        const m = L.map("mapContainer").setView([-23.6562, -46.5367], 15);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+          m,
+        );
+        L.marker([-23.6562, -46.5367])
+          .addTo(m)
+          .bindPopup("Clínica Corcentro")
+          .openPopup();
+      }
+
+      function initChart() {
+        new Chart(document.getElementById("myChart"), {
+          type: "line",
+          data: {
+            labels: ["Jan", "Fev", "Mar", "Abr"],
+            datasets: [
+              {
+                label: "Pressão",
+                data: [120, 125, 122, 118],
+                borderColor: "#c09647",
+                tension: 0.4,
+              },
+            ],
+          },
+        });
+      }
+    </script>
+  </body>
 </html>

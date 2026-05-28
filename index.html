@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -23,13 +23,14 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
       :root {
         --azul-marinho: #0b2447;
+        --azul-claro: #19376d;
         --dourado: #c09647;
+        --dourado-claro: #d4af37;
         --branco-gelo: #f8f9fa;
         --transicao: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
@@ -44,12 +45,20 @@
       body {
         height: 100%;
         width: 100%;
+        scroll-behavior: smooth;
       }
 
       body {
         font-family: "Poppins", sans-serif;
         background-color: var(--branco-gelo);
         overflow-x: hidden;
+      }
+
+      h1,
+      h2,
+      h3,
+      .playfair {
+        font-family: "Playfair Display", serif;
       }
 
       /* --- Header Fixo --- */
@@ -79,16 +88,10 @@
         gap: 8px;
       }
 
-      .header-logo img {
-        height: 50px;
-        cursor: pointer;
-      }
-
       .nav-links {
         display: flex;
         gap: 20px;
         align-items: center;
-        flex-wrap: wrap;
       }
 
       .nav-btn {
@@ -128,33 +131,159 @@
         font-size: 1.5rem;
         color: var(--azul-marinho);
         cursor: pointer;
-        transition: var(--transicao);
       }
 
-      .hamburger-btn:hover {
-        color: var(--dourado);
+      /* --- Hero Section --- */
+      .hero-section {
+        background:
+          linear-gradient(rgba(11, 36, 71, 0.8), rgba(11, 36, 71, 0.8)),
+          url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1920&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
       }
 
-      .nav-links.mobile-menu {
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .hero-subtitle {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      /* --- Video Section --- */
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin: -80px auto 60px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        background: black;
+        z-index: 10;
+      }
+
+      .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+        pointer-events: none; /* Impede interação com o vídeo para parecer um fundo animado */
+      }
+
+      .video-wrapper iframe {
         position: absolute;
-        top: 100%;
+        top: 0;
         left: 0;
-        right: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        transform: scale(1.1); /* Remove bordas pretas se houver */
+      }
+
+      /* --- Seções Gerais --- */
+      .section-padding {
+        padding: 80px 0;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .section-title h2 {
+        color: var(--azul-marinho);
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      .section-title .divider {
+        width: 80px;
+        height: 4px;
+        background: var(--dourado);
+        margin: 0 auto;
+      }
+
+      /* --- Sobre a Dra --- */
+      .about-img {
+        border-radius: 20px;
+        box-shadow: 20px 20px 0 var(--dourado);
+        width: 100%;
+        max-width: 450px;
+      }
+
+      .stats-box {
+        display: flex;
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      .stat-item h4 {
+        color: var(--dourado);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0;
+      }
+
+      /* --- Especialidades --- */
+      .specialty-card {
         background: white;
-        flex-direction: column;
-        gap: 0;
-        padding: 15px 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border-top: 1px solid #eee;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        transition: var(--transicao);
+        height: 100%;
+        border-bottom: 4px solid transparent;
       }
 
-      .nav-links.mobile-menu .nav-btn {
-        padding: 10px 0;
-        border-bottom: 1px solid #f0f0f0;
+      .specialty-card:hover {
+        transform: translateY(-10px);
+        border-bottom-color: var(--dourado);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
       }
 
-      .nav-links.mobile-menu .nav-btn:last-child {
-        border-bottom: none;
+      .specialty-icon {
+        font-size: 3rem;
+        color: var(--dourado);
+        margin-bottom: 20px;
+      }
+
+      /* --- Depoimentos --- */
+      .testimonial-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      }
+
+      .testimonial-card i.quote-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        color: #eee;
+      }
+
+      .patient-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .patient-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #ddd;
       }
 
       /* --- Controle de Telas --- */
@@ -187,22 +316,13 @@
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         margin: 50px auto;
         max-width: 500px;
-        transition: var(--transicao);
       }
 
       .form-control,
       .form-select {
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #ddd;
         margin-bottom: 15px;
-        transition: var(--transicao);
-      }
-
-      .form-control:focus,
-      .form-select:focus {
-        border-color: var(--dourado);
-        box-shadow: 0 0 0 0.2rem rgba(192, 150, 71, 0.25);
       }
 
       .btn-primary-custom {
@@ -214,257 +334,11 @@
         border: none;
         font-weight: 600;
         transition: var(--transicao);
-        cursor: pointer;
       }
 
       .btn-primary-custom:hover {
         background: var(--dourado);
         transform: translateY(-2px);
-      }
-
-      #register-form {
-        display: none;
-      }
-
-      .auth-toggle-link {
-        color: var(--dourado);
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transicao);
-      }
-
-      .auth-toggle-link:hover {
-        text-decoration: underline;
-      }
-
-      /* --- Galeria e Banner --- */
-      .img-zoom-container {
-        overflow: hidden;
-        border-radius: 12px;
-        height: 250px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .img-zoom-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: var(--transicao);
-      }
-
-      .img-zoom-container:hover img {
-        transform: scale(1.1);
-      }
-
-      /* --- Agendamento Automatizado --- */
-      .time-slots-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 10px;
-        margin-top: 15px;
-      }
-
-      .time-slot {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        text-align: center;
-        cursor: pointer;
-        transition: var(--transicao);
-        font-weight: 500;
-        background: white;
-      }
-
-      .time-slot:hover:not(.disabled) {
-        border-color: var(--dourado);
-        color: var(--dourado);
-      }
-
-      .time-slot.active {
-        background-color: var(--azul-marinho);
-        color: white;
-        border-color: var(--azul-marinho);
-      }
-
-      .time-slot.disabled {
-        background-color: #f0f0f0;
-        color: #ccc;
-        cursor: not-allowed;
-        border-color: #eee;
-      }
-
-      .step-indicator {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 30px;
-      }
-
-      .step {
-        flex: 1;
-        text-align: center;
-        position: relative;
-      }
-
-      .step::after {
-        content: "";
-        position: absolute;
-        top: 15px;
-        left: 50%;
-        width: 100%;
-        height: 2px;
-        background: #eee;
-        z-index: 1;
-      }
-
-      .step:last-child::after {
-        display: none;
-      }
-
-      .step-number {
-        width: 30px;
-        height: 30px;
-        background: #eee;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        z-index: 2;
-        font-weight: bold;
-        margin-bottom: 5px;
-        transition: var(--transicao);
-      }
-
-      .step.active .step-number {
-        background: var(--azul-marinho);
-        color: white;
-      }
-
-      .step.completed .step-number {
-        background: var(--dourado);
-        color: white;
-      }
-
-      /* --- CALENDÁRIO OTIMIZADO --- */
-      .calendar-box {
-        background: #fff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 15px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      }
-
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-      }
-
-      .calendar-header h5 {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--azul-marinho);
-        margin: 0;
-        text-transform: capitalize;
-      }
-
-      .calendar-nav-btn {
-        background: var(--dourado);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        cursor: pointer;
-        transition: var(--transicao);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .calendar-nav-btn:hover {
-        background: var(--azul-marinho);
-      }
-
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 5px;
-        text-align: center;
-      }
-
-      .calendar-weekday {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #718096;
-        padding-bottom: 5px;
-      }
-
-      .calendar-day {
-        aspect-ratio: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.85rem;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: var(--transicao);
-        font-weight: 500;
-        border: 1px solid transparent;
-        background: white;
-      }
-
-      .calendar-day:hover:not(.disabled):not(.selected) {
-        background-color: #f1f5f9;
-        color: var(--azul-marinho);
-      }
-
-      .calendar-day.disabled {
-        color: #cbd5e1;
-        cursor: not-allowed;
-        background-color: #f8fafc;
-      }
-
-      .calendar-day.selected {
-        background-color: var(--dourado) !important;
-        color: white !important;
-        font-weight: bold;
-        box-shadow: 0 2px 8px rgba(192, 150, 71, 0.4);
-      }
-
-      .calendar-day.today {
-        border-color: var(--azul-marinho);
-        color: var(--azul-marinho);
-        font-weight: bold;
-      }
-
-      /* --- Dashboard --- */
-      .glass-card {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        height: 100%;
-        transition: var(--transicao);
-      }
-
-      .glass-card:hover {
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      }
-
-      .status-badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: inline-block;
-      }
-
-      .bg-confirmed {
-        background-color: #d1e7dd;
-        color: #0f5132;
       }
 
       /* --- Toast Container --- */
@@ -473,7 +347,6 @@
         top: 20px;
         right: 20px;
         z-index: 9999;
-        max-width: 400px;
       }
 
       .toast-custom {
@@ -485,185 +358,212 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        animation: slideIn 0.3s ease;
         min-width: 300px;
+        border-left: 4px solid var(--dourado);
       }
 
-      .toast-custom.success {
-        border-left: 4px solid #28a745;
+      /* --- Calendário e Agendamento --- */
+      .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        position: relative;
       }
 
-      .toast-custom.error {
-        border-left: 4px solid #dc3545;
+      .step-indicator::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #ddd;
+        z-index: 0;
       }
 
-      .toast-custom.warning {
-        border-left: 4px solid #ffc107;
-      }
-
-      .toast-custom.info {
-        border-left: 4px solid #17a2b8;
-      }
-
-      .toast-custom .icon {
-        font-size: 1.5rem;
-        flex-shrink: 0;
-      }
-
-      .toast-custom.success .icon {
-        color: #28a745;
-      }
-
-      .toast-custom.error .icon {
-        color: #dc3545;
-      }
-
-      .toast-custom.warning .icon {
-        color: #ffc107;
-      }
-
-      .toast-custom.info .icon {
-        color: #17a2b8;
-      }
-
-      .toast-custom .content {
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
         flex: 1;
       }
 
-      .toast-custom .close-btn {
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        color: #999;
-        cursor: pointer;
-        padding: 0;
-        margin-left: 10px;
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateX(400px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-
-      /* --- Footer com Mapa Interativo --- */
-      footer {
-        background: var(--azul-marinho);
-        color: white;
-        padding: 40px 0;
-        margin-top: 60px;
-      }
-
-      .map-container {
-        height: 300px;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-top: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      .leaflet-container {
-        background: #e8f4f8;
-      }
-
-      .leaflet-popup-content {
-        font-family: "Poppins", sans-serif;
-        font-size: 0.9rem;
-      }
-
-      .custom-marker {
-        background: var(--dourado);
-        border: 3px solid white;
-        border-radius: 50%;
+      .step-number {
         width: 40px;
         height: 40px;
+        border-radius: 50%;
+        background: #ddd;
+        color: #666;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-weight: bold;
+        transition: var(--transicao);
+      }
+
+      .step.active .step-number {
+        background: var(--dourado);
         color: white;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .calendar-box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .calendar-header h5 {
+        margin: 0;
+        color: var(--azul-marinho);
+        font-weight: 600;
+      }
+
+      .calendar-nav-btn {
+        background: var(--dourado);
+        color: white;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transicao);
+      }
+
+      .calendar-nav-btn:hover {
+        background: var(--azul-marinho);
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .calendar-weekday {
+        text-align: center;
+        font-weight: bold;
+        color: var(--azul-marinho);
+        padding: 10px 0;
+        font-size: 0.9rem;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
+        background: white;
+        border: 2px solid #ddd;
+        transition: var(--transicao);
+        font-weight: 500;
+      }
+
+      .calendar-day:hover:not(.disabled) {
+        border-color: var(--dourado);
+        background: #f0f4f8;
+      }
+
+      .calendar-day.disabled {
+        background: #e9ecef;
+        color: #999;
+        cursor: not-allowed;
+      }
+
+      .calendar-day.selected {
+        background: var(--dourado);
+        color: white;
+        border-color: var(--dourado);
+      }
+
+      .time-slots-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .time-slot {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transicao);
+        background: white;
+        font-weight: 500;
+      }
+
+      .time-slot:hover {
+        border-color: var(--dourado);
+        background: #f0f4f8;
+      }
+
+      .time-slot.active {
+        background: var(--dourado);
+        color: white;
+        border-color: var(--dourado);
       }
 
       /* --- Responsividade --- */
       @media (max-width: 768px) {
-        .header-container {
-          flex-direction: row;
-          gap: 10px;
+        .hero-title {
+          font-size: 2.5rem;
         }
-
         .hamburger-btn {
           display: block;
         }
-
         .nav-links {
           display: none;
-          gap: 0;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: white;
+          padding: 20px;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
-
         .nav-links.active {
           display: flex;
         }
-
-        .nav-btn {
-          font-size: 0.8rem;
+        .about-img {
+          box-shadow: 10px 10px 0 var(--dourado);
         }
-
-        .auth-card {
-          padding: 25px;
-          margin: 30px 15px;
-        }
-
         .time-slots-container {
-          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        }
-
-        .step-indicator {
-          flex-direction: column;
-          gap: 15px;
-        }
-
-        .step::after {
-          display: none;
-        }
-
-        .map-container {
-          height: 250px;
-        }
-
-        .toast-container-custom {
-          max-width: calc(100% - 20px);
-          left: 10px;
-          right: 10px;
-        }
-
-        .toast-custom {
-          min-width: auto;
+          grid-template-columns: repeat(2, 1fr);
         }
       }
     </style>
   </head>
 
   <body>
-    <!-- Toast Container -->
     <div class="toast-container-custom" id="toastContainer"></div>
 
     <header class="header-custom">
-      <div class="container-fluid header-container">
+      <div class="container header-container">
         <div class="header-logo" onclick="showPage('home')">
-          <i class="bi bi-heart-pulse" style="color: var(--dourado)"></i
-          >Dra. Renata Vasconcelos - Cardiologia
+          <i class="bi bi-heart-pulse-fill" style="color: var(--dourado)"></i>
+          Dra. Renata Vasconcelos - Cardiologia
         </div>
-        <button
-          class="hamburger-btn"
-          id="hamburgerBtn"
-          onclick="toggleMobileMenu()"
-        >
+        <button class="hamburger-btn" onclick="toggleMobileMenu()">
           <i class="bi bi-list"></i>
         </button>
         <div class="nav-links" id="navLinks">
@@ -683,7 +583,7 @@
               closeMobileMenu();
             "
           >
-            <i class="bi bi-person"></i> Login
+            Login
           </button>
           <button
             class="nav-btn"
@@ -701,7 +601,7 @@
               closeMobileMenu();
             "
           >
-            Agendar Consulta
+            Agendar Agora
           </button>
         </div>
       </div>
@@ -709,123 +609,187 @@
 
     <!-- Home Page -->
     <main id="home" class="page-content page-active">
-      <section class="main-banner">
-        <div
-          style="
-            background: linear-gradient(
-              135deg,
-              var(--azul-marinho) 0%,
-              var(--dourado) 100%
-            );
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-          "
-        >
-          <h1
-            style="
-              font-family: &quot;Playfair Display&quot;;
-              font-size: 3rem;
-              margin-bottom: 20px;
-            "
-          >
-            Cardiologia de Excelência
-          </h1>
-          <p style="font-size: 1.2rem; opacity: 0.9">
-            Cuidado especializado para a saúde do seu coração
-          </p>
-        </div>
-      </section>
-
-      <section class="quote-section text-center py-5">
+      <!-- Hero -->
+      <section class="hero-section">
         <div class="container" data-aos="fade-up">
-          <h2
-            style="
-              font-family: &quot;Playfair Display&quot;;
-              color: var(--azul-marinho);
-            "
-          >
-            <span style="color: var(--dourado)"
-              >"Seu coração merece atenção,</span
-            >
-            cuidado e confiança."
-          </h2>
-          <p class="text-muted">
-            Conheça nossa estrutura e tecnologia para sua saúde cardiovascular.
+          <h1 class="hero-title">Sua Saúde Cardíaca em Boas Mãos</h1>
+          <p class="hero-subtitle">
+            Excelência médica, tecnologia de ponta e atendimento humanizado para
+            cuidar do motor da sua vida.
           </p>
         </div>
       </section>
 
-      <section class="container mb-5">
-        <div class="row g-4">
-          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
-            <div class="img-zoom-container">
-              <div
-                style="
-                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-size: 3rem;
-                "
-              >
-                <i class="bi bi-hospital"></i>
-              </div>
-            </div>
-            <h5 class="mt-3" style="color: var(--azul-marinho)">
-              Recepção Moderna
-            </h5>
-            <p class="text-muted">
-              Ambiente acolhedor e equipado com tecnologia de ponta.
-            </p>
+      <!-- Video Section -->
+      <div class="container">
+        <div class="video-container" data-aos="zoom-in">
+          <div class="video-wrapper">
+            <!-- Vídeo de esteira (Teste Ergométrico) em loop e autoplay -->
+            <iframe
+              src="https://www.youtube.com/embed/iitRJd1gc5g?autoplay=1&mute=1&loop=1&playlist=iitRJd1gc5g&controls=0&showinfo=0&modestbranding=1&rel=0"
+              title="Teste de Esforço na Esteira"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
           </div>
-          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
-            <div class="img-zoom-container">
-              <div
-                style="
-                  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-size: 3rem;
-                "
+        </div>
+      </div>
+
+      <!-- Sobre a Dra -->
+      <section class="section-padding">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+              <img
+                src="https://images.unsplash.com/photo-1559839734-2b71f153678f?auto=format&fit=crop&w=800&q=80"
+                alt="Dra Renata"
+                class="about-img"
+              />
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+              <h5
+                class="text-uppercase fw-bold"
+                style="color: var(--dourado)"
               >
-                <i class="bi bi-heart-pulse"></i>
+                Sobre a Especialista
+              </h5>
+              <h2
+                class="playfair mb-4"
+                style="color: var(--azul-marinho); font-size: 2.8rem"
+              >
+                Dra. Renata Vasconcelos
+              </h2>
+              <p class="text-muted fs-5">
+                Com mais de 15 anos de experiência em cardiologia clínica e
+                intervencionista, a Dra. Renata é referência em diagnósticos
+                precisos e tratamentos personalizados.
+              </p>
+              <p class="text-muted">
+                Formada pela USP com especialização no InCor, dedica sua
+                carreira a prevenir doenças cardiovasculares e melhorar a
+                qualidade de vida de seus pacientes através de uma abordagem
+                integrativa.
+              </p>
+
+              <div class="stats-box">
+                <div class="stat-item">
+                  <h4>15+</h4>
+                  <p class="small text-uppercase fw-bold">Anos de Exp.</p>
+                </div>
+                <div class="stat-item">
+                  <h4>5k+</h4>
+                  <p class="small text-uppercase fw-bold">Pacientes</p>
+                </div>
+                <div class="stat-item">
+                  <h4>10+</h4>
+                  <p class="small text-uppercase fw-bold">Prêmios</p>
+                </div>
               </div>
             </div>
-            <h5 class="mt-3" style="color: var(--azul-marinho)">
-              Exames Avançados
-            </h5>
-            <p class="text-muted">
-              Diagnósticos precisos com equipamentos de última geração.
-            </p>
           </div>
-          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
-            <div class="img-zoom-container">
-              <div
-                style="
-                  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-size: 3rem;
-                "
-              >
-                <i class="bi bi-person-check"></i>
+        </div>
+      </section>
+
+      <!-- Especialidades -->
+      <section class="section-padding" style="background: #f0f4f8">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <h2>Nossas Especialidades</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="specialty-card">
+                <div class="specialty-icon">
+                  <i class="bi bi-heart-pulse"></i>
+                </div>
+                <h4 class="playfair">Check-up Completo</h4>
+                <p class="text-muted">
+                  Avaliação detalhada da saúde cardiovascular com exames
+                  preventivos de última geração.
+                </p>
               </div>
             </div>
-            <h5 class="mt-3" style="color: var(--azul-marinho)">
-              Consultório Confortável
-            </h5>
-            <p class="text-muted">
-              Atendimento personalizado e humanizado para cada paciente.
-            </p>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="specialty-card">
+                <div class="specialty-icon"><i class="bi bi-activity"></i></div>
+                <h4 class="playfair">Arritmologia</h4>
+                <p class="text-muted">
+                  Diagnóstico e tratamento de distúrbios do ritmo cardíaco com
+                  monitoramento avançado.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+              <div class="specialty-card">
+                <div class="specialty-icon">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+                <h4 class="playfair">Hipertensão</h4>
+                <p class="text-muted">
+                  Controle rigoroso da pressão arterial para prevenir
+                  complicações graves no futuro.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Depoimentos -->
+      <section class="section-padding">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <h2>O que dizem nossos pacientes</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-6" data-aos="fade-right">
+              <div class="testimonial-card">
+                <i class="bi bi-quote quote-icon"></i>
+                <p class="fst-italic text-muted">
+                  "A Dra. Renata salvou minha vida. Seu diagnóstico rápido e o
+                  cuidado durante todo o tratamento foram fundamentais para
+                  minha recuperação."
+                </p>
+                <div class="patient-info">
+                  <div
+                    class="patient-img"
+                    style="
+                      background: url(&quot;https://i.pravatar.cc/150?u=1&quot;)
+                        center/cover;
+                    "
+                  ></div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Carlos Eduardo</h6>
+                    <small class="text-muted">Paciente há 3 anos</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-left">
+              <div class="testimonial-card">
+                <i class="bi bi-quote quote-icon"></i>
+                <p class="fst-italic text-muted">
+                  "Excelente profissional. O sistema de agendamento online
+                  facilitou muito minha rotina. Recomendo a todos que buscam
+                  confiança."
+                </p>
+                <div class="patient-info">
+                  <div
+                    class="patient-img"
+                    style="
+                      background: url(&quot;https://i.pravatar.cc/150?u=2&quot;)
+                        center/cover;
+                    "
+                  ></div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Mariana Silva</h6>
+                    <small class="text-muted">Paciente há 1 ano</small>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -833,15 +797,12 @@
 
     <!-- Auth Page -->
     <section id="auth" class="page-content">
-      <div class="container">
+      <div class="container section-padding">
         <div class="auth-card" data-aos="zoom-in">
           <div id="login-form">
             <h3
-              class="text-center mb-4"
-              style="
-                font-family: &quot;Playfair Display&quot;;
-                color: var(--azul-marinho);
-              "
+              class="text-center mb-4 playfair"
+              style="color: var(--azul-marinho)"
             >
               Acesso do Paciente
             </h3>
@@ -870,20 +831,20 @@
               </button>
               <p class="text-center mt-4 small">
                 Ainda não tem conta? <br />
-                <span class="auth-toggle-link" onclick="toggleAuth()"
+                <span
+                  class="auth-toggle-link text-primary"
+                  style="cursor: pointer"
+                  onclick="toggleAuth()"
                   >Cadastre-se aqui</span
                 >
               </p>
             </form>
           </div>
 
-          <div id="register-form">
+          <div id="register-form" style="display: none">
             <h3
-              class="text-center mb-4"
-              style="
-                font-family: &quot;Playfair Display&quot;;
-                color: var(--azul-marinho);
-              "
+              class="text-center mb-4 playfair"
+              style="color: var(--azul-marinho)"
             >
               Crie sua Conta
             </h3>
@@ -943,7 +904,10 @@
               </button>
               <p class="text-center mt-4 small">
                 Já possui conta? <br />
-                <span class="auth-toggle-link" onclick="toggleAuth()"
+                <span
+                  class="auth-toggle-link text-primary"
+                  style="cursor: pointer"
+                  onclick="toggleAuth()"
                   >Voltar para Login</span
                 >
               </p>
@@ -955,22 +919,16 @@
 
     <!-- Agendamento Page -->
     <section id="agendamento" class="page-content">
-      <div class="container">
+      <div class="container section-padding">
         <div class="auth-card" style="max-width: 800px" data-aos="fade-up">
           <h3
-            class="text-center mb-2"
-            style="
-              font-family: &quot;Playfair Display&quot;;
-              color: var(--azul-marinho);
-            "
+            class="text-center mb-4 playfair"
+            style="color: var(--azul-marinho)"
           >
             Agendamento Online
           </h3>
-          <p class="text-center text-muted mb-4 small">
-            Escolha o melhor horário para você
-          </p>
 
-          <div class="step-indicator">
+          <div class="step-indicator mb-5">
             <div class="step active" id="step1-indicator">
               <div class="step-number">1</div>
               <div class="small">Serviço</div>
@@ -986,7 +944,6 @@
           </div>
 
           <form id="formAgendar" onsubmit="handleAgendamentoSubmit(event)">
-            <!-- Step 1: Serviço -->
             <div id="step1">
               <h5 class="mb-3">Selecione o Serviço</h5>
               <select id="servicoSelect" class="form-select" required>
@@ -996,8 +953,6 @@
                 </option>
                 <option value="Eletrocardiograma">Eletrocardiograma</option>
                 <option value="Ecocardiograma">Ecocardiograma</option>
-                <option value="Teste de Esforço">Teste de Esforço</option>
-                <option value="Holter 24h">Holter 24h</option>
               </select>
               <div class="mb-3">
                 <label class="small fw-bold">Convênio</label>
@@ -1005,8 +960,6 @@
                   <option value="">-- Selecione --</option>
                   <option value="Particular">Particular</option>
                   <option value="Unimed">Unimed</option>
-                  <option value="Bradesco Saúde">Bradesco Saúde</option>
-                  <option value="SulAmérica">SulAmérica</option>
                 </select>
               </div>
               <button
@@ -1018,7 +971,6 @@
               </button>
             </div>
 
-            <!-- Step 2: Data e Hora -->
             <div id="step2" style="display: none">
               <h5 class="mb-3">Escolha Data e Horário</h5>
               <div class="calendar-box mb-4">
@@ -1042,17 +994,13 @@
                 <div class="calendar-grid" id="calendarGrid"></div>
               </div>
               <input type="hidden" id="dataAgenda" required />
-              <div>
-                <label class="small fw-bold">Horários Disponíveis</label>
-                <div id="timeSlots" class="time-slots-container">
-                  <p class="text-muted small">Selecione uma data primeiro...</p>
-                </div>
-                <input type="hidden" id="selectedTime" required />
-              </div>
-              <div class="d-flex gap-2 mt-4">
+              <h6 class="mb-3">Selecione um Horário</h6>
+              <div id="timeSlots" class="time-slots-container mb-4"></div>
+              <input type="hidden" id="selectedTime" required />
+              <div class="d-flex gap-2">
                 <button
                   type="button"
-                  class="btn btn-outline-secondary w-100 py-2"
+                  class="btn btn-outline-secondary w-100"
                   onclick="prevStep(1)"
                 >
                   VOLTAR
@@ -1067,41 +1015,31 @@
               </div>
             </div>
 
-            <!-- Step 3: Confirmação -->
             <div id="step3" style="display: none">
               <h5 class="mb-3">Resumo do Agendamento</h5>
-              <div
-                class="glass-card mb-4"
-                style="background: #f8f9fa; border: 1px solid #eee"
-              >
-                <p class="mb-2">
-                  <strong>Serviço:</strong> <span id="resumoServico">-</span>
+              <div class="p-3 bg-light rounded mb-4">
+                <p>
+                  <strong>Serviço:</strong> <span id="resumoServico"></span>
                 </p>
-                <p class="mb-2">
-                  <strong>Data:</strong> <span id="resumoData">-</span>
-                </p>
-                <p class="mb-2">
-                  <strong>Horário:</strong> <span id="resumoHora">-</span>
-                </p>
-                <p class="mb-0">
-                  <strong>Convênio:</strong> <span id="resumoConvenio">-</span>
-                </p>
+                <p><strong>Convênio:</strong> <span id="resumoConvenio"></span></p>
+                <p><strong>Data:</strong> <span id="resumoData"></span></p>
+                <p><strong>Horário:</strong> <span id="resumoHora"></span></p>
               </div>
-              <div class="mb-3">
-                <label class="small fw-bold"
-                  >Observações Adicionais (Opcional)</label
-                >
-                <textarea
-                  class="form-control"
-                  id="obsAgendamento"
-                  rows="2"
-                  placeholder="Ex: Primeira vez, sintomas específicos..."
+              
+              <div class="mb-4">
+                <label class="small fw-bold mb-2">Observações Adicionais</label>
+                <textarea 
+                  id="observacoesPaciente" 
+                  class="form-control" 
+                  rows="3" 
+                  placeholder="Digite aqui alguma observação importante para a consulta..."
                 ></textarea>
               </div>
+
               <div class="d-flex gap-2">
                 <button
                   type="button"
-                  class="btn btn-outline-secondary w-100 py-2"
+                  class="btn btn-outline-secondary w-100"
                   onclick="prevStep(2)"
                 >
                   VOLTAR
@@ -1118,112 +1056,78 @@
 
     <!-- Dashboard Page -->
     <section id="dashboard" class="page-content">
-      <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0">Olá, Julia Pacheco</h3>
-          <button
-            class="btn btn-outline-danger btn-sm"
-            onclick="showPage('home')"
-          >
+      <div class="container section-padding">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <h2 class="playfair mb-0">Olá, Julia Pacheco</h2>
+          <button class="btn btn-outline-danger" onclick="showPage('home')">
             Sair
           </button>
         </div>
         <div class="row">
           <div class="col-md-4 mb-4">
-            <div class="glass-card text-center mb-4">
-              <i class="bi bi-calendar-check text-primary display-6"></i>
+            <div class="auth-card m-0 text-center mb-4">
+              <i class="bi bi-calendar-check text-primary display-4"></i>
               <h5 class="mt-3">Próxima Consulta</h5>
-              <div id="proximaConsultaContent">
-                <p class="mb-0 fw-bold">15 de Outubro, 14:00</p>
-                <span class="status-badge bg-confirmed">Confirmado</span>
-              </div>
-            </div>
-
-            <div class="glass-card">
-              <h6 class="fw-bold mb-3">
-                <i class="bi bi-activity text-danger"></i> Evolução da Pressão
-              </h6>
-              <canvas id="myChart" height="200"></canvas>
+              <p class="fw-bold mb-0">15 de Outubro, 14:00</p>
+              <span class="badge bg-success">Confirmado</span>
             </div>
           </div>
-
           <div class="col-md-8">
-            <div class="glass-card">
+            <div class="auth-card m-0" style="max-width: 100%">
               <h5>Histórico de Atividades</h5>
-              <div class="table-responsive">
-                <table class="table mt-3">
-                  <thead>
-                    <tr>
-                      <th>Data</th>
-                      <th>Serviço</th>
-                      <th>Status</th>
-                      <th>Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody id="historicoCorpo">
-                    <tr>
-                      <td>10/08/2025</td>
-                      <td>Check-up Geral</td>
-                      <td>
-                        <span class="status-badge bg-light">Concluído</span>
-                      </td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-dark">
-                          Ver Exame
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <table class="table mt-3">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Serviço</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10/08/2025</td>
+                    <td>Check-up Geral</td>
+                    <td>
+                      <span class="badge bg-light text-dark">Concluído</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Footer com Mapa Interativo -->
-    <footer>
+    <!-- Footer -->
+    <footer
+      style="background: var(--azul-marinho); color: white; padding: 60px 0"
+    >
       <div class="container">
         <div class="row">
           <div class="col-md-4 mb-4">
-            <h5 class="fw-bold">Clínica Corcentro</h5>
+            <h4 class="playfair mb-4">CORCENTRO</h4>
             <p class="opacity-75">
-              Sua saúde cardíaca em mãos de quem entende e cuida com dedicação.
+              Excelência em cardiologia para você e sua família.
             </p>
             <div class="d-flex gap-3 fs-4">
-              <i
-                class="bi bi-instagram"
-                style="cursor: pointer; transition: var(--transicao)"
-                onmouseover="this.style.color = 'var(--dourado)'"
-                onmouseout="this.style.color = 'white'"
-              ></i>
-              <i
-                class="bi bi-facebook"
-                style="cursor: pointer; transition: var(--transicao)"
-                onmouseover="this.style.color = 'var(--dourado)'"
-                onmouseout="this.style.color = 'white'"
-              ></i>
-              <i
-                class="bi bi-whatsapp"
-                style="cursor: pointer; transition: var(--transicao)"
-                onmouseover="this.style.color = 'var(--dourado)'"
-                onmouseout="this.style.color = 'white'"
-              ></i>
+              <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i
+              ><i class="bi bi-whatsapp"></i>
             </div>
           </div>
-
-          <div class="col-md-4 mb-4 text-center">
-            <h5 class="fw-bold">Nossa Localização</h5>
-            <p class="small mb-2">Av. Dom Pedro II, 620 - Santo André/SP</p>
-            <div class="map-container" id="mapContainer"></div>
+          <div class="col-md-4 mb-4">
+            <h5 class="mb-4">Localização</h5>
+            <p class="small">Av. Dom Pedro II, 620 - Santo André/SP</p>
+            <div
+              id="mapContainer"
+              style="height: 200px; border-radius: 10px"
+            ></div>
           </div>
-
           <div class="col-md-4 text-md-end">
-            <h5 class="fw-bold">Atendimento</h5>
-            <p class="mb-1">Segunda a Sexta: 08h às 19h</p>
-            <p class="mb-1">Sábado: 08h às 13h</p>
-            <h4 class="mt-3 text-warning fw-bold">(11) 2325-4369</h4>
+            <h5 class="mb-4">Atendimento</h5>
+            <p class="mb-1">Seg a Sex: 08h às 19h</p>
+            <p class="mb-1">Sáb: 08h às 13h</p>
+            <h3 class="text-warning mt-3">(11) 2325-4369</h3>
           </div>
         </div>
       </div>
@@ -1233,137 +1137,79 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // ============================================
-      // SISTEMA DE TOASTS (NOTIFICAÇÕES)
-      // ============================================
-      function showToast(message, type = "info", duration = 3000) {
-        const container = document.getElementById("toastContainer");
-        const toastId = "toast-" + Date.now();
-
-        const icons = {
-          success: "bi-check-circle-fill",
-          error: "bi-exclamation-circle-fill",
-          warning: "bi-exclamation-triangle-fill",
-          info: "bi-info-circle-fill",
-        };
-
-        const toast = document.createElement("div");
-        toast.className = `toast-custom ${type}`;
-        toast.id = toastId;
-        toast.innerHTML = `
-        <div class="icon">
-          <i class="bi ${icons[type]}"></i>
-        </div>
-        <div class="content">
-          ${message}
-        </div>
-        <button class="close-btn" onclick="document.getElementById('${toastId}').remove()">
-          <i class="bi bi-x"></i>
-        </button>
-      `;
-
-        container.appendChild(toast);
-
-        if (duration > 0) {
-          setTimeout(() => {
-            if (document.getElementById(toastId)) {
-              document.getElementById(toastId).remove();
-            }
-          }, duration);
-        }
-      }
-
-      // ============================================
-      // MENU HAMBÚRGUER MOBILE
-      // ============================================
-      function toggleMobileMenu() {
-        const navLinks = document.getElementById("navLinks");
-        navLinks.classList.toggle("active");
-        navLinks.classList.toggle("mobile-menu");
-      }
-
-      function closeMobileMenu() {
-        const navLinks = document.getElementById("navLinks");
-        navLinks.classList.remove("active");
-        navLinks.classList.remove("mobile-menu");
-      }
-
-      // ============================================
-      // MÁSCARAS DE INPUT (CPF e CELULAR)
-      // ============================================
-      function formatCPF(value) {
-        value = value.replace(/\D/g, "");
-        if (value.length > 11) value = value.slice(0, 11);
-
-        if (value.length <= 3) {
-          return value;
-        } else if (value.length <= 6) {
-          return value.slice(0, 3) + "." + value.slice(3);
-        } else if (value.length <= 9) {
-          return (
-            value.slice(0, 3) + "." + value.slice(3, 6) + "." + value.slice(6)
-          );
-        } else {
-          return (
-            value.slice(0, 3) +
-            "." +
-            value.slice(3, 6) +
-            "." +
-            value.slice(6, 9) +
-            "-" +
-            value.slice(9)
-          );
-        }
-      }
-
-      function formatCelular(value) {
-        value = value.replace(/\D/g, "");
-        if (value.length > 11) value = value.slice(0, 11);
-
-        if (value.length <= 2) {
-          return value;
-        } else if (value.length <= 7) {
-          return "(" + value.slice(0, 2) + ") " + value.slice(2);
-        } else {
-          return (
-            "(" +
-            value.slice(0, 2) +
-            ") " +
-            value.slice(2, 7) +
-            "-" +
-            value.slice(7)
-          );
-        }
-      }
-
-      // Aplicar máscaras aos inputs
-      document.addEventListener("DOMContentLoaded", function () {
-        const cpfInput = document.getElementById("cpfInput");
-        const celularInput = document.getElementById("celularInput");
-
-        if (cpfInput) {
-          cpfInput.addEventListener("input", function () {
-            this.value = formatCPF(this.value);
-          });
-        }
-
-        if (celularInput) {
-          celularInput.addEventListener("input", function () {
-            this.value = formatCelular(this.value);
-          });
-        }
+      // Inicialização
+      window.addEventListener("load", () => {
+        AOS.init({ duration: 800, once: true });
+        renderCalendar();
+        initMap();
       });
 
-      // ============================================
-      // CONFIGURAÇÃO GLOBAL E INICIALIZAÇÃO
-      // ============================================
-      const AppState = {
-        currentMonth: new Date(),
-        selectedDate: null,
-        map: null,
-        chartInstance: null,
-      };
+      // Toasts
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = "toast-custom";
+        toast.innerHTML = `<i class="bi bi-info-circle-fill me-2"></i> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
 
+      // Navegação
+      function showPage(pageId) {
+        document
+          .querySelectorAll(".page-content")
+          .forEach((p) => p.classList.remove("page-active"));
+        document.getElementById(pageId).classList.add("page-active");
+        window.scrollTo(0, 0);
+        if (pageId === "agendamento") {
+          AppState.currentMonth = new Date();
+          AppState.selectedDate = null;
+          renderCalendar();
+          document.getElementById("step1").style.display = "block";
+          document.getElementById("step2").style.display = "none";
+          document.getElementById("step3").style.display = "none";
+          updateStepIndicator(1);
+        }
+        AOS.refresh();
+      }
+
+      function toggleMobileMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+      function closeMobileMenu() {
+        document.getElementById("navLinks").classList.remove("active");
+      }
+      function toggleAuth() {
+        const l = document.getElementById("login-form"),
+          r = document.getElementById("register-form");
+        l.style.display = l.style.display === "none" ? "block" : "none";
+        r.style.display = r.style.display === "none" ? "block" : "none";
+      }
+
+      // Máscaras
+      const mask = (id, fn) =>
+        document
+          .getElementById(id)
+          ?.addEventListener(
+            "input",
+            (e) => (e.target.value = fn(e.target.value)),
+          );
+      mask("cpfInput", (v) =>
+        v
+          .replace(/\D/g, "")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d{1,2})$/, "$1-$2"),
+      );
+      mask("celularInput", (v) =>
+        v
+          .replace(/\D/g, "")
+          .replace(/^(\d{2})(\d)/g, "($1) $2")
+          .replace(/(\d{5})(\d)/, "$1-$2"),
+      );
+
+      // Calendário e Agendamento
+      const AppState = { currentMonth: new Date(), selectedDate: null };
       const Config = {
         monthsBr: [
           "Janeiro",
@@ -1380,251 +1226,41 @@
           "Dezembro",
         ],
         weekdaysBr: ["D", "S", "T", "Q", "Q", "S", "S"],
-        timeSlots: [
-          "08:00",
-          "08:30",
-          "09:00",
-          "09:30",
-          "10:00",
-          "14:00",
-          "15:00",
-          "16:00",
-        ],
-        clinicaCoords: [-23.656247964528173, -46.53676052377312],
-        fixedHolidays: {
-          "01-01": "Confraternização Universal",
-          "04-21": "Tiradentes",
-          "05-01": "Dia do Trabalho",
-          "09-07": "Independência do Brasil",
-          "10-12": "Nossa Senhora Aparecida",
-          "11-02": "Finados",
-          "11-15": "Proclamação da República",
-          "11-20": "Dia da Consciência Negra",
-          "12-25": "Natal",
-        },
+        timeSlots: ["08:00", "09:00", "10:00", "14:00", "15:00", "16:00"],
       };
 
-      // ============================================
-      // FUNÇÕES DE NAVEGAÇÃO
-      // ============================================
-      function showPage(pageId) {
-        const pages = document.querySelectorAll(".page-content");
-        pages.forEach((page) => page.classList.remove("page-active"));
-        document.getElementById(pageId).classList.add("page-active");
-        window.scrollTo(0, 0);
-
-        if (pageId === "dashboard") {
-          setTimeout(() => initChart(), 100);
-        }
-        if (pageId === "agendamento") {
-          renderCalendar();
-        }
-        if (pageId === "home") {
-          setTimeout(() => initMap(), 100);
-        }
-        AOS.refresh();
-      }
-
-      function toggleAuth() {
-        const loginForm = document.getElementById("login-form");
-        const registerForm = document.getElementById("register-form");
-        loginForm.style.display =
-          loginForm.style.display === "none" ? "block" : "none";
-        registerForm.style.display =
-          registerForm.style.display === "none" ? "block" : "none";
-      }
-
-      // ============================================
-      // FUNÇÕES DE AGENDAMENTO
-      // ============================================
-      function nextStep(step) {
-        if (step === 2) {
-          if (!document.getElementById("servicoSelect").value) {
-            showToast("Por favor, selecione um serviço.", "warning");
-            return;
-          }
-          document.getElementById("step1").style.display = "none";
-          document.getElementById("step2").style.display = "block";
-          document.getElementById("step1-indicator").classList.add("completed");
-          document.getElementById("step2-indicator").classList.add("active");
-          renderCalendar();
-        } else if (step === 3) {
-          if (
-            !document.getElementById("dataAgenda").value ||
-            !document.getElementById("selectedTime").value
-          ) {
-            showToast("Por favor, selecione data e hora.", "warning");
-            return;
-          }
-          updateResumo();
-          document.getElementById("step2").style.display = "none";
-          document.getElementById("step3").style.display = "block";
-          document.getElementById("step2-indicator").classList.add("completed");
-          document.getElementById("step3-indicator").classList.add("active");
-        }
-      }
-
-      function prevStep(step) {
-        if (step === 1) {
-          document.getElementById("step2").style.display = "none";
-          document.getElementById("step1").style.display = "block";
-          document
-            .getElementById("step1-indicator")
-            .classList.remove("completed");
-          document.getElementById("step2-indicator").classList.remove("active");
-        } else if (step === 2) {
-          document.getElementById("step3").style.display = "none";
-          document.getElementById("step2").style.display = "block";
-          document
-            .getElementById("step2-indicator")
-            .classList.remove("completed");
-          document.getElementById("step3-indicator").classList.remove("active");
-        }
-      }
-
-      function updateResumo() {
-        document.getElementById("resumoServico").innerText =
-          document.getElementById("servicoSelect").value;
-        const dataFormatada = document
-          .getElementById("dataAgenda")
-          .value.split("-")
-          .reverse()
-          .join("/");
-        document.getElementById("resumoData").innerText = dataFormatada;
-        document.getElementById("resumoHora").innerText =
-          document.getElementById("selectedTime").value;
-        document.getElementById("resumoConvenio").innerText =
-          document.getElementById("convenioSelect").value;
-      }
-
-      function handleAgendamentoSubmit(e) {
-        e.preventDefault();
-        showToast("✓ Agendamento confirmado com sucesso!", "success");
-        document.getElementById("formAgendar").reset();
-        resetAgendamentoForm();
-        setTimeout(() => showPage("dashboard"), 1500);
-      }
-
-      function resetAgendamentoForm() {
-        document.getElementById("step1").style.display = "block";
-        document.getElementById("step2").style.display = "none";
-        document.getElementById("step3").style.display = "none";
-        document
-          .getElementById("step1-indicator")
-          .classList.remove("completed");
-        document
-          .getElementById("step2-indicator")
-          .classList.remove("completed", "active");
-        document.getElementById("step3-indicator").classList.remove("active");
-        document.getElementById("step1-indicator").classList.add("active");
-      }
-
-      function loginSimulado() {
-        showToast("✓ Login realizado com sucesso!", "success");
-        setTimeout(() => showPage("dashboard"), 1500);
-      }
-
-      // ============================================
-      // FUNÇÕES DO CALENDÁRIO
-      // ============================================
-      function getEasterDate(year) {
-        const a = year % 19;
-        const b = Math.floor(year / 100);
-        const c = year % 100;
-        const d = Math.floor(b / 4);
-        const e = b % 4;
-        const f = Math.floor((b + 8) / 25);
-        const g = Math.floor((b - f + 1) / 3);
-        const h = (19 * a + b - d - g + 15) % 30;
-        const i = Math.floor(c / 4);
-        const k = c % 4;
-        const l = (32 + 2 * e + 2 * i - h - k) % 7;
-        const m = Math.floor((a + 11 * h + 22 * l) / 451);
-        const month = Math.floor((h + l - 7 * m + 114) / 31);
-        const day = ((h + l - 7 * m + 114) % 31) + 1;
-        return new Date(year, month - 1, day);
-      }
-
-      function isHoliday(date) {
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const key = `${month}-${day}`;
-
-        if (Config.fixedHolidays[key]) return Config.fixedHolidays[key];
-
-        const easter = getEasterDate(date.getFullYear());
-        const holidays = [
-          { offset: -48, name: "Carnaval (Segunda)" },
-          { offset: -47, name: "Carnaval (Terça)" },
-          { offset: -2, name: "Sexta-feira Santa" },
-          { offset: 0, name: "Páscoa" },
-          { offset: 60, name: "Corpus Christi" },
-        ];
-
-        for (let h of holidays) {
-          const d = new Date(easter);
-          d.setDate(easter.getDate() + h.offset);
-          if (d.toDateString() === date.toDateString()) return h.name;
-        }
-        return null;
-      }
-
       function renderCalendar() {
-        const year = AppState.currentMonth.getFullYear();
-        const month = AppState.currentMonth.getMonth();
+        const y = AppState.currentMonth.getFullYear(),
+          m = AppState.currentMonth.getMonth();
         document.getElementById("calendarTitle").innerText =
-          `${Config.monthsBr[month]} ${year}`;
-
+          `${Config.monthsBr[m]} ${y}`;
         const grid = document.getElementById("calendarGrid");
         grid.innerHTML = "";
-
         Config.weekdaysBr.forEach((d) => {
           const div = document.createElement("div");
           div.className = "calendar-weekday";
           div.innerText = d;
           grid.appendChild(div);
         });
-
-        const firstDayIndex = new Date(year, month, 1).getDay();
-        const totalDays = new Date(year, month + 1, 0).getDate();
-        const todayStr = new Date().toISOString().split("T")[0];
-
-        for (let i = 0; i < firstDayIndex; i++) {
+        const first = new Date(y, m, 1).getDay(),
+          total = new Date(y, m + 1, 0).getDate(),
+          today = new Date().toISOString().split("T")[0];
+        for (let i = 0; i < first; i++)
           grid.appendChild(document.createElement("div"));
-        }
-
-        for (let day = 1; day <= totalDays; day++) {
-          const div = document.createElement("div");
+        for (let d = 1; d <= total; d++) {
+          const date = new Date(y, m, d),
+            dateStr = date.toISOString().split("T")[0],
+            div = document.createElement("div");
           div.className = "calendar-day";
-          div.innerText = day;
-
-          const date = new Date(year, month, day);
-          const dateStr = date.toISOString().split("T")[0];
-          const dayOfWeek = date.getDay();
-          const holiday = isHoliday(date);
-
-          if (dateStr === todayStr) div.classList.add("today");
-
-          if (
-            dateStr < todayStr ||
-            dayOfWeek === 0 ||
-            dayOfWeek === 6 ||
-            holiday
-          ) {
+          div.innerText = d;
+          if (dateStr < today || date.getDay() === 0 || date.getDay() === 6)
             div.classList.add("disabled");
-            if (holiday) {
-              div.style.backgroundColor = "#ffebeb";
-              div.style.color = "#ea580c";
-              div.title = `Feriado: ${holiday}`;
-            }
-          } else {
-            if (AppState.selectedDate === dateStr)
-              div.classList.add("selected");
-            div.onclick = function () {
+          else {
+            div.onclick = () => {
               document
                 .querySelectorAll(".calendar-day")
-                .forEach((d) => d.classList.remove("selected"));
-              this.classList.add("selected");
+                .forEach((el) => el.classList.remove("selected"));
+              div.classList.add("selected");
               AppState.selectedDate = dateStr;
               document.getElementById("dataAgenda").value = dateStr;
               generateTimeSlots();
@@ -1634,134 +1270,88 @@
         }
       }
 
-      function changeMonth(direction) {
-        const newDate = new Date(AppState.currentMonth);
-        newDate.setMonth(newDate.getMonth() + direction);
-        const today = new Date();
-        today.setDate(1);
-
-        if (direction === -1 && newDate < today) return;
-        AppState.currentMonth = newDate;
+      function changeMonth(dir) {
+        AppState.currentMonth.setMonth(AppState.currentMonth.getMonth() + dir);
         renderCalendar();
       }
 
       function generateTimeSlots() {
-        const container = document.getElementById("timeSlots");
-        container.innerHTML = "";
-        document.getElementById("selectedTime").value = "";
-
-        Config.timeSlots.forEach((time) => {
-          const div = document.createElement("div");
-          div.className = "time-slot";
-          div.innerText = time;
-          div.onclick = function () {
+        const c = document.getElementById("timeSlots");
+        c.innerHTML = "";
+        Config.timeSlots.forEach((t) => {
+          const d = document.createElement("div");
+          d.className = "time-slot";
+          d.innerText = t;
+          d.onclick = () => {
             document
               .querySelectorAll(".time-slot")
               .forEach((s) => s.classList.remove("active"));
-            this.classList.add("active");
-            document.getElementById("selectedTime").value = time;
+            d.classList.add("active");
+            document.getElementById("selectedTime").value = t;
           };
-          container.appendChild(div);
+          c.appendChild(d);
         });
       }
 
-      // ============================================
-      // MAPA INTERATIVO COM LEAFLET
-      // ============================================
-      function initMap() {
-        const mapContainer = document.getElementById("mapContainer");
-        if (!mapContainer || AppState.map) return;
-
-        AppState.map = L.map("mapContainer").setView(Config.clinicaCoords, 15);
-
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution: "&copy; OpenStreetMap contributors",
-          maxZoom: 19,
-        }).addTo(AppState.map);
-
-        const customIcon = L.divIcon({
-          html: '<div style="background: var(--dourado); border: 3px solid white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">❤</div>',
-          iconSize: [40, 40],
-          className: "custom-marker",
+      function updateStepIndicator(step) {
+        document.querySelectorAll(".step").forEach((s, i) => {
+          s.classList.toggle("active", i + 1 === step);
         });
+      }
 
-        L.marker(Config.clinicaCoords, { icon: customIcon })
-          .addTo(AppState.map)
-          .bindPopup(
-            `
-          <div style="font-family: Poppins; text-align: center;">
-            <strong style="color: var(--azul-marinho);">Clínica Corcentro</strong><br>
-            Av. Dom Pedro II, 620<br>
-            Santo André - SP<br>
-            <strong style="color: var(--dourado);">(11) 2325-4369</strong>
-          </div>
-        `,
-          )
+      function nextStep(s) {
+        if (s === 2 && !document.getElementById("servicoSelect").value)
+          return showToast("Selecione um serviço", "warning");
+        if (
+          s === 3 &&
+          (!AppState.selectedDate ||
+            !document.getElementById("selectedTime").value)
+        )
+          return showToast("Selecione data e hora", "warning");
+        document.getElementById("step1").style.display =
+          s === 1 ? "block" : "none";
+        document.getElementById("step2").style.display =
+          s === 2 ? "block" : "none";
+        document.getElementById("step3").style.display =
+          s === 3 ? "block" : "none";
+        updateStepIndicator(s);
+        if (s === 3) {
+          document.getElementById("resumoServico").innerText =
+            document.getElementById("servicoSelect").value;
+          document.getElementById("resumoConvenio").innerText =
+            document.getElementById("convenioSelect").value;
+          document.getElementById("resumoData").innerText =
+            new Date(AppState.selectedDate).toLocaleDateString("pt-BR");
+          document.getElementById("resumoHora").innerText =
+            document.getElementById("selectedTime").value;
+        }
+      }
+
+      function prevStep(s) {
+        nextStep(s);
+      }
+
+      function handleAgendamentoSubmit(e) {
+        e.preventDefault();
+        showToast("✓ Agendamento realizado com sucesso!", "success");
+        setTimeout(() => showPage("dashboard"), 1500);
+      }
+
+      function loginSimulado() {
+        showToast("✓ Bem-vindo(a)!", "success");
+        setTimeout(() => showPage("dashboard"), 1500);
+      }
+
+      function initMap() {
+        const m = L.map("mapContainer").setView([-23.6562, -46.5367], 15);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+          m,
+        );
+        L.marker([-23.6562, -46.5367])
+          .addTo(m)
+          .bindPopup("Clínica Corcentro")
           .openPopup();
       }
-
-      // ============================================
-      // GRÁFICO DO DASHBOARD
-      // ============================================
-      function initChart() {
-        const ctx = document.getElementById("myChart");
-        if (!ctx) return;
-
-        if (AppState.chartInstance) {
-          AppState.chartInstance.destroy();
-        }
-
-        AppState.chartInstance = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: ["Jan", "Fev", "Mar", "Abr", "Mai"],
-            datasets: [
-              {
-                label: "Pressão Sistólica",
-                data: [120, 125, 122, 118, 121],
-                borderColor: "var(--dourado)",
-                backgroundColor: "rgba(192, 150, 71, 0.1)",
-                tension: 0.4,
-                fill: true,
-                pointRadius: 5,
-                pointBackgroundColor: "var(--dourado)",
-                pointBorderColor: "white",
-                pointBorderWidth: 2,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-              legend: { display: false },
-            },
-            scales: {
-              y: {
-                beginAtZero: false,
-                grid: { color: "#f0f0f0" },
-              },
-              x: { grid: { display: false } },
-            },
-          },
-        });
-      }
-
-      // ============================================
-      // INICIALIZAÇÃO
-      // ============================================
-      window.addEventListener("load", () => {
-        AOS.init({ duration: 800, once: true });
-        renderCalendar();
-        initMap();
-      });
-
-      // Redimensionar mapa quando necessário
-      window.addEventListener("resize", () => {
-        if (AppState.map) {
-          AppState.map.invalidateSize();
-        }
-      });
     </script>
   </body>
 </html>
