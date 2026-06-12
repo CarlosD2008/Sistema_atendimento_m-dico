@@ -1,22 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dra. Renata Vasconcelos - Cardiologia</title>
-
-    <!-- CSS Externo -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+    <meta
+      name="description"
+      content="A clínica Cordis Cardiologia é referência em excelência médica cardiovascular, exames preventivos, diagnóstico de arritmias e controle de hipertensão com tecnologia de ponta e equipe médica altamente qualificada."
     />
+    <meta
+      name="keywords"
+      content="cardiologia, clinica cardiologica, exames do coracao, agendamento de consulta cardiologica, checkup cardiologico, arritmia, hipertensao, eletrocardiograma, ecocardiograma, sao paulo"
+    />
+    <meta name="author" content="Cordis Cardiologia" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://localhost:3000/" />
+    <meta
+      property="og:title"
+      content="Cordis Cardiologia - Excelência em Cuidado Cardiovascular"
+    />
+    <meta
+      property="og:description"
+      content="Cuide do motor da sua vida com quem é especialista. Agende sua consulta ou exame cardiológico em poucos cliques de forma rápida e segura."
+    />
+    <meta
+      property="og:image"
+      content="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="http://localhost:3000/" />
+    <meta
+      property="twitter:title"
+      content="Cordis Cardiologia - Excelência em Cuidado Cardiovascular"
+    />
+    <meta
+      property="twitter:description"
+      content="Cuide do motor da sua vida com quem é especialista. Agende sua consulta ou exame cardiológico em poucos cliques de forma rápida e segura."
+    />
+    <meta
+      property="twitter:image"
+      content="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80"
+    />
+
+    <title>Cordis Cardiologia | Especialistas no seu Coração</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>"
+    />
+
+    <!-- Fontes e Ícones Externos -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
     />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link
@@ -25,1027 +67,1045 @@
     />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <style>
-      :root {
-        --azul-marinho: #0b2447;
-        --azul-claro: #19376d;
-        --dourado: #c09647;
-        --dourado-claro: #d4af37;
-        --branco-gelo: #f8f9fa;
-        --transicao: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
-        height: 100%;
-        width: 100%;
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: var(--branco-gelo);
-        overflow-x: hidden;
-      }
-
-      h1,
-      h2,
-      h3,
-      .playfair {
-        font-family: "Playfair Display", serif;
-      }
-
-      /* --- Header Fixo --- */
-      .header-custom {
-        background: white;
-        padding: 12px 0;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-      }
-
-      .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-      }
-
-      .header-logo {
-        cursor: pointer;
-        font-weight: 700;
-        color: var(--azul-marinho);
-        font-size: 1.3rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-      }
-
-      .nav-btn {
-        text-decoration: none;
-        color: var(--azul-marinho);
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: var(--transicao);
-        border: none;
-        background: none;
-        cursor: pointer;
-      }
-
-      .nav-btn:hover {
-        color: var(--dourado);
-      }
-
-      .btn-cta {
-        background: var(--dourado);
-        color: white !important;
-        padding: 8px 22px;
-        border-radius: 50px;
-        box-shadow: 0 4px 12px rgba(192, 150, 71, 0.2);
-        transition: var(--transicao);
-      }
-
-      .btn-cta:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(192, 150, 71, 0.3);
-      }
-
-      /* --- Menu Hambúrguer --- */
-      .hamburger-btn {
-        display: none;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: var(--azul-marinho);
-        cursor: pointer;
-      }
-
-      /* --- Hero Section --- */
-      .hero-section {
-        background:
-          linear-gradient(rgba(11, 36, 71, 0.8), rgba(11, 36, 71, 0.8)),
-          url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1920&q=80");
-        background-size: cover;
-        background-position: center;
-        color: white;
-        padding: 120px 0;
-        text-align: center;
-      }
-
-      .hero-title {
-        font-size: 4rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-      }
-
-      .hero-subtitle {
-        font-size: 1.4rem;
-        opacity: 0.9;
-        max-width: 700px;
-        margin: 0 auto;
-      }
-
-      /* --- Video Section --- */
-      .video-container {
-        position: relative;
-        width: 100%;
-        max-width: 900px;
-        margin: -80px auto 60px;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        background: black;
-        z-index: 10;
-      }
-
-      .video-wrapper {
-        position: relative;
-        padding-bottom: 56.25%; /* 16:9 */
-        height: 0;
-        pointer-events: none; /* Impede interação com o vídeo para parecer um fundo animado */
-      }
-
-      .video-wrapper iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-        transform: scale(1.1); /* Remove bordas pretas se houver */
-      }
-
-      /* --- Seções Gerais --- */
-      .section-padding {
-        padding: 80px 0;
-      }
-
-      .section-title {
-        text-align: center;
-        margin-bottom: 50px;
-      }
-
-      .section-title h2 {
-        color: var(--azul-marinho);
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-      }
-
-      .section-title .divider {
-        width: 80px;
-        height: 4px;
-        background: var(--dourado);
-        margin: 0 auto;
-      }
-
-      /* --- Sobre a Dra --- */
-      .about-img {
-        border-radius: 20px;
-        box-shadow: 20px 20px 0 var(--dourado);
-        width: 100%;
-        max-width: 450px;
-      }
-
-      .stats-box {
-        display: flex;
-        gap: 30px;
-        margin-top: 30px;
-      }
-
-      .stat-item h4 {
-        color: var(--dourado);
-        font-weight: 700;
-        font-size: 2rem;
-        margin-bottom: 0;
-      }
-
-      /* --- Especialidades --- */
-      .specialty-card {
-        background: white;
-        padding: 40px;
-        border-radius: 15px;
-        text-align: center;
-        transition: var(--transicao);
-        height: 100%;
-        border-bottom: 4px solid transparent;
-      }
-
-      .specialty-card:hover {
-        transform: translateY(-10px);
-        border-bottom-color: var(--dourado);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-      }
-
-      .specialty-icon {
-        font-size: 3rem;
-        color: var(--dourado);
-        margin-bottom: 20px;
-      }
-
-      /* --- Depoimentos --- */
-      .testimonial-card {
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        position: relative;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      }
-
-      .testimonial-card i.quote-icon {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        font-size: 2rem;
-        color: #eee;
-      }
-
-      .patient-info {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-      }
-
-      .patient-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #ddd;
-      }
-
-      /* --- Controle de Telas --- */
-      .page-content {
-        display: none;
-        min-height: 80vh;
-        animation: fadeIn 0.6s ease;
-      }
-
-      .page-active {
-        display: block;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* --- Estilo dos Cards de Auth --- */
-      .auth-card {
-        background: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        margin: 50px auto;
-        max-width: 500px;
-      }
-
-      .form-control,
-      .form-select {
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-      }
-
-      .btn-primary-custom {
-        background: var(--azul-marinho);
-        color: white;
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: none;
-        font-weight: 600;
-        transition: var(--transicao);
-      }
-
-      .btn-primary-custom:hover {
-        background: var(--dourado);
-        transform: translateY(-2px);
-      }
-
-      /* --- Toast Container --- */
-      .toast-container-custom {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-      }
-
-      .toast-custom {
-        background: white;
-        border-radius: 8px;
-        padding: 16px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 300px;
-        border-left: 4px solid var(--dourado);
-      }
-
-      /* --- Calendário e Agendamento --- */
-      .step-indicator {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        position: relative;
-      }
-
-      .step-indicator::before {
-        content: "";
-        position: absolute;
-        top: 20px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #ddd;
-        z-index: 0;
-      }
-
-      .step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        position: relative;
-        z-index: 1;
-        flex: 1;
-      }
-
-      .step-number {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #ddd;
-        color: #666;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        transition: var(--transicao);
-      }
-
-      .step.active .step-number {
-        background: var(--dourado);
-        color: white;
-      }
-
-      .calendar-box {
-        background: #f8f9fa;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .calendar-header h5 {
-        margin: 0;
-        color: var(--azul-marinho);
-        font-weight: 600;
-      }
-
-      .calendar-nav-btn {
-        background: var(--dourado);
-        color: white;
-        border: none;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: var(--transicao);
-      }
-
-      .calendar-nav-btn:hover {
-        background: var(--azul-marinho);
-      }
-
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 8px;
-        margin-bottom: 20px;
-      }
-
-      .calendar-weekday {
-        text-align: center;
-        font-weight: bold;
-        color: var(--azul-marinho);
-        padding: 10px 0;
-        font-size: 0.9rem;
-      }
-
-      .calendar-day {
-        aspect-ratio: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        cursor: pointer;
-        background: white;
-        border: 2px solid #ddd;
-        transition: var(--transicao);
-        font-weight: 500;
-      }
-
-      .calendar-day:hover:not(.disabled) {
-        border-color: var(--dourado);
-        background: #f0f4f8;
-      }
-
-      .calendar-day.disabled {
-        background: #e9ecef;
-        color: #999;
-        cursor: not-allowed;
-      }
-
-      .calendar-day.selected {
-        background: var(--dourado);
-        color: white;
-        border-color: var(--dourado);
-      }
-
-      .time-slots-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-bottom: 20px;
-      }
-
-      .time-slot {
-        padding: 12px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        text-align: center;
-        cursor: pointer;
-        transition: var(--transicao);
-        background: white;
-        font-weight: 500;
-      }
-
-      .time-slot:hover {
-        border-color: var(--dourado);
-        background: #f0f4f8;
-      }
-
-      .time-slot.active {
-        background: var(--dourado);
-        color: white;
-        border-color: var(--dourado);
-      }
-
-      /* --- Responsividade --- */
-      @media (max-width: 768px) {
-        .hero-title {
-          font-size: 2.5rem;
-        }
-        .hamburger-btn {
-          display: block;
-        }
-        .nav-links {
-          display: none;
-          flex-direction: column;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          background: white;
-          padding: 20px;
-          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-        .nav-links.active {
-          display: flex;
-        }
-        .about-img {
-          box-shadow: 10px 10px 0 var(--dourado);
-        }
-        .time-slots-container {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-    </style>
+    <!-- Folha de Estilo Customizada -->
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-
   <body>
-    <div class="toast-container-custom" id="toastContainer"></div>
+    <!-- Toast Container para Alertas Rápidos -->
+    <div
+      class="toast-container-custom"
+      id="toastContainer"
+      aria-live="polite"
+    ></div>
 
+    <!-- Botão Voltar ao Topo -->
+    <button
+      class="back-to-top-btn"
+      id="backToTopBtn"
+      aria-label="Voltar ao topo da página"
+    >
+      <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- 1. Header & Menu de Navegação -->
     <header class="header-custom">
-      <div class="container header-container">
-        <div class="header-logo" onclick="showPage('home')">
-          <i class="bi bi-heart-pulse-fill" style="color: var(--dourado)"></i>
-          Dra. Renata Vasconcelos - Cardiologia
+      <div class="container-custom header-container">
+        <div
+          class="header-logo"
+          id="logoHome"
+          role="link"
+          aria-label="Voltar para a página inicial"
+        >
+          <i class="bi bi-heart-pulse-fill"></i>
+          <span>Cordis</span>
         </div>
-        <button class="hamburger-btn" onclick="toggleMobileMenu()">
-          <i class="bi bi-list"></i>
-        </button>
-        <div class="nav-links" id="navLinks">
+
+        <nav aria-label="Menu principal">
           <button
-            class="nav-btn"
-            onclick="
-              showPage('home');
-              closeMobileMenu();
-            "
+            class="hamburger-btn"
+            id="hamburgerBtn"
+            aria-label="Abrir menu de navegação"
+            aria-expanded="false"
+            aria-controls="navLinks"
           >
-            Início
+            <i class="bi bi-list"></i>
           </button>
+          <div class="nav-links" id="navLinks">
+            <button class="nav-btn" id="btnNavHome">Home</button>
+            <button class="nav-btn" id="btnNavSobre">Sobre</button>
+            <button class="nav-btn" id="btnNavServicos">Serviços</button>
+            <button class="nav-btn" id="btnNavBeneficios">Benefícios</button>
+            <button class="nav-btn" id="btnNavFAQ">Perguntas Frequentes</button>
+            <button class="nav-btn" id="btnNavContato">Contato</button>
+            <button class="nav-btn" id="btnNavAuth">Login</button>
+            <button class="nav-btn" id="btnNavDashboard" style="display: none">
+              Painel do Paciente
+            </button>
+            <button class="btn-custom btn-primary-custom" id="btnNavAgendar">
+              Agendar Consulta
+            </button>
+          </div>
+        </nav>
+
+        <div class="header-actions">
           <button
-            class="nav-btn"
-            onclick="
-              showPage('auth');
-              closeMobileMenu();
-            "
+            class="theme-toggle-btn"
+            id="themeToggleBtn"
+            aria-label="Alternar entre modo claro e escuro"
           >
-            Login
-          </button>
-          <button
-            class="nav-btn"
-            onclick="
-              showPage('dashboard');
-              closeMobileMenu();
-            "
-          >
-            Minhas Consultas
-          </button>
-          <button
-            class="nav-btn btn-cta"
-            onclick="
-              showPage('agendamento');
-              closeMobileMenu();
-            "
-          >
-            Agendar Agora
+            <i class="bi bi-moon-fill" id="themeToggleIcon"></i>
           </button>
         </div>
       </div>
     </header>
 
-    <!-- Home Page -->
+    <!-- ================= PÁGINA INSTITUCIONAL (HOME) ================= -->
     <main id="home" class="page-content page-active">
-      <!-- Hero -->
+      <!-- 2. Hero Section -->
       <section class="hero-section">
-        <div class="container" data-aos="fade-up">
-          <h1 class="hero-title">Sua Saúde Cardíaca em Boas Mãos</h1>
-          <p class="hero-subtitle">
-            Excelência médica, tecnologia de ponta e atendimento humanizado para
-            cuidar do motor da sua vida.
+        <div class="container-custom hero-grid">
+          <div class="hero-content" data-aos="fade-right">
+            <div class="hero-badge">
+              <i class="bi bi-shield-check"></i> Saúde Cardíaca de Alta
+              Performance
+            </div>
+            <h1 class="hero-title">
+              Sua Saúde <span>Cardíaca</span> em Boas Mãos
+            </h1>
+            <p class="hero-subtitle">
+              Unimos corpo clínico de excelência, tecnologia diagnóstica
+              avançada e atendimento humanizado para cuidar do ritmo e da saúde
+              do seu coração.
+            </p>
+            <div class="hero-buttons">
+              <button class="btn-custom btn-primary-custom" id="heroBtnAgendar">
+                <i class="bi bi-calendar3"></i> Agendar Agora
+              </button>
+              <button
+                class="btn-custom btn-secondary-custom"
+                id="heroBtnSobre"
+                style="color: white; border-color: rgba(255, 255, 255, 0.3)"
+              >
+                Saiba Mais <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="hero-image-wrapper" data-aos="fade-left">
+            <img
+              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80"
+              alt="Médico cardiologista examinando exames cardíacos"
+              class="hero-illustration"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Seção Sobre -->
+      <section id="sobre" class="section-padding">
+        <div class="container-custom about-grid">
+          <div class="about-img-box" data-aos="fade-right">
+            <img
+              src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80"
+              alt="Consultório médico moderno da Cordis Cardiologia"
+              class="about-img"
+            />
+            <div class="about-experience-badge">
+              <h3>20+</h3>
+              <p>Anos de<br />Experiência</p>
+            </div>
+          </div>
+          <div class="about-text" data-aos="fade-left">
+            <div
+              class="hero-badge"
+              style="
+                background: rgba(var(--color-accent-rgb), 0.1);
+                border-color: var(--color-accent);
+                color: var(--color-accent);
+              "
+            >
+              Sobre Nós
+            </div>
+            <h3>Excelência Médica com Foco na Prevenção</h3>
+            <p>
+              Fundada no ano de 2006, a
+              <strong>Cordis Cardiologia</strong> nasceu do desejo de oferecer
+              um centro de diagnóstico e tratamento cardíaco que integrasse o
+              que há de mais avançado em equipamentos médicos a um atendimento
+              próximo, ético e empático.
+            </p>
+            <p>
+              Acreditamos que a prevenção é o melhor caminho para uma vida longa
+              e ativa. Nossa equipe atua tanto em consultas clínicas quanto em
+              exames diagnósticos de alta fidelidade para antecipar riscos e
+              planejar tratamentos personalizados.
+            </p>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-number" data-target="15000">0</div>
+                <div class="stat-label">Pacientes</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" data-target="99">0</div>
+                <div class="stat-label">Satisfação %</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" data-target="12">0</div>
+                <div class="stat-label">Especialistas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Seção Serviços -->
+      <section
+        id="servicos"
+        class="section-padding"
+        style="background-color: var(--bg-secondary)"
+      >
+        <div class="container-custom">
+          <div class="section-title" data-aos="fade-up">
+            <h2>Especialidades & Exames</h2>
+            <div class="divider"></div>
+          </div>
+
+          <div class="services-grid">
+            <!-- Serviço 1 -->
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="service-icon-box">
+                <i class="bi bi-heart-pulse"></i>
+              </div>
+              <h3>Check-up Cardiológico</h3>
+              <p>
+                Avaliação minuciosa da saúde cardíaca por meio de exames
+                clínicos periódicos e levantamento de fatores de risco para
+                doenças cardiovasculares.
+              </p>
+              <a href="#contato" class="service-link"
+                >Agendar Exame <i class="bi bi-chevron-right"></i
+              ></a>
+            </div>
+
+            <!-- Serviço 2 -->
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="service-icon-box">
+                <i class="bi bi-activity"></i>
+              </div>
+              <h3>Eletrocardiograma (ECG)</h3>
+              <p>
+                Exame rápido e indolor que registra a atividade elétrica do
+                coração em repouso, essencial para diagnosticar arritmias e
+                infartos.
+              </p>
+              <a href="#contato" class="service-link"
+                >Agendar Exame <i class="bi bi-chevron-right"></i
+              ></a>
+            </div>
+
+            <!-- Serviço 3 -->
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+              <div class="service-icon-box">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h3>Ecocardiograma</h3>
+              <p>
+                Ultrassonografia cardíaca que fornece imagens em tempo real das
+                estruturas do coração, avaliando o bombeamento sanguíneo e
+                válvulas.
+              </p>
+              <a href="#contato" class="service-link"
+                >Agendar Exame <i class="bi bi-chevron-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Seção Benefícios -->
+      <section id="beneficios" class="section-padding">
+        <div class="container-custom benefits-grid">
+          <div class="benefits-content" data-aos="fade-right">
+            <div class="hero-badge">Por que nos escolher?</div>
+            <h3>Estrutura Focada no seu Bem-estar</h3>
+            <p class="text-muted" style="margin-bottom: 30px">
+              Oferecemos uma experiência completa com foco no conforto e na
+              segurança do paciente, desde o agendamento rápido até a entrega
+              laudos assertivos.
+            </p>
+
+            <ul class="benefits-list">
+              <li class="benefit-item">
+                <div class="benefit-icon">
+                  <i class="bi bi-check-lg"></i>
+                </div>
+                <div class="benefit-text">
+                  <h4>Corpo Clínico Sênior</h4>
+                  <p>
+                    Médicos cardiologistas titulados com ampla experiência
+                    hospitalar e acadêmica.
+                  </p>
+                </div>
+              </li>
+              <li class="benefit-item">
+                <div class="benefit-icon">
+                  <i class="bi bi-check-lg"></i>
+                </div>
+                <div class="benefit-text">
+                  <h4>Equipamentos Digitais de Ponta</h4>
+                  <p>
+                    Diagnósticos com alta definição de imagem e captação de
+                    dados para maior precisão.
+                  </p>
+                </div>
+              </li>
+              <li class="benefit-item">
+                <div class="benefit-icon">
+                  <i class="bi bi-check-lg"></i>
+                </div>
+                <div class="benefit-text">
+                  <h4>Laudos Rápidos e Digitais</h4>
+                  <p>
+                    Acesse o resultado dos seus exames diretamente no celular ou
+                    envie para seu médico.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="benefits-image-box" data-aos="fade-left">
+            <img
+              src="https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=600&q=80"
+              alt="Exame de cardiologia com eletrocardiograma e estetoscópio"
+              class="benefits-image"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Seção Depoimentos -->
+      <section
+        id="depoimentos"
+        class="section-padding"
+        style="background-color: var(--bg-secondary)"
+      >
+        <div class="container-custom">
+          <div class="section-title" data-aos="fade-up">
+            <h2>O que nossos pacientes dizem</h2>
+            <div class="divider"></div>
+          </div>
+
+          <div class="testimonials-slider" data-aos="zoom-in">
+            <div class="testimonial-track" id="testimonialTrack">
+              <!-- Slide 1 -->
+              <div class="testimonial-slide">
+                <div class="testimonial-card-premium">
+                  <p class="testimonial-text">
+                    "O atendimento na Cordis superou todas as minhas
+                    expectativas. A Dra. Renata foi extremamente atenciosa,
+                    explicou cada detalhe do meu eletrocardiograma e me
+                    tranquilizou bastante sobre o tratamento da minha
+                    hipertensão."
+                  </p>
+                  <div class="testimonial-user">
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80"
+                      alt="Foto do paciente Carlos Eduardo"
+                      class="testimonial-img"
+                    />
+                    <div class="testimonial-name">Carlos Eduardo Mendes</div>
+                    <div class="testimonial-role">Paciente há 3 anos</div>
+                    <div class="testimonial-stars">
+                      <i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="testimonial-slide">
+                <div class="testimonial-card-premium">
+                  <p class="testimonial-text">
+                    "A possibilidade de agendar consultas e exames pelo site
+                    facilitou demais a minha rotina de check-ups. A clínica é
+                    linda, limpa e o atendimento das secretárias é muito
+                    receptivo e profissional. Recomendo muito."
+                  </p>
+                  <div class="testimonial-user">
+                    <img
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80"
+                      alt="Foto da paciente Mariana Silva"
+                      class="testimonial-img"
+                    />
+                    <div class="testimonial-name">Mariana Silva de Souza</div>
+                    <div class="testimonial-role">Paciente há 1 ano</div>
+                    <div class="testimonial-stars">
+                      <i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i
+                      ><i class="bi bi-star-fill"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-controls">
+              <button
+                class="testimonial-arrow"
+                id="prevTestimonial"
+                aria-label="Depoimento anterior"
+              >
+                <i class="bi bi-arrow-left"></i>
+              </button>
+              <div class="testimonial-dots" id="testimonialDots"></div>
+              <button
+                class="testimonial-arrow"
+                id="nextTestimonial"
+                aria-label="Próximo depoimento"
+              >
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Seção FAQ -->
+      <section id="faq" class="section-padding">
+        <div class="container-custom">
+          <div class="section-title" data-aos="fade-up">
+            <h2>Perguntas Frequentes</h2>
+            <div class="divider"></div>
+          </div>
+
+          <div class="faq-container" data-aos="fade-up">
+            <!-- FAQ 1 -->
+            <div class="faq-item">
+              <button class="faq-header">
+                <span>Como funciona o agendamento online?</span>
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-content">
+                <p>
+                  O agendamento online é simples e rápido: crie ou acesse sua
+                  conta no nosso portal do paciente, selecione o exame ou
+                  consulta médica desejada, o convênio, e o calendário mostrará
+                  os dias e horários disponíveis em tempo real. Após clicar em
+                  confirmar, seu agendamento já estará garantido no sistema.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item">
+              <button class="faq-header">
+                <span>Quais convênios são aceitos na clínica?</span>
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-content">
+                <p>
+                  Aceitamos atendimentos particulares e pelos principais
+                  convênios médicos do mercado, como Unimed, Bradesco Saúde,
+                  SulAmérica, Amil, Allianz e Porto Seguro. Recomendamos entrar
+                  em contato previamente ou verificar as opções na tela de
+                  agendamento online para confirmar a cobertura do seu plano
+                  específico.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item">
+              <button class="faq-header">
+                <span
+                  >É necessário jejum para realizar exames cardiológicos?</span
+                >
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-content">
+                <p>
+                  Para exames comuns como Eletrocardiograma (ECG) e
+                  Ecocardiograma simples, não há necessidade de jejum. Para
+                  exames laboratoriais complementares ou teste ergométrico, pode
+                  haver restrições específicas (evitar cafeína, usar roupas de
+                  ginástica). Ao agendar, as recomendações de preparo serão
+                  detalhadas no seu resumo.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item">
+              <button class="faq-header">
+                <span
+                  >Posso reagendar ou cancelar minha consulta pela
+                  internet?</span
+                >
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-content">
+                <p>
+                  Sim! Ao acessar o Painel do Paciente (após realizar o login),
+                  você verá a sua próxima consulta listada. É possível reagendar
+                  (escolhendo outra data e hora no calendário) ou realizar o
+                  cancelamento sem burocracias com até 24 horas de antecedência.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. CTA Final -->
+      <section class="section-padding cta-final">
+        <div class="container-custom cta-final-content" data-aos="zoom-in">
+          <h2>Previna-se. Cuide bem do seu Coração.</h2>
+          <p>
+            Realizar exames preventivos periódicos reduz drasticamente o risco
+            de infartos e arritmias. Não espere sentir sintomas para procurar um
+            cardiologista de confiança.
           </p>
+          <button class="btn-custom btn-primary-custom" id="ctaBtnAgendar">
+            <i class="bi bi-calendar-check"></i> Agende sua Consulta Agora
+          </button>
         </div>
       </section>
 
-      <!-- Video Section -->
-      <div class="container">
-        <div class="video-container" data-aos="zoom-in">
-          <div class="video-wrapper">
-            <!-- Vídeo de esteira (Teste Ergométrico) em loop e autoplay -->
-            <iframe
-              src="https://www.youtube.com/embed/iitRJd1gc5g?autoplay=1&mute=1&loop=1&playlist=iitRJd1gc5g&controls=0&showinfo=0&modestbranding=1&rel=0"
-              title="Teste de Esforço na Esteira"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
+      <!-- 9. Seção Contato -->
+      <section id="contato" class="section-padding">
+        <div class="container-custom contact-grid">
+          <div class="contact-info-card" data-aos="fade-right">
+            <h3>Fale Conosco</h3>
+            <p class="text-muted" style="margin-bottom: 25px">
+              Estamos à disposição para tirar suas dúvidas sobre exames,
+              convênios ou procedimentos.
+            </p>
 
-      <!-- Sobre a Dra -->
-      <section class="section-padding">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-              <img
-                src="https://images.unsplash.com/photo-1559839734-2b71f153678f?auto=format&fit=crop&w=800&q=80"
-                alt="Dra Renata"
-                class="about-img"
-              />
+            <div class="contact-details">
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <i class="bi bi-telephone"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <h4>Telefone Fixo</h4>
+                  <p>(11) 2325-4369</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div
+                  class="contact-detail-icon"
+                  style="
+                    background: rgba(34, 197, 94, 0.1);
+                    color: var(--color-success);
+                  "
+                >
+                  <i class="bi bi-whatsapp"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <h4>WhatsApp</h4>
+                  <p>(11) 98765-4321</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <i class="bi bi-envelope"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <h4>E-mail</h4>
+                  <p>contato@cordiscardiologia.com.br</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <i class="bi bi-geo-alt"></i>
+                </div>
+                <div class="contact-detail-text">
+                  <h4>Endereço</h4>
+                  <p>
+                    Av. Dom Pedro II, 620<br />Bairro Jardim, Santo André - SP
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="col-lg-6" data-aos="fade-left">
-              <h5
-                class="text-uppercase fw-bold"
-                style="color: var(--dourado)"
+
+            <div class="contact-socials">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener"
+                class="contact-social-link"
+                aria-label="Siga-nos no Instagram"
               >
-                Sobre a Especialista
-              </h5>
-              <h2
-                class="playfair mb-4"
-                style="color: var(--azul-marinho); font-size: 2.8rem"
+                <i class="bi bi-instagram"></i>
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener"
+                class="contact-social-link"
+                aria-label="Curta nossa página no Facebook"
               >
-                Dra. Renata Vasconcelos
-              </h2>
-              <p class="text-muted fs-5">
-                Com mais de 15 anos de experiência em cardiologia clínica e
-                intervencionista, a Dra. Renata é referência em diagnósticos
-                precisos e tratamentos personalizados.
-              </p>
-              <p class="text-muted">
-                Formada pela USP com especialização no InCor, dedica sua
-                carreira a prevenir doenças cardiovasculares e melhorar a
-                qualidade de vida de seus pacientes através de uma abordagem
-                integrativa.
-              </p>
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener"
+                class="contact-social-link"
+                aria-label="Conecte-se conosco no LinkedIn"
+              >
+                <i class="bi bi-linkedin"></i>
+              </a>
+            </div>
+          </div>
 
-              <div class="stats-box">
-                <div class="stat-item">
-                  <h4>15+</h4>
-                  <p class="small text-uppercase fw-bold">Anos de Exp.</p>
-                </div>
-                <div class="stat-item">
-                  <h4>5k+</h4>
-                  <p class="small text-uppercase fw-bold">Pacientes</p>
-                </div>
-                <div class="stat-item">
-                  <h4>10+</h4>
-                  <p class="small text-uppercase fw-bold">Prêmios</p>
-                </div>
-              </div>
+          <div
+            class="contact-form-box"
+            data-aos="fade-left"
+            id="contactFormBox"
+          >
+            <div class="loading-overlay" id="contactFormLoading">
+              <div class="spinner-custom"></div>
             </div>
-          </div>
-        </div>
-      </section>
+            <h3>Envie uma Mensagem</h3>
+            <form id="formContato">
+              <div class="form-group">
+                <label for="contatoNome">Nome Completo</label>
+                <input
+                  type="text"
+                  id="contatoNome"
+                  class="form-input-custom"
+                  placeholder="Seu nome"
+                  required
+                />
+              </div>
 
-      <!-- Especialidades -->
-      <section class="section-padding" style="background: #f0f4f8">
-        <div class="container">
-          <div class="section-title" data-aos="fade-up">
-            <h2>Nossas Especialidades</h2>
-            <div class="divider"></div>
-          </div>
-          <div class="row g-4">
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-              <div class="specialty-card">
-                <div class="specialty-icon">
-                  <i class="bi bi-heart-pulse"></i>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contatoEmail">E-mail</label>
+                  <input
+                    type="email"
+                    id="contatoEmail"
+                    class="form-input-custom"
+                    placeholder="exemplo@email.com"
+                    required
+                  />
                 </div>
-                <h4 class="playfair">Check-up Completo</h4>
-                <p class="text-muted">
-                  Avaliação detalhada da saúde cardiovascular com exames
-                  preventivos de última geração.
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-              <div class="specialty-card">
-                <div class="specialty-icon"><i class="bi bi-activity"></i></div>
-                <h4 class="playfair">Arritmologia</h4>
-                <p class="text-muted">
-                  Diagnóstico e tratamento de distúrbios do ritmo cardíaco com
-                  monitoramento avançado.
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-              <div class="specialty-card">
-                <div class="specialty-icon">
-                  <i class="bi bi-shield-check"></i>
+                <div class="form-group">
+                  <label for="contatoCelular">Celular / WhatsApp</label>
+                  <input
+                    type="tel"
+                    id="contatoCelular"
+                    class="form-input-custom"
+                    placeholder="(11) 99999-9999"
+                    required
+                  />
                 </div>
-                <h4 class="playfair">Hipertensão</h4>
-                <p class="text-muted">
-                  Controle rigoroso da pressão arterial para prevenir
-                  complicações graves no futuro.
-                </p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <!-- Depoimentos -->
-      <section class="section-padding">
-        <div class="container">
-          <div class="section-title" data-aos="fade-up">
-            <h2>O que dizem nossos pacientes</h2>
-            <div class="divider"></div>
-          </div>
-          <div class="row g-4">
-            <div class="col-md-6" data-aos="fade-right">
-              <div class="testimonial-card">
-                <i class="bi bi-quote quote-icon"></i>
-                <p class="fst-italic text-muted">
-                  "A Dra. Renata salvou minha vida. Seu diagnóstico rápido e o
-                  cuidado durante todo o tratamento foram fundamentais para
-                  minha recuperação."
-                </p>
-                <div class="patient-info">
-                  <div
-                    class="patient-img"
-                    style="
-                      background: url(&quot;https://i.pravatar.cc/150?u=1&quot;)
-                        center/cover;
-                    "
-                  ></div>
-                  <div>
-                    <h6 class="mb-0 fw-bold">Carlos Eduardo</h6>
-                    <small class="text-muted">Paciente há 3 anos</small>
-                  </div>
-                </div>
+              <div class="form-group">
+                <label for="contatoAssunto">Assunto</label>
+                <select
+                  id="contatoAssunto"
+                  class="form-input-custom"
+                  style="appearance: auto"
+                  required
+                >
+                  <option value="">-- Selecione uma opção --</option>
+                  <option value="Dúvida Geral">Dúvida Geral</option>
+                  <option value="Agendamento de Exames">
+                    Agendamento de Exames
+                  </option>
+                  <option value="Dificuldades com o Portal">
+                    Dificuldades com o Portal
+                  </option>
+                  <option value="Trabalhe Conosco">Trabalhe Conosco</option>
+                </select>
               </div>
-            </div>
-            <div class="col-md-6" data-aos="fade-left">
-              <div class="testimonial-card">
-                <i class="bi bi-quote quote-icon"></i>
-                <p class="fst-italic text-muted">
-                  "Excelente profissional. O sistema de agendamento online
-                  facilitou muito minha rotina. Recomendo a todos que buscam
-                  confiança."
-                </p>
-                <div class="patient-info">
-                  <div
-                    class="patient-img"
-                    style="
-                      background: url(&quot;https://i.pravatar.cc/150?u=2&quot;)
-                        center/cover;
-                    "
-                  ></div>
-                  <div>
-                    <h6 class="mb-0 fw-bold">Mariana Silva</h6>
-                    <small class="text-muted">Paciente há 1 ano</small>
-                  </div>
-                </div>
+
+              <div class="form-group">
+                <label for="contatoMensagem">Mensagem</label>
+                <textarea
+                  id="contatoMensagem"
+                  class="form-input-custom"
+                  rows="4"
+                  placeholder="Escreva sua mensagem detalhada..."
+                  required
+                ></textarea>
               </div>
-            </div>
+
+              <button
+                type="submit"
+                class="btn-custom btn-primary-custom"
+                style="width: 100%; border-radius: 10px"
+              >
+                Enviar Mensagem <i class="bi bi-send"></i>
+              </button>
+            </form>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Auth Page -->
+    <!-- ================= PÁGINA DE PORTAL: AUTHENTICATION ================= -->
     <section id="auth" class="page-content">
-      <div class="container section-padding">
-        <div class="auth-card" data-aos="zoom-in">
-          <div id="login-form">
-            <h3
-              class="text-center mb-4 playfair"
-              style="color: var(--azul-marinho)"
-            >
-              Acesso do Paciente
-            </h3>
-            <form
-              onsubmit="
-                event.preventDefault();
-                loginSimulado();
-              "
-            >
-              <label class="small fw-bold">E-mail ou CPF</label>
+      <div class="container-custom auth-container">
+        <div class="auth-card-premium" id="loginFormCard">
+          <h3>Acesso do Paciente</h3>
+          <p class="auth-subtitle">
+            Faça login para gerenciar suas consultas e exames.
+          </p>
+
+          <form id="formLogin">
+            <div class="form-group">
+              <label for="loginUser">E-mail ou CPF do Paciente</label>
               <input
                 type="text"
-                class="form-control"
-                placeholder="Digite seu acesso"
+                id="loginUser"
+                class="form-input-custom"
+                placeholder="Digite seu CPF ou e-mail registrado"
                 required
               />
-              <label class="small fw-bold">Senha</label>
+            </div>
+
+            <div class="form-group">
+              <label for="loginSenha">Senha</label>
               <input
                 type="password"
-                class="form-control"
+                id="loginSenha"
+                class="form-input-custom"
                 placeholder="••••••••"
                 required
               />
-              <button type="submit" class="btn-primary-custom mt-2">
-                ENTRAR
-              </button>
-              <p class="text-center mt-4 small">
-                Ainda não tem conta? <br />
-                <span
-                  class="auth-toggle-link text-primary"
-                  style="cursor: pointer"
-                  onclick="toggleAuth()"
-                  >Cadastre-se aqui</span
-                >
-              </p>
-            </form>
-          </div>
+            </div>
 
-          <div id="register-form" style="display: none">
-            <h3
-              class="text-center mb-4 playfair"
-              style="color: var(--azul-marinho)"
+            <button
+              type="submit"
+              class="btn-custom btn-primary-custom"
+              style="width: 100%; border-radius: 10px; margin-top: 10px"
             >
-              Crie sua Conta
-            </h3>
-            <form
-              onsubmit="
-                event.preventDefault();
-                loginSimulado();
-              "
-            >
-              <label class="small fw-bold">Nome Completo</label>
+              Entrar no Portal <i class="bi bi-box-arrow-in-right"></i>
+            </button>
+
+            <p class="text-center" style="margin-top: 25px; font-size: 0.9rem">
+              Ainda não tem conta?
+              <span class="auth-toggle-link" id="linkToRegister"
+                >Cadastre-se</span
+              >
+            </p>
+          </form>
+        </div>
+
+        <div
+          class="auth-card-premium"
+          id="registerFormCard"
+          style="display: none"
+        >
+          <h3>Crie sua Conta</h3>
+          <p class="auth-subtitle">
+            Crie um perfil para agendar de forma prática.
+          </p>
+
+          <form id="formRegister">
+            <div class="form-group">
+              <label for="regNome">Nome Completo</label>
               <input
                 type="text"
-                class="form-control"
-                placeholder="Seu nome"
+                id="regNome"
+                class="form-input-custom"
+                placeholder="Digite seu nome completo"
                 required
               />
-              <label class="small fw-bold">E-mail</label>
+            </div>
+
+            <div class="form-group">
+              <label for="regEmail">E-mail</label>
               <input
                 type="email"
-                class="form-control"
+                id="regEmail"
+                class="form-input-custom"
                 placeholder="exemplo@email.com"
                 required
               />
-              <div class="row">
-                <div class="col-6">
-                  <label class="small fw-bold">CPF</label>
-                  <input
-                    type="text"
-                    id="cpfInput"
-                    class="form-control"
-                    placeholder="000.000.000-00"
-                    maxlength="14"
-                    required
-                  />
-                </div>
-                <div class="col-6">
-                  <label class="small fw-bold">Celular</label>
-                  <input
-                    type="tel"
-                    id="celularInput"
-                    class="form-control"
-                    placeholder="(11) 99999-9999"
-                    maxlength="15"
-                    required
-                  />
-                </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="regCpf">CPF</label>
+                <input
+                  type="text"
+                  id="regCpf"
+                  class="form-input-custom"
+                  placeholder="000.000.000-00"
+                  maxlength="14"
+                  required
+                />
               </div>
-              <label class="small fw-bold">Crie uma Senha</label>
+              <div class="form-group">
+                <label for="regCelular">Celular / WhatsApp</label>
+                <input
+                  type="tel"
+                  id="regCelular"
+                  class="form-input-custom"
+                  placeholder="(11) 99999-9999"
+                  maxlength="15"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="regSenha">Crie uma Senha</label>
               <input
                 type="password"
-                class="form-control"
-                placeholder="••••••••"
+                id="regSenha"
+                class="form-input-custom"
+                placeholder="Mínimo 4 caracteres"
                 required
               />
-              <button type="submit" class="btn-primary-custom mt-2">
-                FINALIZAR CADASTRO
-              </button>
-              <p class="text-center mt-4 small">
-                Já possui conta? <br />
-                <span
-                  class="auth-toggle-link text-primary"
-                  style="cursor: pointer"
-                  onclick="toggleAuth()"
-                  >Voltar para Login</span
-                >
-              </p>
-            </form>
-          </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-custom btn-primary-custom"
+              style="width: 100%; border-radius: 10px; margin-top: 10px"
+            >
+              Concluir Cadastro <i class="bi bi-person-plus"></i>
+            </button>
+
+            <p class="text-center" style="margin-top: 25px; font-size: 0.9rem">
+              Já possui cadastro?
+              <span class="auth-toggle-link" id="linkToLogin">Fazer Login</span>
+            </p>
+          </form>
         </div>
       </div>
     </section>
 
-    <!-- Agendamento Page -->
+    <!-- ================= PÁGINA DE PORTAL: AGENDAMENTO (WIZARD) ================= -->
     <section id="agendamento" class="page-content">
-      <div class="container section-padding">
-        <div class="auth-card" style="max-width: 800px" data-aos="fade-up">
+      <div class="container-custom">
+        <div class="booking-card-premium" id="bookingCard">
+          <div class="loading-overlay" id="bookingLoading">
+            <div class="spinner-custom"></div>
+          </div>
+
           <h3
-            class="text-center mb-4 playfair"
-            style="color: var(--azul-marinho)"
+            id="agendamentoTitle"
+            style="text-align: center; font-size: 2.1rem; margin-bottom: 30px"
           >
-            Agendamento Online
+            Agendar Nova Consulta
           </h3>
 
-          <div class="step-indicator mb-5">
+          <!-- Wizard Steps -->
+          <div class="step-indicator">
             <div class="step active" id="step1-indicator">
               <div class="step-number">1</div>
-              <div class="small">Serviço</div>
+              <div class="step-label">Serviço</div>
             </div>
             <div class="step" id="step2-indicator">
               <div class="step-number">2</div>
-              <div class="small">Data e Hora</div>
+              <div class="step-label">Data e Hora</div>
             </div>
             <div class="step" id="step3-indicator">
               <div class="step-number">3</div>
-              <div class="small">Confirmação</div>
+              <div class="step-label">Confirmação</div>
             </div>
           </div>
 
-          <form id="formAgendar" onsubmit="handleAgendamentoSubmit(event)">
+          <form id="formAgendar">
+            <!-- PASSO 1: Escolha do Serviço e Convênio -->
             <div id="step1">
-              <h5 class="mb-3">Selecione o Serviço</h5>
-              <select id="servicoSelect" class="form-select" required>
-                <option value="">-- Escolha um serviço --</option>
-                <option value="Consulta Cardiológica">
-                  Consulta Cardiológica
-                </option>
-                <option value="Eletrocardiograma">Eletrocardiograma</option>
-                <option value="Ecocardiograma">Ecocardiograma</option>
-              </select>
-              <div class="mb-3">
-                <label class="small fw-bold">Convênio</label>
-                <select id="convenioSelect" class="form-select" required>
-                  <option value="">-- Selecione --</option>
-                  <option value="Particular">Particular</option>
-                  <option value="Unimed">Unimed</option>
+              <h4
+                style="
+                  margin-bottom: 20px;
+                  font-family: var(--font-body);
+                  font-size: 1.25rem;
+                "
+              >
+                Dados Iniciais
+              </h4>
+
+              <div class="form-group">
+                <label for="servicoSelect"
+                  >Escolha a Especialidade ou Exame</label
+                >
+                <select
+                  id="servicoSelect"
+                  class="form-input-custom"
+                  style="appearance: auto"
+                  required
+                >
+                  <option value="">-- Selecione uma opção --</option>
+                  <option value="Consulta Cardiológica">
+                    Consulta Cardiológica
+                  </option>
+                  <option value="Eletrocardiograma">
+                    Eletrocardiograma (ECG)
+                  </option>
+                  <option value="Ecocardiograma">Ecocardiograma simples</option>
                 </select>
               </div>
-              <button
-                type="button"
-                class="btn-primary-custom"
-                onclick="nextStep(2)"
-              >
-                PRÓXIMO PASSO
-              </button>
+
+              <div class="form-group" style="margin-bottom: 35px">
+                <label for="convenioSelect">Convênio Médico</label>
+                <select
+                  id="convenioSelect"
+                  class="form-input-custom"
+                  style="appearance: auto"
+                  required
+                >
+                  <option value="">-- Selecione --</option>
+                  <option value="Particular">Particular / Reembolso</option>
+                  <option value="Unimed">Unimed</option>
+                  <option value="Bradesco Saúde">Bradesco Saúde</option>
+                  <option value="SulAmérica">SulAmérica</option>
+                  <option value="Amil">Amil</option>
+                </select>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end">
+                <button
+                  type="button"
+                  class="btn-custom btn-primary-custom"
+                  id="btnStep1Next"
+                >
+                  Próximo Passo <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
             </div>
 
+            <!-- PASSO 2: Data e Horário (Calendário Interativo) -->
             <div id="step2" style="display: none">
-              <h5 class="mb-3">Escolha Data e Horário</h5>
-              <div class="calendar-box mb-4">
+              <h4
+                style="
+                  margin-bottom: 20px;
+                  font-family: var(--font-body);
+                  font-size: 1.25rem;
+                "
+              >
+                Escolha de Data e Horário
+              </h4>
+
+              <div class="calendar-box">
                 <div class="calendar-header">
                   <button
                     type="button"
                     class="calendar-nav-btn"
-                    onclick="changeMonth(-1)"
+                    id="btnCalendarPrev"
+                    aria-label="Mês anterior"
                   >
                     <i class="bi bi-chevron-left"></i>
                   </button>
-                  <h5 id="calendarTitle"></h5>
+                  <h4 id="calendarTitle">Outubro 2026</h4>
                   <button
                     type="button"
                     class="calendar-nav-btn"
-                    onclick="changeMonth(1)"
+                    id="btnCalendarNext"
+                    aria-label="Próximo mês"
                   >
                     <i class="bi bi-chevron-right"></i>
                   </button>
                 </div>
-                <div class="calendar-grid" id="calendarGrid"></div>
+
+                <div class="calendar-grid" id="calendarGrid">
+                  <!-- Preenchido dinamicamente via JS -->
+                </div>
               </div>
+
+              <!-- Campo oculto para salvar data -->
               <input type="hidden" id="dataAgenda" required />
-              <h6 class="mb-3">Selecione um Horário</h6>
-              <div id="timeSlots" class="time-slots-container mb-4"></div>
+
+              <h4
+                style="
+                  margin-bottom: 15px;
+                  font-family: var(--font-body);
+                  font-size: 1.15rem;
+                "
+              >
+                Horários Disponíveis
+              </h4>
+              <div class="time-slots-container" id="timeSlots">
+                <!-- Preenchido dinamicamente via JS -->
+              </div>
+
+              <!-- Campo oculto para salvar horário -->
               <input type="hidden" id="selectedTime" required />
-              <div class="d-flex gap-2">
+
+              <div
+                style="display: flex; justify-content: space-between; gap: 15px"
+              >
                 <button
                   type="button"
-                  class="btn btn-outline-secondary w-100"
-                  onclick="prevStep(1)"
+                  class="btn-custom btn-secondary-custom"
+                  id="btnStep2Prev"
                 >
-                  VOLTAR
+                  <i class="bi bi-arrow-left"></i> Voltar
                 </button>
                 <button
                   type="button"
-                  class="btn-primary-custom"
-                  onclick="nextStep(3)"
+                  class="btn-custom btn-primary-custom"
+                  id="btnStep2Next"
                 >
-                  PRÓXIMO PASSO
+                  Próximo Passo <i class="bi bi-arrow-right"></i>
                 </button>
               </div>
             </div>
 
+            <!-- PASSO 3: Confirmação e Observações -->
             <div id="step3" style="display: none">
-              <h5 class="mb-3">Resumo do Agendamento</h5>
-              <div class="p-3 bg-light rounded mb-4">
-                <p>
-                  <strong>Serviço:</strong> <span id="resumoServico"></span>
+              <h4
+                style="
+                  margin-bottom: 20px;
+                  font-family: var(--font-body);
+                  font-size: 1.25rem;
+                "
+              >
+                Resumo da Consulta
+              </h4>
+
+              <div
+                style="
+                  background: var(--bg-primary);
+                  border: 1px solid var(--border-color);
+                  padding: 25px;
+                  border-radius: 12px;
+                  margin-bottom: 30px;
+                "
+              >
+                <p style="margin-bottom: 10px; font-size: 1.05rem">
+                  <strong>Serviço:</strong> <span id="resumoServico">-</span>
                 </p>
-                <p><strong>Convênio:</strong> <span id="resumoConvenio"></span></p>
-                <p><strong>Data:</strong> <span id="resumoData"></span></p>
-                <p><strong>Horário:</strong> <span id="resumoHora"></span></p>
+                <p style="margin-bottom: 10px; font-size: 1.05rem">
+                  <strong>Convênio:</strong> <span id="resumoConvenio">-</span>
+                </p>
+                <p style="margin-bottom: 10px; font-size: 1.05rem">
+                  <strong>Data da Consulta:</strong>
+                  <span id="resumoData">-</span>
+                </p>
+                <p style="margin-bottom: 0; font-size: 1.05rem">
+                  <strong>Horário Agendado:</strong>
+                  <span id="resumoHora">-</span>
+                </p>
               </div>
-              
-              <div class="mb-4">
-                <label class="small fw-bold mb-2">Observações Adicionais</label>
-                <textarea 
-                  id="observacoesPaciente" 
-                  class="form-control" 
-                  rows="3" 
-                  placeholder="Digite aqui alguma observação importante para a consulta..."
+
+              <div class="form-group" style="margin-bottom: 35px">
+                <label for="observacoesPaciente"
+                  >Observações Clínicas (Opcional)</label
+                >
+                <textarea
+                  id="observacoesPaciente"
+                  class="form-input-custom"
+                  rows="3"
+                  placeholder="Caso possua alguma recomendação médica, alergia ou queixa recente, digite aqui..."
                 ></textarea>
               </div>
 
-              <div class="d-flex gap-2">
+              <div
+                style="display: flex; justify-content: space-between; gap: 15px"
+              >
                 <button
                   type="button"
-                  class="btn btn-outline-secondary w-100"
-                  onclick="prevStep(2)"
+                  class="btn-custom btn-secondary-custom"
+                  id="btnStep3Prev"
                 >
-                  VOLTAR
+                  <i class="bi bi-arrow-left"></i> Voltar
                 </button>
-                <button type="submit" class="btn-primary-custom">
-                  CONFIRMAR AGENDAMENTO
+                <button
+                  type="submit"
+                  class="btn-custom btn-primary-custom"
+                  id="btnSubmitAgendamento"
+                >
+                  Confirmar Agendamento <i class="bi bi-check2-circle"></i>
                 </button>
               </div>
             </div>
@@ -1054,43 +1114,73 @@
       </div>
     </section>
 
-    <!-- Dashboard Page -->
+    <!-- ================= PÁGINA DE PORTAL: DASHBOARD DO PACIENTE ================= -->
     <section id="dashboard" class="page-content">
-      <div class="container section-padding">
-        <div class="d-flex justify-content-between align-items-center mb-5">
-          <h2 class="playfair mb-0">Olá, Julia Pacheco</h2>
-          <button class="btn btn-outline-danger" onclick="showPage('home')">
-            Sair
+      <div
+        class="container-custom"
+        style="padding-top: 50px; padding-bottom: 80px"
+      >
+        <div class="patient-header">
+          <div>
+            <h2 class="playfair" style="font-size: 2.2rem; margin-bottom: 5px">
+              Olá, <span id="dashNomePaciente">Carregando...</span>
+            </h2>
+            <p class="text-muted">
+              Abaixo está o controle das suas consultas médicas e exames
+              cardiológicos.
+            </p>
+          </div>
+          <button
+            class="btn-custom btn-secondary-custom"
+            id="btnLogoff"
+            style="
+              color: var(--color-danger);
+              border-color: rgba(239, 68, 68, 0.3);
+            "
+          >
+            Sair <i class="bi bi-box-arrow-right"></i>
           </button>
         </div>
-        <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="auth-card m-0 text-center mb-4">
-              <i class="bi bi-calendar-check text-primary display-4"></i>
-              <h5 class="mt-3">Próxima Consulta</h5>
-              <p class="fw-bold mb-0">15 de Outubro, 14:00</p>
-              <span class="badge bg-success">Confirmado</span>
+
+        <div class="dashboard-grid">
+          <!-- Próxima Consulta -->
+          <div class="dashboard-card-premium">
+            <h3><i class="bi bi-calendar-check"></i> Próxima Consulta</h3>
+
+            <div class="next-appointment-box" id="nextAppointmentBox">
+              <!-- Renderizado dinamicamente pelo JS -->
+              <div class="next-appointment-icon">
+                <i class="bi bi-calendar-x"></i>
+              </div>
+              <div class="next-appointment-details">
+                Nenhuma consulta agendada no momento.
+              </div>
+              <button
+                class="btn-custom btn-primary-custom"
+                id="btnAgendarPeloDash"
+                style="font-size: 0.85rem; padding: 10px 20px"
+              >
+                Agendar Nova Consulta
+              </button>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="auth-card m-0" style="max-width: 100%">
-              <h5>Histórico de Atividades</h5>
-              <table class="table mt-3">
+
+          <!-- Histórico e Atividades -->
+          <div class="dashboard-card-premium">
+            <h3><i class="bi bi-clock-history"></i> Histórico de Consultas</h3>
+
+            <div class="history-table-container">
+              <table class="history-table">
                 <thead>
                   <tr>
                     <th>Data</th>
                     <th>Serviço</th>
+                    <th>Convênio</th>
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>10/08/2025</td>
-                    <td>Check-up Geral</td>
-                    <td>
-                      <span class="badge bg-light text-dark">Concluído</span>
-                    </td>
-                  </tr>
+                <tbody id="historyTableBody">
+                  <!-- Renderizado dinamicamente pelo JS -->
                 </tbody>
               </table>
             </div>
@@ -1099,259 +1189,56 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer
-      style="background: var(--azul-marinho); color: white; padding: 60px 0"
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 mb-4">
-            <h4 class="playfair mb-4">CORCENTRO</h4>
-            <p class="opacity-75">
-              Excelência em cardiologia para você e sua família.
-            </p>
-            <div class="d-flex gap-3 fs-4">
-              <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i
-              ><i class="bi bi-whatsapp"></i>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <h5 class="mb-4">Localização</h5>
-            <p class="small">Av. Dom Pedro II, 620 - Santo André/SP</p>
-            <div
-              id="mapContainer"
-              style="height: 200px; border-radius: 10px"
-            ></div>
-          </div>
-          <div class="col-md-4 text-md-end">
-            <h5 class="mb-4">Atendimento</h5>
-            <p class="mb-1">Seg a Sex: 08h às 19h</p>
-            <p class="mb-1">Sáb: 08h às 13h</p>
-            <h3 class="text-warning mt-3">(11) 2325-4369</h3>
-          </div>
+    <!-- 10. Footer -->
+    <footer class="footer-custom">
+      <div class="container-custom footer-grid">
+        <div class="footer-brand">
+          <h4>Cordis Cardiologia</h4>
+          <p>
+            Referência em excelência, inovação e humanização para cuidados
+            cardiológicos preventivos e diagnósticos assertivos.
+          </p>
+          <p style="font-size: 0.8rem; color: #64748b">
+            Responsável Técnico: Dr. Carlos Eduardo Mendes<br />CRM-SP 123.456 |
+            RQE 78.910
+          </p>
         </div>
+
+        <div class="footer-links">
+          <h5>Links Rápidos</h5>
+          <ul class="footer-menu">
+            <li><a href="#home" id="footLinkInicio">Início</a></li>
+            <li><a href="#sobre" id="footLinkSobre">Sobre Nós</a></li>
+            <li>
+              <a href="#servicos" id="footLinkServicos">Especialidades</a>
+            </li>
+            <li>
+              <a href="#beneficios" id="footLinkBeneficios">Diferenciais</a>
+            </li>
+            <li><a href="#faq" id="footLinkFAQ">Perguntas Frequentes</a></li>
+            <li><a href="#contato" id="footLinkContato">Fale Conosco</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-map-box">
+          <h5>Onde Estamos</h5>
+          <p style="font-size: 0.9rem; margin-bottom: 15px; color: #94a3b8">
+            <i class="bi bi-geo-alt"></i> Av. Dom Pedro II, 620 - Santo André/SP
+          </p>
+          <div class="map-container-custom" id="mapContainer"></div>
+        </div>
+      </div>
+
+      <div class="container-custom footer-copyright">
+        <p>
+          &copy; 2026 Cordis Cardiologia. Todos os direitos reservados.
+          Desenvolvido com foco em UX/UI e Performance.
+        </p>
       </div>
     </footer>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // Inicialização
-      window.addEventListener("load", () => {
-        AOS.init({ duration: 800, once: true });
-        renderCalendar();
-        initMap();
-      });
-
-      // Toasts
-      function showToast(message, type = "info") {
-        const container = document.getElementById("toastContainer");
-        const toast = document.createElement("div");
-        toast.className = "toast-custom";
-        toast.innerHTML = `<i class="bi bi-info-circle-fill me-2"></i> ${message}`;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-      }
-
-      // Navegação
-      function showPage(pageId) {
-        document
-          .querySelectorAll(".page-content")
-          .forEach((p) => p.classList.remove("page-active"));
-        document.getElementById(pageId).classList.add("page-active");
-        window.scrollTo(0, 0);
-        if (pageId === "agendamento") {
-          AppState.currentMonth = new Date();
-          AppState.selectedDate = null;
-          renderCalendar();
-          document.getElementById("step1").style.display = "block";
-          document.getElementById("step2").style.display = "none";
-          document.getElementById("step3").style.display = "none";
-          updateStepIndicator(1);
-        }
-        AOS.refresh();
-      }
-
-      function toggleMobileMenu() {
-        document.getElementById("navLinks").classList.toggle("active");
-      }
-      function closeMobileMenu() {
-        document.getElementById("navLinks").classList.remove("active");
-      }
-      function toggleAuth() {
-        const l = document.getElementById("login-form"),
-          r = document.getElementById("register-form");
-        l.style.display = l.style.display === "none" ? "block" : "none";
-        r.style.display = r.style.display === "none" ? "block" : "none";
-      }
-
-      // Máscaras
-      const mask = (id, fn) =>
-        document
-          .getElementById(id)
-          ?.addEventListener(
-            "input",
-            (e) => (e.target.value = fn(e.target.value)),
-          );
-      mask("cpfInput", (v) =>
-        v
-          .replace(/\D/g, "")
-          .replace(/(\d{3})(\d)/, "$1.$2")
-          .replace(/(\d{3})(\d)/, "$1.$2")
-          .replace(/(\d{3})(\d{1,2})$/, "$1-$2"),
-      );
-      mask("celularInput", (v) =>
-        v
-          .replace(/\D/g, "")
-          .replace(/^(\d{2})(\d)/g, "($1) $2")
-          .replace(/(\d{5})(\d)/, "$1-$2"),
-      );
-
-      // Calendário e Agendamento
-      const AppState = { currentMonth: new Date(), selectedDate: null };
-      const Config = {
-        monthsBr: [
-          "Janeiro",
-          "Fevereiro",
-          "Março",
-          "Abril",
-          "Maio",
-          "Junho",
-          "Julho",
-          "Agosto",
-          "Setembro",
-          "Outubro",
-          "Novembro",
-          "Dezembro",
-        ],
-        weekdaysBr: ["D", "S", "T", "Q", "Q", "S", "S"],
-        timeSlots: ["08:00", "09:00", "10:00", "14:00", "15:00", "16:00"],
-      };
-
-      function renderCalendar() {
-        const y = AppState.currentMonth.getFullYear(),
-          m = AppState.currentMonth.getMonth();
-        document.getElementById("calendarTitle").innerText =
-          `${Config.monthsBr[m]} ${y}`;
-        const grid = document.getElementById("calendarGrid");
-        grid.innerHTML = "";
-        Config.weekdaysBr.forEach((d) => {
-          const div = document.createElement("div");
-          div.className = "calendar-weekday";
-          div.innerText = d;
-          grid.appendChild(div);
-        });
-        const first = new Date(y, m, 1).getDay(),
-          total = new Date(y, m + 1, 0).getDate(),
-          today = new Date().toISOString().split("T")[0];
-        for (let i = 0; i < first; i++)
-          grid.appendChild(document.createElement("div"));
-        for (let d = 1; d <= total; d++) {
-          const date = new Date(y, m, d),
-            dateStr = date.toISOString().split("T")[0],
-            div = document.createElement("div");
-          div.className = "calendar-day";
-          div.innerText = d;
-          if (dateStr < today || date.getDay() === 0 || date.getDay() === 6)
-            div.classList.add("disabled");
-          else {
-            div.onclick = () => {
-              document
-                .querySelectorAll(".calendar-day")
-                .forEach((el) => el.classList.remove("selected"));
-              div.classList.add("selected");
-              AppState.selectedDate = dateStr;
-              document.getElementById("dataAgenda").value = dateStr;
-              generateTimeSlots();
-            };
-          }
-          grid.appendChild(div);
-        }
-      }
-
-      function changeMonth(dir) {
-        AppState.currentMonth.setMonth(AppState.currentMonth.getMonth() + dir);
-        renderCalendar();
-      }
-
-      function generateTimeSlots() {
-        const c = document.getElementById("timeSlots");
-        c.innerHTML = "";
-        Config.timeSlots.forEach((t) => {
-          const d = document.createElement("div");
-          d.className = "time-slot";
-          d.innerText = t;
-          d.onclick = () => {
-            document
-              .querySelectorAll(".time-slot")
-              .forEach((s) => s.classList.remove("active"));
-            d.classList.add("active");
-            document.getElementById("selectedTime").value = t;
-          };
-          c.appendChild(d);
-        });
-      }
-
-      function updateStepIndicator(step) {
-        document.querySelectorAll(".step").forEach((s, i) => {
-          s.classList.toggle("active", i + 1 === step);
-        });
-      }
-
-      function nextStep(s) {
-        if (s === 2 && !document.getElementById("servicoSelect").value)
-          return showToast("Selecione um serviço", "warning");
-        if (
-          s === 3 &&
-          (!AppState.selectedDate ||
-            !document.getElementById("selectedTime").value)
-        )
-          return showToast("Selecione data e hora", "warning");
-        document.getElementById("step1").style.display =
-          s === 1 ? "block" : "none";
-        document.getElementById("step2").style.display =
-          s === 2 ? "block" : "none";
-        document.getElementById("step3").style.display =
-          s === 3 ? "block" : "none";
-        updateStepIndicator(s);
-        if (s === 3) {
-          document.getElementById("resumoServico").innerText =
-            document.getElementById("servicoSelect").value;
-          document.getElementById("resumoConvenio").innerText =
-            document.getElementById("convenioSelect").value;
-          document.getElementById("resumoData").innerText =
-            new Date(AppState.selectedDate).toLocaleDateString("pt-BR");
-          document.getElementById("resumoHora").innerText =
-            document.getElementById("selectedTime").value;
-        }
-      }
-
-      function prevStep(s) {
-        nextStep(s);
-      }
-
-      function handleAgendamentoSubmit(e) {
-        e.preventDefault();
-        showToast("✓ Agendamento realizado com sucesso!", "success");
-        setTimeout(() => showPage("dashboard"), 1500);
-      }
-
-      function loginSimulado() {
-        showToast("✓ Bem-vindo(a)!", "success");
-        setTimeout(() => showPage("dashboard"), 1500);
-      }
-
-      function initMap() {
-        const m = L.map("mapContainer").setView([-23.6562, -46.5367], 15);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
-          m,
-        );
-        L.marker([-23.6562, -46.5367])
-          .addTo(m)
-          .bindPopup("Clínica Corcentro")
-          .openPopup();
-      }
-    </script>
+    <script src="js/script.js"></script>
   </body>
 </html>

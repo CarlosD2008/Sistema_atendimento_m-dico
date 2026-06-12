@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "nome": "Julia Pacheco",
+      "email": "julia3@email.com",
+      "cpf": "123.456.769-04",
+      "celular": "(11) 1234-9876",
+      "senha": "123456"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "1",
+      "patientCpf": "123.456.769-04",
+      "data": "2026-10-15",
+      "horario": "14:00",
+      "servico": "Consulta Cardiológica",
+      "convenio": "Unimed",
+      "observacoes": "Check-up anual de rotina."
+    }
+  ]
+}
